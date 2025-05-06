@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel de Alocação UBS</title>
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/kepler.gl@2.5.2/dist/kepler.gl.bundle.css" />
+  <script src="https://unpkg.com/kepler.gl@2.5.2/dist/kepler.gl.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #112330;
+      --bg-card: #1a2c3b;
+      --primary: #1fbad6;
+      --text-light: #d8d9db;
+      --bg-acc-header:   #16344a;  
+      --bg-acc-header-o: #1fbad615; 
+      --bg-acc-body:     #122635;   
+      --acc-border:      #2998b3;   
+    }
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+    h1 {
+      color: #fff;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .card-custom {
+      background: var(--bg-card);
+      border: 0;
+      color: var(--text-light);
+    }
+    .card-custom .card-title {
+      color: var(--primary);
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    #download-zip {
+      background: var(--primary);
+      border: 0;
+    }
+    #download-zip:hover {
+      background: #1494ab;
+    }
+    canvas {
+      max-width: 100%!important;
+      height: auto!important;
+    }
+   
+
+  html, body {
+    overflow-x: hidden;
+  }
+
+  #mapContainer {
+    overflow: hidden;
+  }
+
+  .map-iframe {
+    overflow: hidden;
+    display: block;
+    border: none;
+  }
+
+  .accordion.perguntas .accordion-item{
+    background: var(--bg-card);     
+    border: 0;
+  }
+  
+  .accordion.perguntas .accordion-button{
+    background: var(--bg-acc-header);
+    color: var(--text-light);
+    padding: .8rem 1rem;
+    font-weight: 600;
+    transition: background .15s;
+  }
+  
+  .accordion.perguntas .accordion-button:not(.collapsed){
+    background: var(--bg-acc-header-o);      
+    color: var(--primary);
+    border-left: 4px solid var(--acc-border);
+  }
+  
+  .accordion.perguntas .accordion-body{
+    background: var(--bg-acc-body);
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--acc-border);
+    color: var(--text-light);
+  }
+  
+  .accordion.perguntas .accordion-body p{
+    margin-bottom:.35rem;
+  }
+  
+  .accordion.perguntas .accordion-button::after{
+    filter: invert(1);
+  }
+
+
+  </style>
+</head>
+<body>
+  <div id="loadingOverlay" class="d-none" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(17,35,48,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;">
+    <div class="spinner-border text-light" role="status" style="width: 4rem; height: 4rem;">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <div class="container py-3">
+    <h1>Painel de Alocação UBS</h1>
+    <form id="consulta-form" class="row gy-2 gx-2 align-items-end">
+      <div class="col-12 col-md-3">
+        <label class="form-label mb-1" for="estado">Estado</label>
+        <select id="estado" class="form-select form-select-sm"></select>
+      </div>
+      <div class="col-12 col-md-4">
+        <label class="form-label mb-1" for="municipio">Cidade</label>
+        <select id="municipio" class="form-select form-select-sm"></select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label mb-1" for="distancia">Tipo de Distância</label>
+        <select id="distancia" class="form-select form-select-sm">
+          <option value="geodesic">Geodésica</option>
+          <option value="pandana_real_distance">Pandana Real</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2 d-grid">
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fas fa-search me-1"></i> Consultar
+        </button>
+      </div>
+    </form>
+
+    <div id="painel" class="mt-4 d-none">
+      <div class="row g-3" id="top-indicators"></div>
+      <h5 class="mt-4">Alocação</h5>
+      <div id="ubs-cards" class="row g-3"></div>
+
+    <div class="d-grid mt-2">
+      <button id="toggle-ubs-btn"
+              class="btn btn-outline-secondary btn-sm d-none">
+        Mostrar todas
+      </button>
+    </div>
+
+
+      <div class="row g-3 mt-4">
+        <div class="col-md-4">
+          <div class="card card-custom p-3 h-100">
+            <h6 class="card-title">Distribuição da população por raça</h6>
+            <canvas id="chartRacial"></canvas>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="card card-custom p-3 h-100">
+            <h6 class="card-title">% de população por UBS</h6>
+            <canvas id="chartPopUBS"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="qa-section" class="row g-3 mt-4 d-none">
+  <div class="col-12">
+    <div class="card card-custom p-3">
+      <h5 class="card-title mb-3">
+        <i class="fas fa-circle-question me-2 text-primary"></i>
+        Perguntas-Guia da Análise
+      </h5>
+      <div id="qa-list" class="accordion perguntas accordion-flush">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+    <div id="mapCard" class="mt-4 d-none">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title">Mapa de Alocação</h5>
+          <div id="mapContainer" style="width:100%; height:600px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid mt-4">
+      <button id="download-zip" class="btn btn-primary btn-lg d-none">
+        📦 Baixar ZIP com Resultados Completos
+      </button>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* ------------------------------------------------------------- */
+    /* CONFIGURAÇÕES GERAIS                                          */
+    /* ------------------------------------------------------------- */
+    const API_BASE   = "http://127.0.0.1:8050";
+    const estadoSel  = document.getElementById("estado");
+    const municipioSel = document.getElementById("municipio");
+    const painel     = document.getElementById("painel");
+    const mapCard    = document.getElementById("mapCard");
+    const downloadBtn = document.getElementById("download-zip");
+    const toggleBtn  = document.getElementById("toggle-ubs-btn");
+  
+    const qaSection  = document.getElementById("qa-section"); // container do card
+    const qaList     = document.getElementById("qa-list");    // acordeão
+  
+    /* limite inicial de cards de UBS */
+    const MAX_UBS_DISPLAY = 9;
+    let allUBS     = [];
+    let showingAll = false;
+  
+    const fmtInt = n => Intl.NumberFormat("pt-BR").format(n);
+    const fmtPct = v => (v ?? 0).toFixed(1) + "%";
+    const iconPin = '<i class="fas fa-map-marker-alt me-1 text-primary"></i>';
+  
+    /* ------------------------------------------------------------- */
+    /* CARREGA LISTA DE ESTADOS E MUNICÍPIOS                         */
+    /* ------------------------------------------------------------- */
+    fetch(`${API_BASE}/consulta_base/ufs`)
+      .then(r => r.json())
+      .then(ufs => ufs.forEach(uf => estadoSel.appendChild(new Option(uf, uf))));
+  
+    estadoSel.addEventListener("change", () => {
+      municipioSel.innerHTML = "";
+      fetch(`${API_BASE}/consulta_base/municipios?uf=${estadoSel.value}`)
+        .then(r => r.json())
+        .then(cidades => cidades.forEach(c => municipioSel.appendChild(new Option(c, c))));
+    });
+  
+    /* ------------------------------------------------------------- */
+    /* SUBMISSÃO DO FORMULÁRIO                                       */
+    /* ------------------------------------------------------------- */
+    document.getElementById("consulta-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      loadingOverlay.classList.remove("d-none");
+  
+      painel.classList.add("d-none");
+      mapCard.classList.add("d-none");
+      downloadBtn.classList.add("d-none");
+      qaSection.classList.add("d-none");
+  
+      const uf   = estadoSel.value;
+      const mun  = municipioSel.value;
+      const tipo = document.getElementById("distancia").value;
+  
+      fetch(`${API_BASE}/consulta_base/resultado_completo?uf=${uf}&municipio=${mun}&tipo=${tipo}`)
+        .then(r => r.json())
+        .then(data => {
+          showDashboard(data);
+          loadingOverlay.classList.add("d-none");
+        })
+        .catch(err => {
+          alert("Erro: " + err);
+          loadingOverlay.classList.add("d-none");
+        });
+    });
+  
+    /* ------------------------------------------------------------- */
+    /* DASHBOARD PRINCIPAL                                           */
+    /* ------------------------------------------------------------- */
+    let chartRacial, chartPopUBS; // referências para Chart.js
+  
+    function showDashboard(data) {
+      const { info, eda, alocacao, map_url, perguntas } = data;
+      painel.classList.remove("d-none");
+  
+      /* ---- indicadores superiores ---- */
+      const top = document.getElementById("top-indicators");
+      top.innerHTML = "";
+      [
+        { label: "Cidade",            val: info["Município"] },
+        { label: "População Total",   val: fmtInt(eda.Total_City_Population) },
+        { label: "UBS Ativas",        val: fmtInt(Object.keys(alocacao).length) },
+        { label: "Tipo de distância", val: info["Distância"] === "geodesic" ? "Geodésica" : "Pandana Real" }
+      ].forEach(s => top.appendChild(makeStatCard(s.label, s.val)));
+  
+      /* ---- cards de UBS ---- */
+      allUBS     = Object.values(alocacao);
+      showingAll = false;
+      renderUBSCards();
+  
+      /* ---- gráficos ---- */
+      buildCharts(alocacao);
+  
+      /* ---- Perguntas-Guia ---- */
+      renderPerguntas(perguntas || []);
+  
+      /* ---- botão de download ---- */
+      downloadBtn.classList.remove("d-none");
+      downloadBtn.onclick = () => {
+        window.open(
+          `${API_BASE}/consulta_base/download_zip?uf=${estadoSel.value}&municipio=${municipioSel.value}&tipo=${document.getElementById("distancia").value}`,
+          "_blank"
+        );
+      };
+  
+      /* ---- iframe do mapa ---- */
+      if (map_url) {
+        mapCard.classList.remove("d-none");
+        const mapFrame = document.createElement("iframe");
+        mapFrame.src          = map_url;
+        mapFrame.className    = "map-iframe";
+        mapFrame.style.width  = "100%";
+        mapFrame.style.height = "900px";
+        mapFrame.frameBorder  = "0";
+        mapFrame.scrolling    = "no";
+        document.getElementById("mapContainer").innerHTML = "";
+        document.getElementById("mapContainer").appendChild(mapFrame);
+      }
+    }
+  
+    /* ------------------------------------------------------------- */
+    /* RENDERIZAÇÃO DOS CARDS DE UBS                                 */
+    /* ------------------------------------------------------------- */
+    function renderUBSCards() {
+      const cont = document.getElementById("ubs-cards");
+      cont.innerHTML = "";
+  
+      const subset = showingAll ? allUBS : allUBS.slice(0, MAX_UBS_DISPLAY);
+      subset.forEach(d => cont.appendChild(makeUBSCard(d)));
+  
+      if (allUBS.length <= MAX_UBS_DISPLAY) {
+        toggleBtn.classList.add("d-none");
+      } else {
+        toggleBtn.textContent = showingAll
+          ? "Mostrar menos"
+          : `Mostrar mais (${allUBS.length - MAX_UBS_DISPLAY})`;
+        toggleBtn.classList.remove("d-none");
+      }
+    }
+  
+    toggleBtn.addEventListener("click", () => {
+      showingAll = !showingAll;
+      renderUBSCards();
+    });
+  
+    /* ------------------------------------------------------------- */
+    /* PERGUNTAS-GUIA – acordeão                                      */
+    /* ------------------------------------------------------------- */
+    function renderPerguntas(lines) {
+      qaList.innerHTML = "";
+  
+      if (!Array.isArray(lines) || !lines.length) {
+        qaSection.classList.add("d-none");
+        return;
+      }
+  
+      // agrupa cada pergunta com seu bloco de resposta
+      const grupos = [];
+      lines.forEach(l => {
+        const t = l.trim();
+        if (/^\d+\./.test(t)) {
+          grupos.push({ q: t.replace(/^\d+\.\s*/, ""), resp: [] });
+        } else if (grupos.length) {
+          grupos[grupos.length - 1].resp.push(t);
+        }
+      });
+  
+      grupos.forEach((g, idx) => {
+        const itemId = `qa-${idx}`;
+        qaList.insertAdjacentHTML("beforeend", `
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="h-${itemId}">
+              <button class="accordion-button collapsed perguntas-header" type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#c-${itemId}"
+                      aria-expanded="false" aria-controls="c-${itemId}">
+                ${g.q}
+              </button>
+            </h2>
+            <div id="c-${itemId}" class="accordion-collapse collapse perguntas-body"
+                 aria-labelledby="h-${itemId}" data-bs-parent="#qa-list">
+              <div class="accordion-body">
+                ${g.resp.map(r => `<p class="mb-1">${r}</p>`).join("")}
+              </div>
+            </div>
+          </div>
+        `);
+      });
+  
+      qaSection.classList.remove("d-none");
+    }
+  
+    /* ------------------------------------------------------------- */
+    /* CONSTRUTORES DE ELEMENTOS HTML                                */
+    /* ------------------------------------------------------------- */
+    function makeStatCard(title, value) {
+      const col = document.createElement("div");
+      col.className = "col-6 col-lg-3";
+      col.innerHTML = `
+        <div class="card card-custom p-3 h-100">
+          <h6 class="card-title">${title}</h6>
+          <div class="stat-value">${value}</div>
+        </div>`;
+      return col;
+    }
+  
+    function makeUBSCard(d) {
+      const col = document.createElement("div");
+      col.className = "col-12 col-md-6 col-lg-4 mb-4";
+      const distMedia = d.Mean_Distance !== null
+        ? `${d.Mean_Distance.toFixed(0)} m`
+        : "—";
+  
+      col.innerHTML = `
+        <div class="card card-custom p-3 h-100">
+          <h6 class="card-title">${iconPin} UBS: ${d.UBS_Name}</h6>
+          <p class="mb-1 text-white">
+            <span class="text-secondary">Qtd. Pessoas Atendidas:</span>
+            <strong>${fmtInt(d.Total_People)}</strong>
+          </p>
+          <p class="mb-1 text-white">
+            <span class="text-secondary">Raio de Cobertura:</span>
+            <strong>${d.Radius}</strong>
+          </p>
+          <p class="mb-2 text-white">
+            <span class="text-secondary">Distância Média:</span>
+            <strong>${distMedia}</strong>
+          </p>
+          <hr class="text-secondary">
+          <p class="mb-1 text-white">
+            <small>
+              <span class="text-secondary">Negros:</span> ${fmtInt(d.Total_People_Negros)} |
+              <span class="text-secondary">Pardos:</span> ${fmtInt(d.Total_People_Pardos)} |
+              <span class="text-secondary">Indígenas:</span> ${fmtInt(d.Total_People_Indigenas)} |
+              <span class="text-secondary">Amarela:</span> ${fmtInt(d.Total_People_Amarela)}
+            </small>
+          </p>
+          <p class="mb-0 text-white">
+            ${fmtPct(d.Percentage_City)} da população
+          </p>
+        </div>`;
+      return col;
+    }
+
+    function buildCharts(aloc) {
+      if (chartRacial) { chartRacial.destroy(); chartPopUBS.destroy(); }
+  
+      const values = Object.values(aloc);
+      const sum = k => values.reduce((a, b) => a + (b[k] || 0), 0);
+  
+      /* pizza racial */
+      chartRacial = new Chart(document.getElementById("chartRacial"), {
+        type: "pie",
+        data: {
+          labels: ["Negros", "Pardos", "Indígenas", "Amarela"],
+          datasets: [{
+            data: [
+              sum("Total_People_Negros"),
+              sum("Total_People_Pardos"),
+              sum("Total_People_Indigenas"),
+              sum("Total_People_Amarela")
+            ],
+            backgroundColor: ["#795548", "#ff9800", "#9c27b0", "#fdd835"]
+          }]
+        },
+        options: { plugins: { legend: { labels: { color: "#d8d9db" } } } }
+      });
+  
+      /* barras % por UBS */
+      const top = values
+        .sort((a, b) => b.Percentage_City - a.Percentage_City)
+        .slice(0, 10);
+  
+      chartPopUBS = new Chart(document.getElementById("chartPopUBS"), {
+        type: "bar",
+        data: {
+          labels: top.map(t => t.UBS_Name),
+          datasets: [{
+            data: top.map(t => t.Percentage_City),
+            backgroundColor: "#1fbad6"
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          scales: {
+            x: {
+              ticks: {
+                color: "#d8d9db",
+                callback: v => v + "%"
+              },
+              grid: { color: "rgba(255,255,255,.08)" }
+            },
+            y: {
+              ticks: { color: "#d8d9db" },
+              grid: { display: false }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: { label: ctx => `${ctx.raw.toFixed(1)} %` }
+            }
+          }
+        }
+      });
+    }
+  </script>  
+  <script src="/assets/keplermap.js"></script>
+</body>
+</html>

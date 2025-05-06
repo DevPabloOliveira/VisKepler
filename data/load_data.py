@@ -1,16 +1,24 @@
-from os import listdir
 import os
-from os.path import isfile, join
 import geopandas as gpd
+import pandas as pd
 
-def read_geojsons(data_path):
-    only_files = [f for f in listdir(data_path) if isfile(join(data_path, f))]
-    # filter the geojson files
-    geojson_files = [f for f in only_files if f.lower().endswith('.geojson')]
-    
+def read_geojsons(*directories):
     geojsons = {}
-    for geojson_file in geojson_files:
-        with open(os.path.join(data_path, geojson_file), 'r') as f:
-            geojsons[geojson_file] = gpd.read_file(f)
-            
+    for directory in directories:
+        if not os.path.exists(directory):
+            continue
+        for file in os.listdir(directory):
+            file_path = os.path.join(directory, file)
+            if file.endswith('.geojson'):
+                try:
+                    geojsons[file] = gpd.read_file(file_path)
+                    print(f"Loaded GeoJSON file: {file_path}")
+                except Exception as e:
+                    print(f"Error reading GeoJSON {file_path}: {e}")
+            elif file.endswith('.csv'):
+                try:
+                    geojsons[file] = pd.read_csv(file_path)
+                    print(f"Loaded CSV file: {file_path}")
+                except Exception as e:
+                    print(f"Error reading CSV {file_path}: {e}")
     return geojsons

@@ -1,25 +1,192 @@
-body,
-html {
+body, html {
   height: 100%;
   margin: 0;
+  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
+  background-color: #112330;
 }
 
 .container {
   display: flex;
-  flex-direction: column;
-  height: calc(
-    100% - 20px
-  ); /* Adjusting for the margin in the iframe container */
+  height: 100%;
 }
 
-.iframe-container {
+.sidebar {
+  width: 20%;
+  background: #29323C;
+  padding: 0.5rem;
+  overflow-y: auto;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.map-container {
   flex-grow: 1;
   position: relative;
-  margin: 10px;
 }
 
 .map-iframe {
   width: 100%;
   height: 100%;
+  border: none;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+  margin-top: 0;
+}
+
+li a {
+  text-decoration: none;
+  color: #D8D9DB;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+li a:hover {
+  background-color: #34495e;
+}
+
+.fa {
+  margin-right: 8px;
+}
+
+.title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.title {
+  color: #1FBAD6;
+  font-size: 0.85em;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #D8D9DB;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.link-text {
+  display: block;
+}
+
+.sidebar.collapsed .link-text {
+  display: none;
+}
+
+.divider {
+  border-bottom: 1px solid #34495e;
+  margin: 10px;
+}
+
+.info-button {
+  background-color: #29323C;
+  color: #D8D9DB;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.info-button:hover {
+  background-color: #1b8aad;
+}
+
+.info-button svg {
+  fill: currentColor;
+}
+
+.map-control {
   position: absolute;
+  top: 202px; /* altura botão */
+  right: 12.5px; /* posição do botão no lado direito */
+  display: flex;
+  flex-direction: column;
+  z-index: 1000; 
+}
+
+.map-control .info-button {
+  margin: 10px 0 0 0; 
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 0; 
+}
+
+.map-control .info-button svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+
+.map-control .info-button svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* Estilo modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); 
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #2a3b47; 
+  color: #d1d5db; /* cor do texto, cinza claro */
+  margin: 5% auto; /*  modal centralizado */
+  padding: 20px; /* espaçamento interno */
+  border: 1px solid #3b4a58; 
+  width: 80%; 
+  border-radius: 6px; 
+}
+
+.modal-content h2 {
+  color: #ffffff; /* cor do título */
+  margin-bottom: 15px; 
+  font-size: 18px;
+}
+
+.modal-content p {
+  color: #d1d5db; /* cor do texto do parágrafo */
+  font-size: 14px; 
+}
+
+.close {
+  color: #6c7680; 
+  float: right; 
+  font-size: 28px; 
+  font-weight: bold; 
+}
+
+.close:hover,
+.close:focus {
+  color: #ffffff; 
+  text-decoration: none; 
+  cursor: pointer; 
 }

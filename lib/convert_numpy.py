@@ -1,4 +1,5 @@
 import numpy as np
+import geopandas as gpd
 
 def convert_numpy_types(data):
     if isinstance(data, dict):
@@ -11,5 +12,7 @@ def convert_numpy_types(data):
         return float(data)
     elif isinstance(data, np.ndarray):
         return data.tolist()
+    elif isinstance(data, gpd.GeoDataFrame):
+        return data.to_json()
     else:
         return data

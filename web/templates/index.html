@@ -1,5 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
@@ -7,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css" rel="stylesheet">
   <link href="https://d1a3f4spazzrp4.cloudfront.net/kepler.gl/uber-fonts/4.0.0/superfine.css" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="{{ url_for('assets', path='styles.css') }}">
 </head>
 
 <body>
@@ -19,10 +21,17 @@
           <i class="fas fa-bars"></i>
         </button>
       </div>
+
       <ul id="sidebar-links">
-        <!-- Links will be populados here by JavaScript -->
+      </ul>
+
+      <hr class="divider">
+
+      <ul>
+        <li><a href="/consulta_base"><i class="fas fa-database" style="margin-right: 12px;"></i> Consultas</a></li>
       </ul>
     </div>
+
     <div class="map-container">
       <iframe id="mapFrame" src="" class="map-iframe"></iframe>
       <div class="map-control">
@@ -38,7 +47,7 @@
     </div>
   </div>
 
-  <!-- The Modal -->
+  <!-- Modal -->
   <div id="infoModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModalHandler(document.getElementById('infoModal'))">&times;</span>
@@ -50,8 +59,14 @@
   <script src="/assets/scripts.js"></script>
   <script src="/assets/modal.js"></script>
   <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("collapsed");
+    }
+
     document.addEventListener('DOMContentLoaded', fetchConfig);
   </script>
 </body>
 
 </html>
+{% endblock content %}

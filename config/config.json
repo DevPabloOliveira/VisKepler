@@ -3,22 +3,44 @@
   "websiteTitle": "My SisKepler App",
   "maps": [
     {
-      "data_id": "rowek3uu",
-      "label": "Portuguese Demography - Municipalities",
-      "geojson_file": "rowek3uu.geojson",
-      "link": "/rowek3uu"
+      "data_ids": {
+        "csv_file": "COMBINEDALLOCATIONS.csv"
+      },
+      "label": "Alocação Nacional de Demandas – Fluxos Setoriais",
+      "link": "/COMBINEDALLOCATIONS",
+      "description": "Mapa interativo mostrando os fluxos de deslocamento de setores censitários para Unidades Básicas de Saúde em todo o Brasil, com análise de distâncias, intensidade do fluxo e cobertura regional."
     },
     {
-      "data_id": "rs1hiroye",
-      "label": "Portuguese Demography - Regions",
-      "geojson_file": "rs1hiroye.geojson",
-      "link": "/rs1hiroye"
+      "data_ids": {
+        "csv_file": "knn_20250429_003424.csv"
+      },
+      "label": "Fluxo de Demandas – São Paulo/SP",
+      "link": "/knn_20250429_003424",
+      "description": "Visualiza o deslocamento de demandas setoriais até as UBS em São Paulo/SP, destacando trajetórias, distâncias percorridas e distribuição espacial de atendimento."
     },
     {
-      "data_id": "61yujy",
-      "label": "Brazil - Coverage of UBS",
-      "geojson_file": "61yujy.geojson",
-      "link": "/61yujy"
+      "data_ids": {
+        "csv_file": "knn_20250429_035828.csv"
+      },
+      "label": "Fluxo de Demandas – Belo Horizonte/MG",
+      "link": "/knn_20250429_035828",
+      "description": "Análise dos fluxos de deslocamento de setores censitários para Unidades Básicas de Saúde em Belo Horizonte/MG, com granularidade por bairro e estatísticas de distância."
+    },
+    {
+      "data_ids": {
+        "csv_file": "knn_20250429_040956.csv"
+      },
+      "label": "Fluxo de Demandas – Manaus/AM",
+      "link": "/knn_20250429_040956",
+      "description": "Mapeia os trajetos de demandas setoriais até UBS em Manaus/AM, permitindo avaliar cobertura de saúde e identificar áreas com maiores distâncias de acesso."
+    },
+    {
+      "data_ids": {
+        "csv_file": "knn_20250429_041434.csv"
+      },
+      "label": "Fluxo de Demandas – Salvador/BA",
+      "link": "/knn_20250429_041434",
+      "description": "Ilustra os fluxos de setor censitário para UBS em Salvador/BA, com indicadores de distância, densidade de demanda e potencial de atendimento por região."
     }
   ]
 }
