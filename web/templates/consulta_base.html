@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Painel de Alocação UBS</title>
   
-  <!-- Bootstrap 5 -->
+  <!-- Dependências CSS e JS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="https://unpkg.com/kepler.gl@2.5.2/dist/kepler.gl.bundle.css" />
@@ -62,59 +62,57 @@
       height: auto!important;
     }
    
+    html, body {
+      overflow-x: hidden;
+    }
 
-  html, body {
-    overflow-x: hidden;
-  }
+    #mapContainer {
+      overflow: hidden;
+    }
 
-  #mapContainer {
-    overflow: hidden;
-  }
+    .map-iframe {
+      overflow: hidden;
+      display: block;
+      border: none;
+    }
 
-  .map-iframe {
-    overflow: hidden;
-    display: block;
-    border: none;
-  }
-
-  .accordion.perguntas .accordion-item{
-    background: var(--bg-card);     
-    border: 0;
-  }
-  
-  .accordion.perguntas .accordion-button{
-    background: var(--bg-acc-header);
-    color: var(--text-light);
-    padding: .8rem 1rem;
-    font-weight: 600;
-    transition: background .15s;
-  }
-  
-  .accordion.perguntas .accordion-button:not(.collapsed){
-    background: var(--bg-acc-header-o);      
-    color: var(--primary);
-    border-left: 4px solid var(--acc-border);
-  }
-  
-  .accordion.perguntas .accordion-body{
-    background: var(--bg-acc-body);
-    padding: 1rem 1.25rem;
-    border-left: 4px solid var(--acc-border);
-    color: var(--text-light);
-  }
-  
-  .accordion.perguntas .accordion-body p{
-    margin-bottom:.35rem;
-  }
-  
-  .accordion.perguntas .accordion-button::after{
-    filter: invert(1);
-  }
-
-
+    .accordion.perguntas .accordion-item{
+      background: var(--bg-card);     
+      border: 0;
+    }
+    
+    .accordion.perguntas .accordion-button{
+      background: var(--bg-acc-header);
+      color: var(--text-light);
+      padding: .8rem 1rem;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    
+    .accordion.perguntas .accordion-button:not(.collapsed){
+      background: var(--bg-acc-header-o);      
+      color: var(--primary);
+      border-left: 4px solid var(--acc-border);
+    }
+    
+    .accordion.perguntas .accordion-body{
+      background: var(--bg-acc-body);
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--acc-border);
+      color: var(--text-light);
+    }
+    
+    .accordion.perguntas .accordion-body p{
+      margin-bottom:.35rem;
+    }
+    
+    .accordion.perguntas .accordion-button::after{
+      filter: invert(1);
+    }
   </style>
 </head>
 <body>
+  <!-- Overlay de Carregamento -->
   <div id="loadingOverlay" class="d-none" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(17,35,48,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;">
     <div class="spinner-border text-light" role="status" style="width: 4rem; height: 4rem;">
       <span class="visually-hidden">Carregando...</span>
@@ -123,6 +121,8 @@
 
   <div class="container py-3">
     <h1>Painel de Alocação UBS</h1>
+    
+    <!-- Formulário de Consulta -->
     <form id="consulta-form" class="row gy-2 gx-2 align-items-end">
       <div class="col-12 col-md-3">
         <label class="form-label mb-1" for="estado">Estado</label>
@@ -146,19 +146,16 @@
       </div>
     </form>
 
+    <!-- Seção do Painel de Resultados (Dashboard) -->
     <div id="painel" class="mt-4 d-none">
       <div class="row g-3" id="top-indicators"></div>
       <h5 class="mt-4">Alocação</h5>
       <div id="ubs-cards" class="row g-3"></div>
-
-    <div class="d-grid mt-2">
-      <button id="toggle-ubs-btn"
-              class="btn btn-outline-secondary btn-sm d-none">
-        Mostrar todas
-      </button>
-    </div>
-
-
+      <div class="d-grid mt-2">
+        <button id="toggle-ubs-btn" class="btn btn-outline-secondary btn-sm d-none">
+          Mostrar todas
+        </button>
+      </div>
       <div class="row g-3 mt-4">
         <div class="col-md-4">
           <div class="card card-custom p-3 h-100">
@@ -175,22 +172,20 @@
       </div>
     </div>
 
-<div id="qa-section" class="row g-3 mt-4 d-none">
-  <div class="col-12">
-    <div class="card card-custom p-3">
-      <h5 class="card-title mb-3">
-        <i class="fas fa-circle-question me-2 text-primary"></i>
-        Perguntas-Guia da Análise
-      </h5>
-      <div id="qa-list" class="accordion perguntas accordion-flush">
+    <!-- Seção de Perguntas e Respostas -->
+    <div id="qa-section" class="row g-3 mt-4 d-none">
+      <div class="col-12">
+        <div class="card card-custom p-3">
+          <h5 class="card-title mb-3">
+            <i class="fas fa-circle-question me-2 text-primary"></i>
+            Perguntas-Guia da Análise
+          </h5>
+          <div id="qa-list" class="accordion perguntas accordion-flush"></div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-
-
-
+    <!-- Seção do Mapa -->
     <div id="mapCard" class="mt-4 d-none">
       <div class="card card-custom">
         <div class="card-body">
@@ -200,6 +195,7 @@
       </div>
     </div>
 
+    <!-- Botão de Download -->
     <div class="d-grid mt-4">
       <button id="download-zip" class="btn btn-primary btn-lg d-none">
         📦 Baixar ZIP com Resultados Completos
@@ -214,22 +210,27 @@
     /* ------------------------------------------------------------- */
     /* CONFIGURAÇÕES GERAIS                                          */
     /* ------------------------------------------------------------- */
-    const API_BASE   = "http://127.0.0.1:8050";
+    
+    // --- ATUALIZAÇÃO ---
+    // A URL base para a API agora aponta para o caminho do proxy (ex: Nginx).
+    const API_ALLOCATOR_BASE = "/api/allocator";
+
+    // Seletores de elementos do DOM
     const estadoSel  = document.getElementById("estado");
     const municipioSel = document.getElementById("municipio");
     const painel     = document.getElementById("painel");
     const mapCard    = document.getElementById("mapCard");
     const downloadBtn = document.getElementById("download-zip");
     const toggleBtn  = document.getElementById("toggle-ubs-btn");
+    const qaSection  = document.getElementById("qa-section");
+    const qaList     = document.getElementById("qa-list");    
   
-    const qaSection  = document.getElementById("qa-section"); // container do card
-    const qaList     = document.getElementById("qa-list");    // acordeão
-  
-    /* limite inicial de cards de UBS */
+    // Configurações de exibição
     const MAX_UBS_DISPLAY = 9;
     let allUBS     = [];
     let showingAll = false;
   
+    // Funções de formatação
     const fmtInt = n => Intl.NumberFormat("pt-BR").format(n);
     const fmtPct = v => (v ?? 0).toFixed(1) + "%";
     const iconPin = '<i class="fas fa-map-marker-alt me-1 text-primary"></i>';
@@ -237,15 +238,28 @@
     /* ------------------------------------------------------------- */
     /* CARREGA LISTA DE ESTADOS E MUNICÍPIOS                         */
     /* ------------------------------------------------------------- */
-    fetch(`${API_BASE}/consulta_base/ufs`)
-      .then(r => r.json())
-      .then(ufs => ufs.forEach(uf => estadoSel.appendChild(new Option(uf, uf))));
+    
+    // ATUALIZAÇÃO: Usando a nova URL base e tratamento de erro
+    fetch(`${API_ALLOCATOR_BASE}/consulta_base/ufs`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Erro ao buscar UFs: ${response.statusText}`);
+        return response.json();
+      })
+      .then(ufs => ufs.forEach(uf => estadoSel.appendChild(new Option(uf, uf))))
+      .catch(err => console.error("Falha ao carregar estados:", err));
   
     estadoSel.addEventListener("change", () => {
       municipioSel.innerHTML = "";
-      fetch(`${API_BASE}/consulta_base/municipios?uf=${estadoSel.value}`)
-        .then(r => r.json())
-        .then(cidades => cidades.forEach(c => municipioSel.appendChild(new Option(c, c))));
+      if (!estadoSel.value) return;
+
+      // ATUALIZAÇÃO: Usando a nova URL base e tratamento de erro
+      fetch(`${API_ALLOCATOR_BASE}/consulta_base/municipios?uf=${estadoSel.value}`)
+        .then(response => {
+          if (!response.ok) throw new Error(`Erro ao buscar municípios: ${response.statusText}`);
+          return response.json();
+        })
+        .then(cidades => cidades.forEach(c => municipioSel.appendChild(new Option(c, c))))
+        .catch(err => console.error("Falha ao carregar municípios:", err));
     });
   
     /* ------------------------------------------------------------- */
@@ -256,6 +270,7 @@
       const loadingOverlay = document.getElementById("loadingOverlay");
       loadingOverlay.classList.remove("d-none");
   
+      // Esconde painéis antigos
       painel.classList.add("d-none");
       mapCard.classList.add("d-none");
       downloadBtn.classList.add("d-none");
@@ -265,28 +280,35 @@
       const mun  = municipioSel.value;
       const tipo = document.getElementById("distancia").value;
   
-      fetch(`${API_BASE}/consulta_base/resultado_completo?uf=${uf}&municipio=${mun}&tipo=${tipo}`)
-        .then(r => r.json())
+      // ATUALIZAÇÃO: Usando a nova URL base e tratamento de erro completo
+      fetch(`${API_ALLOCATOR_BASE}/consulta_base/resultado_completo?uf=${uf}&municipio=${mun}&tipo=${tipo}`)
+        .then(r => {
+          if (!r.ok) {
+              throw new Error(`Erro na API do Backend (${r.status}): ${r.statusText}`);
+          }
+          return r.json();
+        })
         .then(data => {
           showDashboard(data);
           loadingOverlay.classList.add("d-none");
         })
         .catch(err => {
-          alert("Erro: " + err);
+          alert("Erro ao realizar a consulta. Verifique o console para mais detalhes.");
+          console.error(err);
           loadingOverlay.classList.add("d-none");
         });
     });
   
     /* ------------------------------------------------------------- */
-    /* DASHBOARD PRINCIPAL                                           */
+    /* RENDERIZAÇÃO DO DASHBOARD PRINCIPAL                           */
     /* ------------------------------------------------------------- */
-    let chartRacial, chartPopUBS; // referências para Chart.js
+    let chartRacial, chartPopUBS;
   
     function showDashboard(data) {
       const { info, eda, alocacao, map_url, perguntas } = data;
       painel.classList.remove("d-none");
   
-      /* ---- indicadores superiores ---- */
+      // Renderiza indicadores superiores
       const top = document.getElementById("top-indicators");
       top.innerHTML = "";
       [
@@ -296,27 +318,28 @@
         { label: "Tipo de distância", val: info["Distância"] === "geodesic" ? "Geodésica" : "Pandana Real" }
       ].forEach(s => top.appendChild(makeStatCard(s.label, s.val)));
   
-      /* ---- cards de UBS ---- */
+      // Renderiza cards de UBS
       allUBS     = Object.values(alocacao);
       showingAll = false;
       renderUBSCards();
   
-      /* ---- gráficos ---- */
+      // Renderiza gráficos
       buildCharts(alocacao);
   
-      /* ---- Perguntas-Guia ---- */
+      // Renderiza seção de perguntas e respostas
       renderPerguntas(perguntas || []);
   
-      /* ---- botão de download ---- */
+      // Botão de download
       downloadBtn.classList.remove("d-none");
       downloadBtn.onclick = () => {
+        // ATUALIZAÇÃO: Usando a nova URL base
         window.open(
-          `${API_BASE}/consulta_base/download_zip?uf=${estadoSel.value}&municipio=${municipioSel.value}&tipo=${document.getElementById("distancia").value}`,
+          `${API_ALLOCATOR_BASE}/consulta_base/download_zip?uf=${estadoSel.value}&municipio=${municipioSel.value}&tipo=${document.getElementById("distancia").value}`,
           "_blank"
         );
       };
   
-      /* ---- iframe do mapa ---- */
+      // Renderiza o iframe do mapa
       if (map_url) {
         mapCard.classList.remove("d-none");
         const mapFrame = document.createElement("iframe");
@@ -346,7 +369,7 @@
       } else {
         toggleBtn.textContent = showingAll
           ? "Mostrar menos"
-          : `Mostrar mais (${allUBS.length - MAX_UBS_DISPLAY})`;
+          : `Mostrar todas as ${allUBS.length} UBS`;
         toggleBtn.classList.remove("d-none");
       }
     }
@@ -357,7 +380,7 @@
     });
   
     /* ------------------------------------------------------------- */
-    /* PERGUNTAS-GUIA – acordeão                                      */
+    /* RENDERIZAÇÃO DAS PERGUNTAS-GUIA (ACORDEÃO)                    */
     /* ------------------------------------------------------------- */
     function renderPerguntas(lines) {
       qaList.innerHTML = "";
@@ -367,7 +390,6 @@
         return;
       }
   
-      // agrupa cada pergunta com seu bloco de resposta
       const grupos = [];
       lines.forEach(l => {
         const t = l.trim();
@@ -383,14 +405,13 @@
         qaList.insertAdjacentHTML("beforeend", `
           <div class="accordion-item">
             <h2 class="accordion-header" id="h-${itemId}">
-              <button class="accordion-button collapsed perguntas-header" type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#c-${itemId}"
+              <button class="accordion-button collapsed" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#c-${itemId}"
                       aria-expanded="false" aria-controls="c-${itemId}">
                 ${g.q}
               </button>
             </h2>
-            <div id="c-${itemId}" class="accordion-collapse collapse perguntas-body"
+            <div id="c-${itemId}" class="accordion-collapse collapse"
                  aria-labelledby="h-${itemId}" data-bs-parent="#qa-list">
               <div class="accordion-body">
                 ${g.resp.map(r => `<p class="mb-1">${r}</p>`).join("")}
@@ -428,7 +449,7 @@
         <div class="card card-custom p-3 h-100">
           <h6 class="card-title">${iconPin} UBS: ${d.UBS_Name}</h6>
           <p class="mb-1 text-white">
-            <span class="text-secondary">Qtd. Pessoas Atendidas:</span>
+            <span class="text-secondary">Pessoas Atendidas:</span>
             <strong>${fmtInt(d.Total_People)}</strong>
           </p>
           <p class="mb-1 text-white">
@@ -439,8 +460,8 @@
             <span class="text-secondary">Distância Média:</span>
             <strong>${distMedia}</strong>
           </p>
-          <hr class="text-secondary">
-          <p class="mb-1 text-white">
+          <hr class="text-secondary my-2">
+          <p class="mb-1">
             <small>
               <span class="text-secondary">Negros:</span> ${fmtInt(d.Total_People_Negros)} |
               <span class="text-secondary">Pardos:</span> ${fmtInt(d.Total_People_Pardos)} |
@@ -448,20 +469,25 @@
               <span class="text-secondary">Amarela:</span> ${fmtInt(d.Total_People_Amarela)}
             </small>
           </p>
-          <p class="mb-0 text-white">
-            ${fmtPct(d.Percentage_City)} da população
+          <p class="mb-0 fw-bold">
+            ${fmtPct(d.Percentage_City)} da população da cidade
           </p>
         </div>`;
       return col;
     }
 
+    /* ------------------------------------------------------------- */
+    /* CONSTRUÇÃO DOS GRÁFICOS (CHART.JS)                            */
+    /* ------------------------------------------------------------- */
     function buildCharts(aloc) {
-      if (chartRacial) { chartRacial.destroy(); chartPopUBS.destroy(); }
+      // ATUALIZAÇÃO: Destruição segura dos gráficos existentes
+      if (chartRacial) { chartRacial.destroy(); }
+      if (chartPopUBS) { chartPopUBS.destroy(); }
   
       const values = Object.values(aloc);
       const sum = k => values.reduce((a, b) => a + (b[k] || 0), 0);
   
-      /* pizza racial */
+      // Gráfico de Pizza: Distribuição Racial
       chartRacial = new Chart(document.getElementById("chartRacial"), {
         type: "pie",
         data: {
@@ -479,7 +505,7 @@
         options: { plugins: { legend: { labels: { color: "#d8d9db" } } } }
       });
   
-      /* barras % por UBS */
+      // Gráfico de Barras: % da População por UBS (Top 10)
       const top = values
         .sort((a, b) => b.Percentage_City - a.Percentage_City)
         .slice(0, 10);
@@ -497,10 +523,7 @@
           indexAxis: "y",
           scales: {
             x: {
-              ticks: {
-                color: "#d8d9db",
-                callback: v => v + "%"
-              },
+              ticks: { color: "#d8d9db", callback: v => v + "%" },
               grid: { color: "rgba(255,255,255,.08)" }
             },
             y: {
@@ -511,7 +534,7 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              callbacks: { label: ctx => `${ctx.raw.toFixed(1)} %` }
+              callbacks: { label: ctx => `${ctx.raw.toFixed(1)} % da população` }
             }
           }
         }
