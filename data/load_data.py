@@ -1,24 +1,52 @@
 import os
 import geopandas as gpd
 import pandas as pd
+import logging
+
+# Configures logging to display information about loaded files or errors.
+logging.basicConfig(level=logging.INFO)
 
 def read_geojsons(*directories):
-    geojsons = {}
+    """
+    Reads all .geojson and .csv files from a list of directories.
+
+    Args:
+        *directories: A sequence of directory paths to search.
+
+    Returns:
+        A dictionary where the keys are the filenames and the values
+        are the loaded data as GeoDataFrames (for .geojson) or
+        DataFrames (for .csv).
+    """
+    datasets = {}
     for directory in directories:
+        # Skips directories that do not exist to avoid errors.
         if not os.path.exists(directory):
+            logging.warning(f"Directory not found, skipping: {directory}")
             continue
+            
+        logging.info(f"Reading files from directory: {directory}")
         for file in os.listdir(directory):
             file_path = os.path.join(directory, file)
-            if file.endswith('.geojson'):
+            
+            # Checks if it is a file before trying to read it.
+            if not os.path.isfile(file_path):
+                continue
+
+            # Loads .geojson files
+            if file.lower().endswith('.geojson'):
                 try:
-                    geojsons[file] = gpd.read_file(file_path)
-                    print(f"Loaded GeoJSON file: {file_path}")
+                    datasets[file] = gpd.read_file(file_path)
+                    logging.info(f"GeoJSON file loaded successfully: {file_path}")
                 except Exception as e:
-                    print(f"Error reading GeoJSON {file_path}: {e}")
-            elif file.endswith('.csv'):
+                    logging.error(f"Error reading GeoJSON file {file_path}: {e}")
+            
+            # Loads .csv files
+            elif file.lower().endswith('.csv'):
                 try:
-                    geojsons[file] = pd.read_csv(file_path)
-                    print(f"Loaded CSV file: {file_path}")
+                    datasets[file] = pd.read_csv(file_path)
+                    logging.info(f"CSV file loaded successfully: {file_path}")
                 except Exception as e:
-                    print(f"Error reading CSV {file_path}: {e}")
-    return geojsons
+                    logging.error(f"Error reading CSV file {file_path}: {e}")
+                    
+    return datasets
