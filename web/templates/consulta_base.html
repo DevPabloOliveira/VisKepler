@@ -135,9 +135,10 @@
       <div class="col-6 col-md-3">
         <label class="form-label mb-1" for="distancia">Tipo de Distância</label>
         <select id="distancia" class="form-select form-select-sm">
-          <option value="geodesic">Geodésica</option>
-          <option value="pandana_real_distance">Pandana Real</option>
-        </select>
+        <option value="geodesic">Geodésica</option>
+        <option value="pandana_real_distance">Pandana Real</option>
+        <option value="pysal">PySAL</option> 
+      </select>
       </div>
       <div class="col-6 col-md-2 d-grid">
         <button type="submit" class="btn btn-sm btn-primary">
@@ -329,7 +330,7 @@
       // Renderiza seção de perguntas e respostas
       renderPerguntas(perguntas || []);
   
-      // Botão de download
+      // Configura o botão de download
       downloadBtn.classList.remove("d-none");
       downloadBtn.onclick = () => {
         // ATUALIZAÇÃO: Usando a nova URL base
