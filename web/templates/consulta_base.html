@@ -19,13 +19,13 @@
     :root {
       --bg-dark: #112330;
       --bg-card: #1a2c3b;
-      --primary: #1fbad6;       /* Azul Ciano do Kepler */
+      --primary: #1fbad6;       
       --primary-hover: #1494ab;
       --text-main: #ffffff;
       --text-muted: #9fa7b0;
       
       --bg-acc-header:   #1f2f3d;  
-      --bg-acc-header-o: #1fbad61a; /* 10% opacity */
+      --bg-acc-header-o: #1fbad61a; 
       --bg-acc-body:     #162633;   
       --acc-border:      #1fbad6;    
     }
@@ -35,9 +35,9 @@
       background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 4rem; /* Espaço para o footer/scroll */
+      padding-bottom: 4rem; 
       position: relative;
-      -webkit-font-smoothing: antialiased; /* Texto mais nítido */
+      -webkit-font-smoothing: antialiased; 
     }
 
     /* Tipografia de Títulos */
@@ -71,7 +71,7 @@
       font-size: 0.70rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em; /* Espaçamento para elegância */
+      letter-spacing: 0.08em; 
       margin-bottom: 0.5rem;
       opacity: 0.9;
     }
@@ -83,7 +83,7 @@
       color: #fff;
       letter-spacing: -0.03em;
       line-height: 1.2;
-      font-variant-numeric: tabular-nums; /* Alinha números em tabelas */
+      font-variant-numeric: tabular-nums; 
     }
 
     /* Inputs e Selects */
@@ -121,7 +121,7 @@
       border-color: var(--primary-hover);
     }
 
-    /* Botões de Download (Dentro do Card) */
+    /* Botões de Download */
     .btn-download-icon {
         background: rgba(255,255,255,0.05);
         border: 1px solid rgba(255,255,255,0.1);
@@ -166,35 +166,24 @@
     }
 
     /* Map & Canvas */
-    canvas {
-      max-width: 100%!important;
-      height: auto!important;
-    }
-    html, body {
-      overflow-x: hidden;
-    }
+    canvas { max-width: 100%!important; height: auto!important; }
+    html, body { overflow-x: hidden; }
     #mapContainer {
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.1);
     }
-    .map-iframe {
-      overflow: hidden;
-      display: block;
-      border: none;
-    }
+    .map-iframe { overflow: hidden; display: block; border: none; }
 
     /* Accordion (Perguntas/Insights) */
-    /* --- ESTILO DOS 3 PAINÉIS PRINCIPAIS --- */
     .accordion.perguntas .accordion-item {
       background: transparent;
       border: 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       margin-bottom: 0.5rem;
     }
-
     .accordion.perguntas .accordion-button {
-      background: rgba(31, 186, 214, 0.05); /* Fundo sutil */
+      background: rgba(31, 186, 214, 0.05); 
       color: #e0e0e0;
       font-weight: 600;
       font-size: 1rem;
@@ -203,15 +192,13 @@
       transition: all 0.2s ease;
       border: 1px solid rgba(255, 255, 255, 0.02);
     }
-
     .accordion.perguntas .accordion-button:not(.collapsed) {
-      background: rgba(31, 186, 214, 0.15); /* Destaque quando aberto */
+      background: rgba(31, 186, 214, 0.15); 
       color: var(--primary);
       border-color: var(--primary);
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      border-radius: 8px 8px 0 0; /* Arredondado só em cima */
+      border-radius: 8px 8px 0 0; 
     }
-
     .accordion.perguntas .accordion-body {
       background: rgba(0, 0, 0, 0.2);
       padding: 1.5rem;
@@ -219,8 +206,6 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-top: none;
     }
-
-    /* Ícone da seta do accordion */
     .accordion.perguntas .accordion-button::after {
       filter: invert(1) brightness(2);
       transform: scale(0.9);
@@ -240,18 +225,13 @@
       position: relative;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+    .insight-card:last-child { margin-bottom: 0; }
 
-    .insight-card:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Cores Semânticas */
     .insight-card.info { border-left-color: var(--primary); }
     .insight-card.warning { border-left-color: #ff9800; background: rgba(255, 152, 0, 0.03); }
     .insight-card.danger { border-left-color: #f44336; background: rgba(244, 67, 54, 0.03); }
     .insight-card.success { border-left-color: #4caf50; background: rgba(76, 175, 80, 0.03); }
 
-    /* Tipografia do Card */
     .insight-question {
       display: flex;
       align-items: center;
@@ -267,10 +247,30 @@
       color: #b0b8c1;
       font-size: 0.9rem;
       line-height: 1.6;
-      padding-left: 26px; /* Alinhamento visual com o texto da pergunta */
+      padding-left: 26px; 
     }
 
-    .highlight-ubs {
+    /* Área de Conclusão/Impacto dentro do Insight */
+    .insight-impact {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #d1d5db;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-left: 26px; /* Alinhar com a resposta */
+    }
+    .insight-impact strong {
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Highlight para valores e nomes de UBS */
+    .highlight-val {
       color: #fff;
       background: rgba(31, 186, 214, 0.2);
       padding: 2px 6px;
@@ -279,13 +279,9 @@
       font-size: 0.85rem;
     }
 
-    /* Utilitários de Texto */
-    .text-secondary {
-      color: var(--text-muted) !important;
-    }
-    hr.text-secondary {
-      opacity: 0.2;
-    }
+    .text-secondary { color: var(--text-muted) !important; }
+    .text-muted { color: #9fa7b0 !important; }
+    hr.text-secondary { opacity: 0.2; }
   </style>
 </head>
 <body>
@@ -345,7 +341,6 @@
              <div class="p-3 d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0" style="font-size: 1rem;">Mapa Interativo de Alocação</h5>
                 <small class="text-white"><i class="fas fa-mouse me-1"></i> Use o mouse para interagir</small>
-
              </div>
             <div id="mapContainer" style="width:100%; height:650px;"></div>
           </div>
@@ -377,6 +372,43 @@
             <h5 class="card-title mb-4" style="font-size: 1rem;">
               <i class="fas fa-lightbulb me-2"></i> Insights e Análise Automática
             </h5>
+
+            <div class="mb-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h6 class="text-white mb-3" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <i class="fas fa-circle-question me-2"></i> Guia de Interpretação
+                </h6>
+                <div class="row g-3">
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-circle-info text-primary me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Monitoramento</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Indicadores descritivos do sistema.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-circle-exclamation text-warning me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Ponto de Atenção</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Desvios moderados da média.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-triangle-exclamation text-danger me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Alerta Crítico</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Alta vulnerabilidade ou sobrecarga.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-circle-check text-success me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Meta Atingida</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Parâmetros adequados.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="qa-list" class="accordion perguntas accordion-flush"></div>
           </div>
         </div>
@@ -385,6 +417,55 @@
       <div class="d-flex align-items-center mb-4 pt-4 border-top border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
         <h5 class="mb-0 me-3 text-white">Detalhamento por UBS</h5>
         <span class="badge bg-primary text-dark rounded-pill" id="ubs-count-badge">0</span>
+      </div>
+
+      <div class="card card-custom p-4 mb-4">
+        <h5 class="card-title mb-3">
+          <i class="fas fa-book-open me-2"></i> Como ler os cards abaixo?
+        </h5>
+        <div class="row g-4">
+          
+          <div class="col-md-6">
+            <h6 class="text-white mb-2" style="font-size: 0.9rem;">Classificação de Cobertura</h6>
+            <p class="text-muted small mb-3">
+              Baseada na distância média que a população percorre até a UBS.
+            </p>
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-success me-2" style="width: 80px;">Ótima</span>
+                <span class="text-muted small">Até 700m (Acesso a pé facilitado)</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-success me-2" style="width: 80px; opacity: 0.7;">Boa</span>
+                <span class="text-muted small">700m a 1km</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-warning text-dark me-2" style="width: 80px;">Regular</span>
+                <span class="text-muted small">1km a 2km</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-danger me-2" style="width: 80px;">Ruim</span>
+                <span class="text-muted small">Acima de 2km (Barreira de acesso)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <h6 class="text-white mb-2" style="font-size: 0.9rem;">Indicadores de Demanda</h6>
+            <ul class="list-unstyled text-muted small">
+              <li class="mb-2">
+                <strong class="text-white">População:</strong> Total de pessoas alocadas para esta unidade baseada na proximidade (Setores Censitários).
+              </li>
+              <li class="mb-2">
+                <strong class="text-primary">% Cidade:</strong> Quanto esta UBS representa do atendimento total do município.
+              </li>
+              <li>
+                <strong class="text-white">Cor Racial:</strong> Distribuição demográfica da área de cobertura, essencial para políticas de equidade.
+              </li>
+            </ul>
+          </div>
+
+        </div>
       </div>
       
       <div id="ubs-cards" class="row g-3"></div>
@@ -559,7 +640,7 @@
       // Atualiza badge de contagem
       ubsCountBadge.innerText = Object.keys(alocacao).length;
 
-      // Renderiza Indicadores (Agora com 5 colunas)
+      // Renderiza Indicadores
       const top = document.getElementById("top-indicators");
       top.innerHTML = "";
       [
@@ -569,22 +650,21 @@
         { label: "Método Utilizado",  val: nomesDistancia[info["Distância"]] || info["Distância"] }
       ].forEach(s => top.appendChild(makeStatCard(s.label, s.val)));
 
-      // Adiciona o Card de Downloads como o 5º elemento
       const params = `uf=${estadoSel.value}&municipio=${municipioSel.value}&tipo=${document.getElementById("distancia").value}`;
       top.appendChild(makeDownloadCard(params));
   
-      // 3. Renderiza UBS Cards
+      // Renderiza UBS Cards
       allUBS     = Object.values(alocacao);
       showingAll = false;
       renderUBSCards();
   
-      // 4. Gráficos
+      // Gráficos
       buildCharts(alocacao);
   
-      // 5. Perguntas
+      // Perguntas
       renderPerguntas(perguntas || []);
   
-      // 6. Mapa
+      // Mapa
       if (map_url) {
         mapCard.classList.remove("d-none");
         const mapFrame = document.createElement("iframe");
@@ -598,7 +678,6 @@
         document.getElementById("mapContainer").appendChild(mapFrame);
       }
       
-      // Scroll suave para o painel
       painel.scrollIntoView({ behavior: 'smooth' });
     }
   
@@ -607,7 +686,7 @@
     /* ------------------------------------------------------------- */
     function makeStatCard(title, value) {
       const col = document.createElement("div");
-      col.className = "col"; // Bootstrap grid automático dentro do row-cols-5
+      col.className = "col"; 
       col.innerHTML = `
         <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-center">
           <h6 class="card-title mb-2">${title}</h6>
@@ -640,9 +719,13 @@
       const distMedia = d.Mean_Distance !== null ? `${d.Mean_Distance.toFixed(0)} m` : "—";
       
       let raioColor = "text-white";
-      if(d.Radius && d.Radius.includes("Ruim")) raioColor = "text-danger";
-      if(d.Radius && d.Radius.includes("Boa")) raioColor = "text-success";
-      if(d.Radius && d.Radius.includes("Regular")) raioColor = "text-warning";
+      if(d.Radius && (d.Radius.includes("Ótima") || d.Radius.includes("Boa"))) {
+          raioColor = "text-success";
+      } else if(d.Radius && d.Radius.includes("Regular")) {
+          raioColor = "text-warning";
+      } else if(d.Radius && d.Radius.includes("Ruim")) {
+          raioColor = "text-danger";
+      }
 
       col.innerHTML = `
         <div class="card card-custom h-100 border-0">
@@ -718,7 +801,6 @@
         return;
       }
 
-      // 1. Estrutura de Agrupamento
       let categories = [];
       let currentCategory = null;
       let currentCard = null;
@@ -747,7 +829,6 @@
       });
       if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
 
-      // 2. Renderização do HTML
       categories.forEach((cat, idx) => {
         const itemId = `qa-cat-${idx}`;
         
@@ -755,21 +836,30 @@
           let type = "info";
           let icon = "fa-circle-info";
           let colorClass = "text-primary";
+          let recommendation = ""; // Variável para a "conclusão" do card
+
           const textLower = card.answer.toLowerCase();
 
+          // Lógica de Severidade + Recomendação Dinâmica
           if (textLower.includes("sim,") || textLower.includes("existem ubs") || textLower.includes("acima de") || textLower.includes("desigual")) {
             if (textLower.includes("crítica") || textLower.includes("sobrecarregada") || textLower.includes("vulnerabilidade")) {
                 type = "danger"; icon = "fa-triangle-exclamation"; colorClass = "text-danger";
+                recommendation = "<strong>Ação Sugerida:</strong> Prioridade alta. Recomenda-se estudo para expansão de cobertura ou redimensionamento de equipes.";
             } else {
                 type = "warning"; icon = "fa-circle-exclamation"; colorClass = "text-warning";
+                recommendation = "<strong>Ação Sugerida:</strong> Monitorar tendência de crescimento e avaliar barreiras de acesso locais.";
             }
           } else if (textLower.includes("não há") || textLower.includes("não existem") || textLower.includes("suficiente") || textLower.includes("adequada")) {
             type = "success"; icon = "fa-circle-check"; colorClass = "text-success";
+            recommendation = "<strong>Análise:</strong> Indicadores dentro do esperado. Manter o padrão de qualidade atual.";
+          } else {
+            // Caso neutro (informação estatística)
+            recommendation = "<strong>Contexto:</strong> Este dado fornece a base estatística para o planejamento territorial.";
           }
 
-          const formattedAnswer = card.answer.replace(
-            /([A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,}(?:\s[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,})*)/g, 
-            '<span class="highlight-ubs">$1</span>'
+          let formattedAnswer = card.answer.replace(
+            /(\d+(?:[.,]\d+)?\s*(?:km|%|m|pessoas))|(\b[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,}(?:\s+[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,})*\b)/g, 
+            '<span class="highlight-val">$1$2</span>'
           );
 
           return `
@@ -780,6 +870,9 @@
               </div>
               <div class="insight-answer">
                 ${formattedAnswer}
+              </div>
+              <div class="insight-impact">
+                 ${recommendation}
               </div>
             </div>
           `;
@@ -825,7 +918,8 @@
           datasets: [{
             data: [sum("Total_People_Negros"), sum("Total_People_Pardos"), sum("Total_People_Indigenas"), sum("Total_People_Amarela")],
             backgroundColor: ["#8D6E63", "#FFB74D", "#BA68C8", "#FFF176"],
-            borderWidth: 0,
+            borderWidth: 2, 
+            borderColor: '#1a2c3b', 
             hoverOffset: 4
           }]
         },

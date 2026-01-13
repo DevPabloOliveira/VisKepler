@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IPSUM - Inteligência Geoespacial</title>
+  <title>IPSUM - Projeto de Pesquisa</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,158 +14,195 @@
 
   <style>
     :root {
-      --bg-dark: #0f172a;       /* Azul noturno profundo */
-      --bg-card: rgba(30, 41, 59, 0.7); /* Fundo semi-transparente */
-      --primary: #22d3ee;       /* Ciano brilhante */
+      --bg-dark: #0f172a;       
+      --bg-card: rgba(30, 41, 59, 0.7); 
+      --primary: #22d3ee;       
       --primary-hover: #06b6d4;
-      --text-main: #f8fafc;     /* Branco quase puro */
-      --text-muted: #cbd5e1;    /* Cinza claro legível (Slate 300) */
-      --accent-purple: #c084fc; /* Roxo vibrante */
+      --text-main: #f8fafc;     
+      --text-muted: #cbd5e1;     
+      --accent-purple: #c084fc;
+      --accent-green: #34d399;  
       --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    ::selection {
+        background: var(--primary);
+        color: #ffffff;
+    }
+    ::-moz-selection {
+        background: var(--primary);
+        color: #ffffff;
     }
 
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(at 0% 0%, rgba(34, 211, 238, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.1) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(34, 211, 238, 0.10) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.05) 0px, transparent 50%);
       background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.7;
       padding-bottom: 4rem;
     }
 
-    /* --- CORREÇÃO DE CONTRASTE (OVERRIDE BOOTSTRAP) --- */
     h1, h2, h3, h4, h5, h6 { color: #fff !important; font-weight: 700; letter-spacing: -0.02em; }
-    p, li { color: var(--text-muted); font-size: 1rem; }
+    p, li { color: var(--text-muted); font-size: 1rem; font-weight: 300; }
     
-    /* Força as classes do Bootstrap a serem claras */
-    .text-muted, .text-secondary {
-        color: #94a3b8 !important; /* Slate 400 - bem legível */
-    }
-    .text-white-50 {
-        color: rgba(255, 255, 255, 0.7) !important;
-    }
-    small {
-        font-size: 0.9em;
-    }
+    .text-muted { color: var(--text-muted) !important; }
+    .text-justify { text-align: justify; }
 
-    /* --- HERO SECTION --- */
+    /* Hero Section */
     .hero-section {
-        padding: 5rem 0 4rem;
+        padding: 6rem 0 4rem;
         border-bottom: 1px solid var(--border-color);
-        margin-bottom: 3rem;
-        position: relative;
+        margin-bottom: 4rem;
     }
 
     .hero-title {
         background: linear-gradient(to right, #fff, #94a3b8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        font-weight: 800;
+    }
+
+    .project-code {
+        font-family: 'Inter', monospace;
+        font-size: 0.85rem;
+        color: var(--primary);
+        background: rgba(34, 211, 238, 0.1);
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(34, 211, 238, 0.2);
+        display: inline-block;
         margin-bottom: 1.5rem;
     }
 
-    /* --- CARDS (Glassmorphism) --- */
-    .action-card, .info-card, .method-card, .tech-card {
+    /* Cards */
+    .feature-card {
         background: var(--bg-card);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--border-color);
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 2rem;
-        height: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        height: 100%; /* Garante altura igual em colunas */
+        transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
-    .action-card:hover, .info-card:hover, .method-card:hover, .tech-card:hover {
+    .feature-card:hover {
         transform: translateY(-5px);
         border-color: rgba(34, 211, 238, 0.3);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
     }
 
-    /* Action Cards Específicos */
-    .action-card {
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-    .action-card i {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: var(--primary);
-    }
-    .action-card h3 { color: #fff !important; font-size: 1.25rem; margin-bottom: 0.5rem; }
-    .action-card p { color: var(--text-muted); margin: 0; }
-
-    /* Info Cards Icons */
-    .icon-box {
-        width: 50px;
-        height: 50px;
-        background: rgba(34, 211, 238, 0.1);
-        border-radius: 12px;
+    /* Botões de Ação (Tools) */
+    .tool-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--primary);
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
-    }
-
-    /* Method Cards */
-    .method-card.geodesic { border-top: 4px solid var(--accent-purple); }
-    .method-card.real { border-top: 4px solid var(--primary); }
-
-    .badge-method {
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    .badge-purple { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); }
-    .badge-cyan { background: rgba(34, 211, 238, 0.15); color: var(--primary); }
-
-    /* Tech Section */
-    .tech-icon {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
         color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s;
+        width: 100%;
     }
-    .tech-card {
-        text-align: center;
-        padding: 1.5rem;
-        border: 1px solid rgba(255,255,255,0.05);
-        background: rgba(255,255,255,0.02);
+    .tool-btn:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #0f172a;
+        font-weight: 600;
+    }
+
+    /* Instituições */
+    .inst-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        display: block;
+        font-weight: 600;
+    }
+    
+    .inst-name {
+        font-size: 1.1rem;
+        color: #fff;
+        font-weight: 600;
     }
 
     /* Section Headers */
     .section-header {
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid var(--primary);
+        padding-left: 1rem;
     }
-    .section-subtitle {
-        color: var(--primary);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-size: 0.85rem;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 0.5rem;
+    
+    .method-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-main);
     }
 
-    /* Footer */
+    /* Lista de Equipe Compacta */
+    .team-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .team-list li {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .team-list li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .role-badge {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 2px;
+    }
+    .member-name {
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    .member-inst {
+        font-size: 0.85rem;
+        color: var(--primary);
+    }
+
+    /* Utilitário para cards menores dentro da coluna */
+    .mini-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .mini-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(34, 211, 238, 0.3);
+    }
+
     footer {
         margin-top: 5rem;
-        padding-top: 3rem;
+        padding-top: 2rem;
         border-top: 1px solid var(--border-color);
         color: #64748b;
         text-align: center;
+        font-size: 0.9rem;
     }
   </style>
 </head>
@@ -175,142 +212,161 @@
   
   <div class="hero-section text-center">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="d-inline-flex align-items-center mb-4 px-3 py-1 rounded-pill" style="background: rgba(34, 211, 238, 0.1); border: 1px solid rgba(34, 211, 238, 0.2);">
-                <span class="pulse me-2" style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display:inline-block;"></span>
-                <span style="color: var(--primary); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;">PLATAFORMA V1.0</span>
-            </div>
+        <div class="col-lg-10">
+            <span class="project-code">PROJETO PRES-001-FIO-21</span>
             <h1 class="display-4 hero-title">Projeto IPSUM</h1>
-            <p class="lead" style="color: #94a3b8; font-size: 1.2rem;">
-                Solução open-source de inteligência geoespacial para otimização de serviços públicos de saúde através de dados censitários.
+            <p class="lead mb-4" style="font-size: 1.25rem; color: #cbd5e1;">
+                Análise e Ações de Apoio ao Aprimoramento das Políticas e Práticas Vinculadas à Atenção Primária à Saúde no Âmbito do SUS.
+            </p>
+            
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-5">
+                <a href="/mapas" class="tool-btn">
+                    <i class="fas fa-layer-group"></i> Acessar Mapas de Alocação
+                </a>
+                <a href="/consulta_base" class="tool-btn">
+                    <i class="fas fa-search-location"></i> Nova Consulta (API)
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row mb-5 justify-content-center">
+    <div class="col-12">
+        <div class="feature-card">
+            <div class="row text-center text-md-start align-items-center">
+                <div class="col-md-4 mb-4 mb-md-0 border-end-md border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
+                    <span class="inst-label">Financiamento</span>
+                    <div class="inst-name">Fiocruz</div>
+                    <small class="text-muted d-block mt-1">Fundação Oswaldo Cruz</small>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0 border-end-md border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
+                    <span class="inst-label">Gestão</span>
+                    <div class="inst-name">Fiotec</div>
+                    <small class="text-muted d-block mt-1">Fundação para o Desenvolvimento Científico e Tecnológico em Saúde</small>
+                </div>
+                <div class="col-md-4">
+                    <span class="inst-label">Execução Técnica</span>
+                    <div class="inst-name">NUPEC</div>
+                    <small class="text-muted d-block mt-1">Núcleo de Pesquisa em Ciência de Dados e Otimização</small>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-12">
+        <div class="section-header">
+            <h2 class="m-0">Sobre a Pesquisa</h2>
+        </div>
+    </div>
+    
+    <div class="col-12">
+        <div class="feature-card">
+            <p class="text-justify mb-4">
+                Desenvolvido no âmbito do projeto <strong>PRES-001-FIO-21</strong>, o Projeto IPSUM tem como objetivo principal aprimorar as políticas e práticas de Atenção Primária à Saúde no Sistema Único de Saúde (SUS). Utilizamos ferramentas tecnológicas avançadas e modelagem de dados para otimizar a distribuição de recursos e reduzir vazios assistenciais.
+            </p>
+            <p class="text-justify m-0">
+                A pesquisa integra dados censitários do IBGE e registros do CNES para criar modelos de alocação de demanda. Através da aplicação <strong>VisKepler</strong> e da <strong>API IPSUM</strong>, oferecemos visualizações interativas e cálculos de acessibilidade que consideram tanto distâncias geodésicas quanto a malha viária real, apoiando gestores na tomada de decisão baseada em evidências.
             </p>
         </div>
     </div>
-
-    <div class="row g-4 justify-content-center mt-4">
-        <div class="col-md-5 col-lg-4">
-            <a href="/mapas" class="action-card">
-                <i class="fas fa-layer-group"></i>
-                <h3>Mapas de Alocação</h3>
-                <p>Repositório histórico de visualizações.</p>
-            </a>
-        </div>
-        <div class="col-md-5 col-lg-4">
-            <a href="/consulta_base" class="action-card">
-                <i class="fas fa-search-location"></i>
-                <h3>Nova Consulta</h3>
-                <p>Alocação em tempo real por município.</p>
-            </a>
-        </div>
-    </div>
-  </div>
-
-  <div class="row mb-5 pt-4">
-    <div class="col-12 section-header">
-        <span class="section-subtitle">Fluxo de Dados</span>
-        <h2 class="m-0">Como Funciona a Tecnologia</h2>
-    </div>
-    
-    <div class="col-md-4 mb-3">
-      <div class="info-card">
-        <div class="icon-box"><i class="fas fa-database"></i></div>
-        <h3>1. Ingestão & Normalização</h3>
-        <p>O sistema processa dados brutos do Censo (IBGE) e CNES, normalizando coordenadas geográficas e unificando sistemas de referência (CRS).</p>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="info-card">
-        <div class="icon-box"><i class="fas fa-network-wired"></i></div>
-        <h3>2. Algoritmos de Rotas</h3>
-        <p>Utilizamos K-Nearest Neighbors (KNN) via árvores espaciais (KDTree) ou grafos de malha viária real (OSMnx) para calcular distâncias.</p>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="info-card">
-        <div class="icon-box"><i class="fas fa-chart-line"></i></div>
-        <h3>3. Análise Socioeconômica</h3>
-        <p>Cruzamento dos resultados com dados raciais e demográficos para gerar insights automáticos sobre desigualdade de acesso.</p>
-      </div>
-    </div>
   </div>
 
   <div class="row mb-5">
-    <div class="col-12 section-header">
-        <span class="section-subtitle">Algoritmos</span>
-        <h2 class="m-0">Precisão vs Performance</h2>
-    </div>
     
-    <div class="col-lg-6 mb-4">
-        <div class="method-card geodesic h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <i class="fas fa-ruler-combined fs-3" style="color:var(--accent-purple)"></i>
-                <span class="badge-method badge-purple">Alta Performance</span>
+    <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="section-header">
+            <h2 class="m-0">Dados e Métodos</h2>
+        </div>
+        
+        <div class="mini-card mb-4">
+            <div class="d-flex align-items-start gap-3">
+                <i class="fas fa-ruler-combined method-icon" style="color: var(--accent-purple);"></i>
+                <div>
+                    <h4 class="mb-2">Modelagem Geométrica</h4>
+                    <p class="small mb-0 text-justify">
+                        Utilização de algoritmos KD-Tree (PySAL) para alocação rápida baseada em distância euclidiana. Ideal para análises macroscópicas de cobertura em grandes territórios.
+                    </p>
+                </div>
             </div>
-            <h3>Distância Geodésica</h3>
-            <p class="mb-4">Cálculo euclidiano ("linha reta") considerando a curvatura da Terra. Ideal para uma visão macro.</p>
-            <ul class="list-unstyled" style="color: #94a3b8;">
-                <li class="mb-2"><i class="fas fa-check me-2 text-success"></i> Cálculo instantâneo (KDTree)</li>
-                <li class="mb-2"><i class="fas fa-check me-2 text-success"></i> Ideal para zonas rurais e remotas</li>
-                <li><i class="fas fa-check me-2 text-success"></i> Baixo consumo computacional</li>
+        </div>
+
+        <div class="mini-card mb-4">
+            <div class="d-flex align-items-start gap-3">
+                <i class="fas fa-route method-icon" style="color: var(--primary);"></i>
+                <div>
+                    <h4 class="mb-2">Análise de Redes Viárias</h4>
+                    <p class="small mb-0 text-justify">
+                        Implementação de grafos viários (Pandana/OSMnx) para simular o deslocamento real da população, considerando barreiras físicas e traçados urbanos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mini-card">
+            <div class="d-flex align-items-start gap-3">
+                <i class="fas fa-database method-icon" style="color: var(--accent-green);"></i>
+                <div>
+                    <h4 class="mb-2">Fontes de Dados</h4>
+                    <p class="small mb-0 text-justify">
+                        Integração de bases oficiais do <strong>IBGE</strong> (Censo Demográfico e Malhas Territoriais), <strong>CNES/MS</strong> (Estabelecimentos de Saúde) e <strong>OpenStreetMap</strong> para roteamento viário.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="section-header">
+            <h2 class="m-0">Estrutura do Projeto</h2>
+        </div>
+        
+        <div class="feature-card">
+            <ul class="team-list">
+                <li>
+                    <span class="role-badge">Líder do Projeto</span>
+                    <span class="member-name">Alessandro Jatobá, PhD</span>
+                    <span class="member-inst">Fiocruz / ResiliSUS Lab</span>
+                </li>
+                <li>
+                    <span class="role-badge">Coordenação</span>
+                    <span class="member-name">Paulo Vitor, PhD</span>
+                    <span class="member-inst">Fiocruz / ResiliSUS Lab</span>
+                </li>
+                <li>
+                    <span class="role-badge">Apoio Institucional</span>
+                    <span class="member-name">NUPEC / Núcleo de Pesquisa em Ciência de Dados e Otimização</span>
+                    <span class="member-inst">UFAM / Universidade Federal do Amazonas</span>
+                </li>
+                <li>
+                    <span class="role-badge">Pesquisa & Desenvolvimento Técnico</span>
+                    <div class="d-flex flex-column gap-3 mt-2">
+                                                <div>
+                            <span class="member-name" style="font-size: 1rem;">Fillipe Oliveira Feitosa, PhD</span>
+                            <small class="text-muted d-block">Pesquisador Sênior & Cientista de Dados (Spatial Data Scientist) - Engenheiro de Software</small>
+                        </div>
+                        <div>
+                            <span class="member-name" style="font-size: 1rem;">Pablo Oliveira</span>
+                            <small class="text-muted d-block">Pesquisador Pleno (NUPEC/ResiliSUS) & Graduando em Eng. de Software</small>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
 
-    <div class="col-lg-6 mb-4">
-        <div class="method-card real h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <i class="fas fa-road fs-3" style="color:var(--primary)"></i>
-                <span class="badge-method badge-cyan">Alta Precisão</span>
-            </div>
-            <h3>Distância Real (Viária)</h3>
-            <p class="mb-4">Simula o deslocamento real por ruas e avenidas, respeitando barreiras físicas (rios, muros).</p>
-            <ul class="list-unstyled" style="color: #94a3b8;">
-                <li class="mb-2"><i class="fas fa-check me-2 text-success"></i> Considera a malha viária real</li>
-                <li class="mb-2"><i class="fas fa-check me-2 text-success"></i> Detecta barreiras físicas</li>
-                <li><i class="fas fa-check me-2 text-success"></i> Ideal para planejamento urbano</li>
-            </ul>
-        </div>
-    </div>
-  </div>
-
-  <div class="row mb-5">
-    <div class="col-12 section-header">
-        <span class="section-subtitle">Under the Hood</span>
-        <h2 class="m-0">Stack Tecnológica</h2>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="tech-card">
-            <i class="fab fa-python tech-icon" style="color: #3776AB;"></i>
-            <h5 class="mb-1">FastAPI</h5>
-            <small class="text-muted">Backend de alta performance</small>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="tech-card">
-            <i class="fab fa-docker tech-icon" style="color: #2496ED;"></i>
-            <h5 class="mb-1">Docker</h5>
-            <small class="text-muted">Containerização completa</small>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="tech-card">
-            <i class="fas fa-map tech-icon" style="color: #fff;"></i>
-            <h5 class="mb-1">Kepler.gl</h5>
-            <small class="text-muted">Visualização Geoespacial</small>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="tech-card">
-            <i class="fas fa-brain tech-icon" style="color: #F7931E;"></i>
-            <h5 class="mb-1">Scikit-Learn</h5>
-            <small class="text-muted">Algoritmos de ML (KNN)</small>
-        </div>
-    </div>
   </div>
 
   <footer>
-    <p class="mb-2">&copy; 2025 Projeto IPSUM</p>
-    <p class="small opacity-50">Desenvolvido para apoio à tomada de decisão em saúde pública.</p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <p class="mb-2"><strong>Projeto PRES-001-FIO-21</strong></p>
+            <p class="small mb-2">Financiado pela Fiocruz através da Fiotec.</p>
+            <p class="small opacity-50">&copy; 2024-2025 IPSUM. Todos os direitos reservados.</p>
+        </div>
+    </div>
   </footer>
 
 </div>
