@@ -14,10 +14,10 @@ import requests
 import logging
 from typing import Optional
 
-# --- Logging Configuration ---
+# --- Configuração de Logging ---
 logging.basicConfig(level=logging.INFO)
 
-# --- Directory Constants ---
+# --- Constantes de Diretório ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DATA_DIR = os.path.join(CURRENT_DIR, "data")
 STATIC_CONFIG_DIR = os.path.join(CURRENT_DIR, "config")
@@ -26,26 +26,26 @@ ASSETS_DIR = os.path.join(WEB_DIR, "assets")
 
 templates = Jinja2Templates(directory="web/templates")
 
-# --- Application Modules ---
+# --- Módulos da Aplicação ---
 from config.shared import read_configs, load_user_config
 from lib.map_utils import create_kepler_map, get_dataId_from_config
 from data.load_data import read_geojsons
 
-# --- Global Variables ---
+# --- Variáveis Globais ---
 global_config = {"maps": []}
 global_maps = {}
 user_config = load_user_config()
 
-# --- Shared Directory via Docker Volume ---
+# --- Diretório Compartilhado via Docker Volume ---
 SHARED_DIR = "/shared"
 os.makedirs(SHARED_DIR, exist_ok=True)
 
 def find_data_file(file_name: str) -> str | None:
-    """Searches for a data file in multiple locations (shared and static)."""
+    """Procura um arquivo de dados em múltiplos locais (compartilhado e estático)."""
     if not file_name:
         return None
     
-    # List of locations to search, prioritizing the shared directory.
+    # Lista de locais para procurar, com prioridade para o compartilhado.
     possible_paths = [
         os.path.join(SHARED_DIR, file_name),
         os.path.join(STATIC_DATA_DIR, file_name)
@@ -60,7 +60,7 @@ def find_data_file(file_name: str) -> str | None:
     return None
 
 def create_route_function(map_config):
-    """Creates an asynchronous route function for a specific map."""
+    """Cria uma função de rota assíncrona para um mapa específico."""
     async def route_function():
         data_ids = map_config.get("data_ids", {})
         csv_file_name = data_ids.get('csv_file')
@@ -82,16 +82,15 @@ def create_route_function(map_config):
     return route_function
 
 def populate_config():
-    """Loads data and configurations at startup."""
+    """Carrega dados e configurações na inicialização."""
     global global_maps, global_config
     
-    # MEMORY LEAK FIX: Loads ONLY static data into global memory.
-    # SHARED_DIR was removed from here to avoid loading the entire history into RAM.
+    # CORREÇÃO MEMORY LEAK: Carrega APENAS dados estáticos para a memória global.
     global_maps = read_geojsons(STATIC_DATA_DIR)
     
     global_config["siteTitle"] = user_config.get("siteTitle", "VisKepler Default")
 
-    # Loads maps defined in config.json
+    # Carrega mapas definidos em config.json
     for map_cfg in user_config.get("maps", []):
         data_ids = map_cfg.get("data_ids", {})
         
@@ -105,7 +104,7 @@ def populate_config():
         else:
             logging.warning(f"Dados para a configuração de mapa {map_cfg.get('label')} não encontrados. Pulando.")
     
-    # Adds dynamic routes for the loaded maps
+    # Adiciona rotas dinâmicas para os mapas carregados
     for map_info in global_config["maps"]:
         link = map_info.get("link")
         if link:
@@ -113,28 +112,25 @@ def populate_config():
             logging.info(f"Rota estática criada para: {link}")
 
 
-# --- FastAPI Application Initialization ---
 app = FastAPI()
-
-# Mounts the static assets directory
 app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="assets")
 
-# Loads initial configuration and creates static routes
+# Carrega a configuração inicial e cria rotas estáticas
 populate_config()
 
-# --- Main Routes ---
+# --- Rotas Principais ---
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     """
-    New Home: Renders the Landing Page (formerly info.html).
+    Nova Home: Renderiza a Landing Page (antiga info.html).
     """
     return templates.TemplateResponse("info.html", {"request": request})
 
 @app.get("/mapas", response_class=HTMLResponse)
 async def maps_dashboard(request: Request):
     """
-    Old Home: Lists available static and dynamic maps.
+    Antiga Home: Lista os mapas estáticos e dinâmicos disponíveis.
     """
     return templates.TemplateResponse(
         "index.html",
@@ -146,17 +142,17 @@ async def maps_dashboard(request: Request):
 
 @app.get("/info", response_class=HTMLResponse)
 def show_info_page(request: Request):
-    """Renders the information and methodology page (alternative route)."""
+    """Renderiza a página de informações e metodologia (rota alternativa)."""
     return templates.TemplateResponse("info.html", {"request": request})
 
 @app.get("/get_config")
 async def get_config():
-    """Returns the global map configuration to the client."""
+    """Retorna a configuração global de mapas para o cliente."""
     return global_config
 
 @app.get("/consulta_base", response_class=HTMLResponse)
 def show_consulta_base(request: Request):
-    """Renders the query page."""
+    """Renderiza a página de consulta."""
     return templates.TemplateResponse("consulta_base.html", {"request": request})
 
 @app.post("/api/upload_map")
@@ -167,14 +163,13 @@ async def api_upload_map(
     poly_file: Optional[UploadFile] = File(None)
 ):
     """
-    Endpoint for the backend to register a dynamically generated map.
-    Accepts an optional polygon file.
+    Endpoint para o backend registrar um mapa gerado dinamicamente.
+    Aceita arquivo de polígono opcional.
     """
     try:
         csv_fname = f"{map_id}.csv"
         cfg_fname = f"{map_id}.json"
 
-        # Saves received files to the shared directory
         csv_path = os.path.join(SHARED_DIR, csv_fname)
         cfg_path = os.path.join(SHARED_DIR, cfg_fname)
 
@@ -187,16 +182,14 @@ async def api_upload_map(
         
         cfg_json = json.loads(cfg_bytes.decode('utf-8'))
         
-        # Saves polygon file if received
         if poly_file:
-            # Uses the original name or constructs one based on the ID
             poly_fname = f"poly_{map_id}.csv"
             poly_path = os.path.join(SHARED_DIR, poly_fname)
             with open(poly_path, "wb") as f:
                 f.write(await poly_file.read())
             logging.info(f"Arquivo de polígono salvo em: {poly_path}")
 
-        # Creates the dynamic route for the new map
+        # Cria a rota dinâmica para o novo mapa
         link = f"/map/{map_id}"
         map_data = {
             "data_ids": {"csv_file": csv_fname},
@@ -206,9 +199,9 @@ async def api_upload_map(
             "config": cfg_json
         }
         
-        # Note: app.add_api_route is useful for in-memory persistence, 
-        # but the /map/{map_id} route already handles dynamic loading.
-        # Kept here for consistency with the legacy static route system.
+        # Nota: app.add_api_route é útil para persistência em memória, 
+        # mas a rota /map/{map_id} já cuida do carregamento dinâmico.
+        # Mantemos aqui para consistência com o sistema legado de rotas estáticas.
         app.add_api_route(link, create_route_function(map_data), methods=["GET"])
         logging.info(f"Mapa '{map_id}' recebido via API e rota criada para: {link}")
 
@@ -222,8 +215,8 @@ async def api_upload_map(
 @app.get("/map/{map_id}", response_class=HTMLResponse)
 async def render_map(request: Request, map_id: str):
     """
-    Renders a specific dynamic map. 
-    Reads the configuration JSON to determine which files to load.
+    Renderiza um mapa dinâmico específico. 
+    Lê o JSON de configuração para descobrir quais arquivos carregar.
     """
     
     config_fname = f"{map_id}.json"
@@ -233,28 +226,26 @@ async def render_map(request: Request, map_id: str):
         return HTMLResponse("Configuração do mapa não encontrada", status_code=404)
 
     try:
-        # 1. Loads the configuration
+        # 1. Carrega a configuração
         with open(config_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
         
-        # 2. Identifies all necessary data files by looking at the config
-        # The get_dataId_from_config function (in lib/map_utils.py) returns a list of dataIds
+        # 2. Identifica todos os arquivos de dados necessários olhando a config
+        # A função get_dataId_from_config (em lib/map_utils.py) retorna lista de dataIds
         data_ids = get_dataId_from_config(config) 
         
-        # Dictionary to store DataFrames: {'filename.csv': DataFrame}
+        # Dicionário para armazenar os DataFrames: {'nome_arquivo.csv': DataFrame}
         datasets = {} 
         
         for data_id in data_ids:
-            # Searches for the file (can be the knn csv or the polygon)
+            # Procura o arquivo (pode ser o csv do knn ou do polígono)
             d_path = find_data_file(data_id)
             if d_path:
                 try:
-                    # Reads CSV
                     if d_path.endswith('.csv'):
                         df = pd.read_csv(d_path)
                         datasets[data_id] = df
                         logging.info(f"Dados carregados para dataId: {data_id}")
-                    # Add logic for geojson if necessary (e.g., if d_path.endswith('.geojson')...)
                 except Exception as e:
                     logging.error(f"Erro ao ler dados {data_id}: {e}")
             else:
@@ -263,8 +254,8 @@ async def render_map(request: Request, map_id: str):
         if not datasets:
              return HTMLResponse("Nenhum arquivo de dados encontrado para este mapa.", status_code=404)
 
-        # 3. Creates the map passing the datasets dictionary
-        # The create_kepler_map function in lib/map_utils.py now accepts a dict
+        # 3. Cria o mapa passando o dicionário de datasets
+        # A função create_kepler_map em lib/map_utils.py agora aceita dict
         kepler_html = create_kepler_map(datasets, config)
         
         if isinstance(kepler_html, (bytes, bytearray)):

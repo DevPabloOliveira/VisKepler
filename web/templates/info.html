@@ -87,7 +87,7 @@
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 2rem;
-        height: 100%; /* Garante altura igual em colunas */
+        height: 100%; 
         transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
@@ -181,6 +181,22 @@
     .member-inst {
         font-size: 0.85rem;
         color: var(--primary);
+    }
+
+    /* Links de Membros */
+    .member-link {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.2s ease;
+        display: inline-block;
+    }
+    .member-link:hover .member-name {
+        color: var(--primary) !important;
+    }
+    .member-link i {
+        font-size: 0.8rem;
+        margin-left: 4px;
+        opacity: 0.6;
     }
 
     /* Utilitário para cards menores dentro da coluna */
@@ -343,12 +359,16 @@
                 <li>
                     <span class="role-badge">Pesquisa & Desenvolvimento Técnico</span>
                     <div class="d-flex flex-column gap-3 mt-2">
-                                                <div>
-                            <span class="member-name" style="font-size: 1rem;">Fillipe Oliveira Feitosa, PhD</span>
-                            <small class="text-muted d-block">Pesquisador Sênior & Cientista de Dados (Spatial Data Scientist) - Engenheiro de Software</small>
+                        <div>
+                            <a href="https://www.uni-muenster.de/Geoinformatics/en/institute/staff/index.php/495/Fillipe_Oliveira_Feitosa" target="_blank" class="member-link">
+                                <span class="member-name">Fillipe Oliveira Feitosa, PhD <i class="fas fa-external-link-alt"></i></span>
+                            </a>
+                            <small class="text-muted d-block">Pesquisador Sênior & Cientista de Dados (Spatial Data Scientist)</small>
                         </div>
                         <div>
-                            <span class="member-name" style="font-size: 1rem;">Pablo Oliveira</span>
+                            <a href="https://www.linkedin.com/in/pablo-oliveira-273937206" target="_blank" class="member-link">
+                                <span class="member-name">Pablo Oliveira <i class="fab fa-linkedin"></i></span>
+                            </a>
                             <small class="text-muted d-block">Pesquisador Pleno (NUPEC/ResiliSUS) & Graduando em Eng. de Software</small>
                         </div>
                     </div>

@@ -250,7 +250,6 @@
       padding-left: 26px; 
     }
 
-    /* Área de Conclusão/Impacto dentro do Insight */
     .insight-impact {
       margin-top: 12px;
       padding: 10px 12px;
@@ -269,7 +268,6 @@
       white-space: nowrap;
     }
 
-    /* Highlight para valores e nomes de UBS */
     .highlight-val {
       color: #fff;
       background: rgba(31, 186, 214, 0.2);
@@ -320,9 +318,10 @@
       <div class="col-6 col-md-3">
         <label class="form-label" for="distancia">Método de Cálculo</label>
         <select id="distancia" class="form-select">
-        <option value="pysal">Distância Geodésica</option> 
-        <option value="pandana_real_distance">Distância Real</option>
-      </select>
+          <option value="pysal">Distância Geodésica (Rápido)</option> 
+          <option value="valhalla">Distância Real (Valhalla - Recomendado)</option>
+          <option value="pandana_real_distance">Distância Real (Pandana)</option>
+        </select>
       </div>
       <div class="col-6 col-md-2 d-grid">
         <button type="submit" class="btn btn-primary h-100">
@@ -531,7 +530,8 @@
   
     const nomesDistancia = {
       "pysal": "Distância Geodésica",
-      "pandana_real_distance": "Distância Real"
+      "valhalla": "Distância Real (Valhalla)",
+      "pandana_real_distance": "Distância Real (Pandana)"
     };
 
     const MAX_UBS_DISPLAY = 9;
@@ -595,8 +595,8 @@
       mapCard.classList.add("d-none");
       qaSection.classList.add("d-none");
   
-      const uf    = estadoSel.value;
-      const mun   = municipioSel.value;
+      const uf   = encodeURIComponent(estadoSel.value);
+      const mun  = encodeURIComponent(municipioSel.value);
       const tipo = document.getElementById("distancia").value;
   
       fetch(`${API_ALLOCATOR_BASE}/consulta_base/resultado_completo?uf=${uf}&municipio=${mun}&tipo=${tipo}`)
@@ -619,7 +619,8 @@
       e.preventDefault();
       const tipo = document.getElementById("distancia").value;
 
-      if (tipo === 'pandana_real_distance') {
+      // Chama o modal de aviso se for qualquer um dos métodos de rede real
+      if (tipo === 'valhalla' || tipo === 'pandana_real_distance') {
           warningModal.show();
       } else {
           executarConsulta();
@@ -657,14 +658,9 @@
       allUBS     = Object.values(alocacao);
       showingAll = false;
       renderUBSCards();
-  
-      // Gráficos
       buildCharts(alocacao);
-  
-      // Perguntas
       renderPerguntas(perguntas || []);
   
-      // Mapa
       if (map_url) {
         mapCard.classList.remove("d-none");
         const mapFrame = document.createElement("iframe");
@@ -787,9 +783,6 @@
       renderUBSCards();
     });
 
-    /* ------------------------------------------------------------- */
-    /* RENDERIZAÇÃO INTELIGENTE: 3 CATEGORIAS COM CARDS INTERNOS     */
-    /* ------------------------------------------------------------- */
     function renderPerguntas(lines) {
       const qaList = document.getElementById("qa-list");
       const qaSection = document.getElementById("qa-section");
