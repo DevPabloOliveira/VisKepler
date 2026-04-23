@@ -4,43 +4,43 @@
   "maps": [
     {
       "data_ids": {
-        "csv_file": "DESLOCAMENTOUK.csv"
+        "csv_file": "COMBINEDALLOCATIONS.csv"
       },
-      "label": "Padrão de deslocamento diário na Inglaterra e no País de Gales",
-      "link": "/DESLOCAMENTOUK",
-      "description": "Este conjunto de dados mostra a localização de residência e local de trabalho, com base no Censo de residência de 2011 da Inglaterra e País de Gales. Os dados classificam as pessoas atualmente residentes em cada área de superprodução da camada intermediária, ou área superior, e mostram o movimento entre sua área de residência e local de trabalho. Fonte de dados: Nomis"
+      "label": "Alocação Nacional de Demandas – Fluxos Setoriais",
+      "link": "/COMBINEDALLOCATIONS",
+      "description": "Mapa interativo mostrando os fluxos de deslocamento de setores censitários para Unidades Básicas de Saúde em todo o Brasil, com análise de distâncias, intensidade do fluxo e cobertura regional."
     },
     {
       "data_ids": {
-        "geojson_file": "ELEVACAOSF.geojson"
+        "csv_file": "knn_20250429_003424.csv"
       },
-      "label": "Contorno de elevação de São Francisco",
-      "link": "/ELEVACAOSF",
-      "description": "Este conjunto de dados contém contornos de elevação para o continente de São Francisco e Ilha do Tesouro/Ilha Yerba. Baseado no Datum de elevação de São Francisco. Fonte de dados: DataSF."
+      "label": "Fluxo de Demandas – São Paulo/SP",
+      "link": "/knn_20250429_003424",
+      "description": "Visualiza o deslocamento de demandas setoriais até as UBS em São Paulo/SP, destacando trajetórias, distâncias percorridas e distribuição espacial de atendimento."
     },
     {
       "data_ids": {
-        "csv_file": "TERREMOTOSCA.csv"
+        "csv_file": "knn_20250429_035828.csv"
       },
-      "label": "Terremotos na Califórnia",
-      "link": "/TERREMOTOSCA",
-      "description": "O conjunto de dados contém uma lista de terremotos de magnitude 2,5+ na Califórnia. As informações foram geradas usando o site do USGS e contêm múltiplas propriedades (localização, magnitude, tipo magnético) para cada entrada. Fonte de dados: USGS"
+      "label": "Fluxo de Demandas – Belo Horizonte/MG",
+      "link": "/knn_20250429_035828",
+      "description": "Análise dos fluxos de deslocamento de setores censitários para Unidades Básicas de Saúde em Belo Horizonte/MG, com granularidade por bairro e estatísticas de distância."
     },
     {
       "data_ids": {
-        "geojson_file": "VOOSGLOBAIS.geojson"
+        "csv_file": "knn_20250429_040956.csv"
       },
-      "label": "Todos os voos do mundo",
-      "link": "/VOOSGLOBAIS",
-      "description": "O conjunto de dados contém dados de duas horas de voo coletados usando a API ao vivo da OpenSky Network. A cor dos voos é baseada no país de origem. 18 mil voos são registrados durante o período de duas horas. O caminho cai sobre os mares devido à falta de cobertura de satélite. As informações da companhia aérea são adicionadas a cada voo juntando-se aos dados de Airlinescodes.co.uk"
+      "label": "Fluxo de Demandas – Manaus/AM",
+      "link": "/knn_20250429_040956",
+      "description": "Mapeia os trajetos de demandas setoriais até UBS em Manaus/AM, permitindo avaliar cobertura de saúde e identificar áreas com maiores distâncias de acesso."
     },
     {
       "data_ids": {
-        "csv_file": "NYTAXI.csv"
+        "csv_file": "knn_20250429_041434.csv"
       },
-      "label": "Viagens de táxi em Nova York",
-      "link": "/NYTAXI",
-      "description": "Os registros de viagem de táxi amarelo e verde incluem campos que capturam datas/horários de coleta e entrega, locais de coleta e entrega, distâncias de viagem, tarifas discriminadas, tipos de tarifas, tipos de pagamento e contagens de passageiros informadas pelo motorista. Os dados são baixados do site da NYC Taxi and Limousine Commission (TLC)."
+      "label": "Fluxo de Demandas – Salvador/BA",
+      "link": "/knn_20250429_041434",
+      "description": "Ilustra os fluxos de setor censitário para UBS em Salvador/BA, com indicadores de distância, densidade de demanda e potencial de atendimento por região."
     }
   ]
 }

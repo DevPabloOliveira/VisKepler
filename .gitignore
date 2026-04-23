@@ -1,3 +1,5 @@
 **/__pycache__/
 config/*.json
 !config/config.json
+# ignore generated csvs
+data/*.csv

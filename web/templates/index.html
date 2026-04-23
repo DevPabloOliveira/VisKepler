@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galeria de Mapas - IPSUM</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --sidebar-bg: #111c29;
+      --sidebar-border: rgba(255, 255, 255, 0.05);
+      --primary: #22d3ee;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --active-bg: rgba(34, 211, 238, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .app-wrapper {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+      width: 320px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      flex-shrink: 0;
+      white-space: nowrap; /* Evita quebra de texto na animação */
+    }
+
+    /* Estado Recolhido (Collapsed) */
+    .sidebar.collapsed {
+      width: 72px;
+    }
+
+    .sidebar-header {
+      height: 70px;
+      padding: 0 1.5rem;
+      border-bottom: 1px solid var(--sidebar-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar.collapsed .sidebar-header {
+      justify-content: center;
+      padding: 0;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .brand-icon {
+        color: var(--primary);
+        font-size: 1.4rem;
+        flex-shrink: 0; /* Impede que o ícone encolha */
+    }
+
+    /* Botão de Toggle Desktop */
+    .desktop-toggle {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: transform 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+    }
+    
+    .desktop-toggle:hover {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+    }
+
+    /* Esconde elementos quando recolhido */
+    .sidebar.collapsed .brand-text,
+    .sidebar.collapsed .desktop-toggle,
+    .sidebar.collapsed .section-label,
+    .sidebar.collapsed .text-truncate,
+    .sidebar.collapsed .sidebar-footer small {
+        display: none;
+        opacity: 0;
+    }
+
+    /* Centraliza itens quando recolhido */
+    .sidebar.collapsed .nav-item {
+        justify-content: center;
+        padding: 0.85rem 0;
+    }
+    
+    .sidebar.collapsed .nav-item i {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+
+    /* Botão de reabrir (hack visual: usa o próprio header clicável ou um ícone fixo) */
+    .sidebar.collapsed .sidebar-header {
+        cursor: pointer;
+    }
+    .sidebar.collapsed .sidebar-header:hover .brand-icon {
+        color: #fff;
+    }
+
+    /* Lista de Mapas */
+    .map-list-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+      padding-left: 0.5rem;
+      transition: opacity 0.2s;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+      height: 44px;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255, 255, 255, 0.03);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background-color: var(--active-bg);
+      color: var(--primary);
+      border-color: rgba(34, 211, 238, 0.2);
+      font-weight: 500;
+    }
+
+    .nav-item i {
+      width: 24px;
+      text-align: center;
+      margin-right: 12px;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--sidebar-border);
+      background-color: rgba(0,0,0,0.2);
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* --- MAP AREA --- */
+    .map-content {
+      flex-grow: 1;
+      position: relative;
+      background-color: #000;
+    }
+
+    .map-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    #mapLoader {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      transition: opacity 0.3s;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: absolute;
+        height: 100%;
+        transform: translateX(-100%);
+        width: 280px !important; /* Mobile sempre fixo */
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .mobile-toggle {
+        display: block !important;
+      }
+      .desktop-toggle {
+        display: none !important;
+      }
+    }
+    
+    .mobile-toggle {
+        display: none;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        z-index: 200;
+        background: var(--sidebar-bg);
+        border: 1px solid var(--sidebar-border);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="app-wrapper">
+    
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header" onclick="expandSidebarIfCollapsed()">
+        <div class="brand-title">
+            <i class="fas fa-layer-group brand-icon"></i>
+            <span class="brand-text">VisKepler</span>
+        </div>
+        <button class="desktop-toggle" onclick="toggleDesktopSidebar(event)" title="Recolher Menu">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <div class="map-list-container">
+        <div class="section-label">Navegação</div>
+        <a href="/" class="nav-item" title="Início">
+            <i class="fas fa-home"></i> 
+            <span class="text-truncate">Início</span>
+        </a>
+        <a href="/consulta_base" class="nav-item" title="Nova Consulta">
+            <i class="fas fa-search-location"></i> 
+            <span class="text-truncate">Nova Consulta</span>
+        </a>
+
+        <hr style="border-color: var(--sidebar-border); margin: 1.5rem 0;">
+
+        <div class="section-label">Mapas Disponíveis</div>
+        <div id="maps-list">
+            <div class="text-center mt-4">
+                <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+            </div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <small class="text-white d-block text-center text-truncate" style="font-size: 0.75rem; opacity: 0.8;">
+            &copy; 2025 Projeto IPSUM
+        </small>
+        <i class="fas fa-info-circle text-muted d-none collapsed-icon"></i>
+      </div>
+    </aside>
+
+    <main class="map-content">
+      <div id="mapLoader">
+        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+        <span class="text-white small fw-bold">Carregando visualização...</span>
+      </div>
+      <iframe id="mapFrame" class="map-iframe" src=""></iframe>
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const mapFrame = document.getElementById('mapFrame');
+    const mapLoader = document.getElementById('mapLoader');
+    const mapsListContainer = document.getElementById('maps-list');
+    const sidebar = document.getElementById('sidebar');
+
+    async function fetchConfig() {
+      try {
+        const response = await fetch('/get_config');
+        const data = await response.json();
+        
+        mapsListContainer.innerHTML = '';
+
+        if (data.maps.length === 0) {
+            mapsListContainer.innerHTML = '<p class="text-muted small ps-2">Nenhum mapa disponível.</p>';
+            mapLoader.innerHTML = '<span class="text-muted">Sem mapas configurados.</span>';
+            return;
+        }
+
+        loadMap(data.maps[0].link, 'map-item-0');
+
+        data.maps.forEach((map, index) => {
+          const link = document.createElement('div');
+          link.className = 'nav-item';
+          link.id = `map-item-${index}`;
+          // Adiciona title para tooltip nativo quando recolhido
+          link.title = map.label;
+          link.onclick = () => loadMap(map.link, link.id);
+          
+          const icon = '<i class="fas fa-map"></i>';
+          
+          link.innerHTML = `
+            ${icon}
+            <span class="text-truncate">${map.label}</span>
+          `;
+          mapsListContainer.appendChild(link);
+        });
+
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error);
+        mapsListContainer.innerHTML = '<p class="text-danger small ps-2">Erro ao carregar mapas.</p>';
+      }
+    }
+
+    function loadMap(url, elementId) {
+      mapLoader.style.opacity = '1';
+      mapLoader.style.zIndex = '50';
+
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      const activeEl = document.getElementById(elementId);
+      if(activeEl) activeEl.classList.add('active');
+
+      mapFrame.src = url;
+
+      if (window.innerWidth <= 768) {
+        toggleMobileSidebar();
+      }
+    }
+
+    mapFrame.onload = function() {
+        setTimeout(() => {
+            mapLoader.style.opacity = '0';
+            setTimeout(() => {
+                mapLoader.style.zIndex = '-1';
+            }, 300);
+        }, 800);
+    };
+
+    // Função para Mobile (Slide in/out)
+    function toggleMobileSidebar() {
+      sidebar.classList.toggle('open');
+    }
+
+    // Função para Desktop (Collapse/Expand)
+    function toggleDesktopSidebar(event) {
+        if(event) event.stopPropagation();
+        sidebar.classList.toggle('collapsed');
+        
+        // Troca o ícone do botão
+        const btnIcon = document.querySelector('.desktop-toggle i');
+        if(sidebar.classList.contains('collapsed')) {
+            btnIcon.className = 'fas fa-chevron-right';
+        } else {
+            btnIcon.className = 'fas fa-chevron-left';
+        }
+    }
+
+    // Expandir ao clicar no header (se estiver fechado)
+    function expandSidebarIfCollapsed() {
+        if(sidebar.classList.contains('collapsed')) {
+            toggleDesktopSidebar();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchConfig);
+  </script>
+</body>
+</html>

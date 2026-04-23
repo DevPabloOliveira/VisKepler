@@ -14,7 +14,7 @@ let visibleModal = null;
 
 // Função para abrir o modal
 function openModalHandler(modal) {
-  console.log("Modal is being opened."); // Log para verificar se a função está sendo chamada
+  console.log("Modal is being opened."); 
   
   if (isScrollbarVisible()) {
     document.documentElement.style.setProperty(

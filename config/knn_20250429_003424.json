@@ -1,0 +1,270 @@
+{
+  "version": "v1",
+  "config": {
+    "visState": {
+      "filters": [],
+      "layers": [
+        {
+          "id": "65871ff",
+          "type": "point",
+          "config": {
+            "dataId": "knn_20250429_003424.csv",
+            "label": "origin",
+            "color": [
+              117,
+              222,
+              227
+            ],
+            "highlightColor": [
+              252,
+              242,
+              26,
+              255
+            ],
+            "columns": {
+              "lat": "Origin_Lat",
+              "lng": "Origin_Lon",
+              "altitude": null
+            },
+            "isVisible": true,
+            "visConfig": {
+              "radius": 10,
+              "fixedRadius": false,
+              "opacity": 0.31,
+              "outline": false,
+              "thickness": 2,
+              "strokeColor": null,
+              "radiusRange": [
+                0,
+                50
+              ],
+              "filled": true
+            },
+            "hidden": false,
+            "textLabel": [
+              {
+                "field": null,
+                "color": [
+                  255,
+                  255,
+                  255
+                ],
+                "size": 18,
+                "offset": [
+                  0,
+                  0
+                ],
+                "anchor": "start",
+                "alignment": "center"
+              }
+            ]
+          },
+          "visualChannels": {
+            "colorField": null,
+            "colorScale": "quantile",
+            "strokeColorField": null,
+            "strokeColorScale": "quantile",
+            "sizeField": null,
+            "sizeScale": "linear"
+          }
+        },
+        {
+          "id": "d2f8ecb",
+          "type": "point",
+          "config": {
+            "dataId": "knn_20250429_003424.csv",
+            "label": "destination",
+            "color": [
+              227,
+              26,
+              26
+            ],
+            "highlightColor": [
+              252,
+              242,
+              26,
+              255
+            ],
+            "columns": {
+              "lat": "Destination_Lat",
+              "lng": "Destination_Lon",
+              "altitude": null
+            },
+            "isVisible": true,
+            "visConfig": {
+              "radius": 15.4,
+              "fixedRadius": false,
+              "opacity": 0.8,
+              "outline": false,
+              "thickness": 2,
+              "strokeColor": null,
+              "radiusRange": [
+                0,
+                50
+              ],
+              "filled": true
+            },
+            "hidden": false,
+            "textLabel": [
+              {
+                "field": null,
+                "color": [
+                  255,
+                  255,
+                  255
+                ],
+                "size": 18,
+                "offset": [
+                  0,
+                  0
+                ],
+                "anchor": "start",
+                "alignment": "center"
+              }
+            ]
+          },
+          "visualChannels": {
+            "colorField": null,
+            "colorScale": "quantile",
+            "strokeColorField": null,
+            "strokeColorScale": "quantile",
+            "sizeField": null,
+            "sizeScale": "linear"
+          }
+        },
+        {
+          "id": "20e0e4b",
+          "type": "arc",
+          "config": {
+            "dataId": "knn_20250429_003424.csv",
+            "label": "origin → destination arc",
+            "color": [
+              100,
+              100,
+              100
+            ],
+            "highlightColor": [
+              255,
+              255,
+              255
+            ],
+            "columns": {
+              "lat0": "Origin_Lat",
+              "lng0": "Origin_Lon",
+              "lat1": "Destination_Lat",
+              "lng1": "Destination_Lon"
+            },
+            "isVisible": true,
+            "visConfig": {
+              "opacity": 0.8,
+              "thickness": 2,
+              "sizeRange": [
+                0,
+                10
+              ],
+              "colorRange": {
+                "name": "Temperature",
+                "type": "sequential",
+                "category": "Uber",
+                "colors": [
+                  "#2b83ba",
+                  "#4ea0c0",
+                  "#71b7c8",
+                  "#92cad0",
+                  "#b4dcd5",
+                  "#f4e0c0",
+                  "#fdb663",
+                  "#f57d4e",
+                  "#d7191c"
+                ],
+                "reversed": false
+              }
+            },
+            "hidden": false,
+            "textLabel": []
+          },
+          "visualChannels": {
+            "colorField": {
+              "name": "distance_km",
+              "type": "real"
+            },
+            "colorScale": "quantile"
+          }
+        },
+        {
+          "id": "a4c2dea",
+          "type": "line",
+          "config": {
+            "dataId": "knn_20250429_003424.csv",
+            "label": "origin → destination line",
+            "color": [
+              130,
+              154,
+              227
+            ],
+            "highlightColor": [
+              252,
+              242,
+              26,
+              255
+            ],
+            "columns": {
+              "lat0": "Origin_Lat",
+              "lng0": "Origin_Lon",
+              "alt0": null,
+              "lat1": "Destination_Lat",
+              "lng1": "Destination_Lon",
+              "alt1": null
+            },
+            "isVisible": false,
+            "visConfig": {
+              "opacity": 0.8,
+              "thickness": 2
+            },
+            "hidden": false,
+            "textLabel": []
+          }
+        }
+      ],
+      "interactionConfig": {
+        "tooltip": {
+          "fieldsToShow": {
+            "knn_20250429_003424.csv": [
+              {
+                "name": "demand_id"
+              },
+              {
+                "name": "Destination_State"
+              },
+              {
+                "name": "Destination_City"
+              },
+              {
+                "name": "opportunity_name"
+              },
+              {
+                "name": "Origin_Lat"
+              }
+            ]
+          },
+          "enabled": true
+        }
+      },
+      "layerBlending": "normal",
+      "splitMaps": []
+    },
+    "mapState": {
+      "bearing": -33,
+      "dragRotate": true,
+      "latitude": -23.580804,
+      "longitude": -46.625386,
+      "pitch": 59,
+      "zoom": 8.6,
+      "isSplit": false
+    },
+    "mapStyle": {
+      "styleType": "dark"
+    }
+  },
+  "label": "Alocação – SÃO PAULO/SP"
+}

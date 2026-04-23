@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel de Alocação UBS</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/kepler.gl@2.5.2/dist/kepler.gl.bundle.css" />
+  <script src="https://unpkg.com/kepler.gl@2.5.2/dist/kepler.gl.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #112330;
+      --bg-card: #1a2c3b;
+      --primary: #1fbad6;       
+      --primary-hover: #1494ab;
+      --text-main: #ffffff;
+      --text-muted: #9fa7b0;
+      
+      --bg-acc-header:   #1f2f3d;  
+      --bg-acc-header-o: #1fbad61a; 
+      --bg-acc-body:     #162633;   
+      --acc-border:      #1fbad6;    
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 4rem; 
+      position: relative;
+      -webkit-font-smoothing: antialiased; 
+    }
+
+    /* Tipografia de Títulos */
+    h1 {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    h5 {
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* Cards */
+    .card-custom {
+      background-color: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      color: var(--text-main);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, border-color 0.2s;
+    }
+
+    /* Títulos dentro dos Cards (Labels) */
+    .card-custom .card-title {
+      color: var(--primary);
+      font-size: 0.70rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em; 
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+
+    /* Valores Numéricos Grandes */
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums; 
+    }
+
+    /* Inputs e Selects */
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .form-select, .form-control {
+      background-color: var(--bg-card);
+      border: 1px solid #2d3f50;
+      color: #fff;
+      font-size: 0.9rem;
+      border-radius: 6px;
+    }
+    .form-select:focus {
+      background-color: var(--bg-card);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 0 2px rgba(31, 186, 214, 0.25);
+    }
+
+    /* Botão Principal */
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      padding: 0.6rem 1rem;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    /* Botões de Download */
+    .btn-download-icon {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #fff;
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .btn-download-icon:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #112330;
+    }
+
+    /* Botão Voltar ao Topo */
+    #btn-back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: none;
+      z-index: 999;
+      background-color: var(--primary);
+      color: #112330;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    #btn-back-to-top:hover {
+      background-color: #fff;
+      transform: translateY(-3px);
+    }
+
+    /* Map & Canvas */
+    canvas { max-width: 100%!important; height: auto!important; }
+    html, body { overflow-x: hidden; }
+    #mapContainer {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .map-iframe { overflow: hidden; display: block; border: none; }
+
+    /* Accordion (Perguntas/Insights) */
+    .accordion.perguntas .accordion-item {
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 0.5rem;
+    }
+    .accordion.perguntas .accordion-button {
+      background: rgba(31, 186, 214, 0.05); 
+      color: #e0e0e0;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    .accordion.perguntas .accordion-button:not(.collapsed) {
+      background: rgba(31, 186, 214, 0.15); 
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border-radius: 8px 8px 0 0; 
+    }
+    .accordion.perguntas .accordion-body {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 1.5rem;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: none;
+    }
+    .accordion.perguntas .accordion-button::after {
+      filter: invert(1) brightness(2);
+      transform: scale(0.9);
+      transition: transform 0.2s;
+    }
+    .accordion.perguntas .accordion-button:not(.collapsed)::after {
+      transform: rotate(-180deg) scale(0.9);
+    }
+
+    /* --- MICRO-CARDS INTERNOS (INSIGHTS) --- */
+    .insight-card {
+      background: #1a2733;
+      border-left: 4px solid var(--text-muted);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .insight-card:last-child { margin-bottom: 0; }
+
+    .insight-card.info { border-left-color: var(--primary); }
+    .insight-card.warning { border-left-color: #ff9800; background: rgba(255, 152, 0, 0.03); }
+    .insight-card.danger { border-left-color: #f44336; background: rgba(244, 67, 54, 0.03); }
+    .insight-card.success { border-left-color: #4caf50; background: rgba(76, 175, 80, 0.03); }
+
+    .insight-question {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0.8rem;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+
+    .insight-answer {
+      color: #b0b8c1;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      padding-left: 26px; 
+    }
+
+    .insight-impact {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #d1d5db;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-left: 26px; /* Alinhar com a resposta */
+    }
+    .insight-impact strong {
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .highlight-val {
+      color: #fff;
+      background: rgba(31, 186, 214, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    .text-secondary { color: var(--text-muted) !important; }
+    .text-muted { color: #9fa7b0 !important; }
+    hr.text-secondary { opacity: 0.2; }
+  </style>
+</head>
+<body>
+  <div id="loadingOverlay" class="d-none" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(17,35,48,0.9);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;">
+    <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+    <span class="text-light fw-bold">Processando dados...</span>
+  </div>
+
+  <button type="button" id="btn-back-to-top" title="Voltar ao topo">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+<div class="container-fluid py-4 px-4 px-lg-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.1)!important;">
+      <div class="d-flex align-items-center gap-3">
+          <a href="/" class="text-decoration-none text-white d-flex align-items-center hover-opacity">
+             <i class="fas fa-chevron-left me-2 text-secondary" style="font-size: 1rem;"></i>
+             <h1 class="mb-0">Painel de Alocação UBS</h1>
+          </a>
+      </div>
+      
+      <a href="/" class="btn btn-sm btn-outline-secondary rounded-pill px-3 text-white">
+        <i class="fas fa-home me-1"></i> Ir para Início
+      </a>
+    </div>
+    
+    <form id="consulta-form" class="row gy-3 gx-3 align-items-end mb-5 p-3" style="background: rgba(255,255,255,0.02); border-radius: 8px;">
+      <div class="col-12 col-md-3">
+        <label class="form-label" for="estado">Estado</label>
+        <select id="estado" class="form-select"></select>
+      </div>
+      <div class="col-12 col-md-4">
+        <label class="form-label" for="municipio">Cidade</label>
+        <select id="municipio" class="form-select"></select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label" for="distancia">Método de Cálculo</label>
+        <select id="distancia" class="form-select">
+          <option value="pysal">Distância Geodésica (Rápido)</option> 
+          <option value="valhalla">Distância Real (Valhalla - Recomendado)</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary h-100">
+          <i class="fas fa-search me-2"></i> Consultar
+        </button>
+      </div>
+    </form>
+
+    <div id="painel" class="d-none fade-in">
+      
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-3 mb-5" id="top-indicators"></div>
+
+      <div id="mapCard" class="mt-4 mb-5 d-none">
+        <div class="card card-custom">
+          <div class="card-body p-1">
+             <div class="p-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0" style="font-size: 1rem;">Mapa Interativo de Alocação</h5>
+                <small class="text-white"><i class="fas fa-mouse me-1"></i> Use o mouse para interagir</small>
+             </div>
+            <div id="mapContainer" style="width:100%; height:650px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+          <div class="card card-custom p-4 h-100">
+            <h6 class="card-title mb-4">Composição Racial da Demanda</h6>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="chartRacial"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card card-custom p-4 h-100">
+            <h6 class="card-title mb-4">Top 10 UBS por % da População da Cidade</h6>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="chartPopUBS"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="qa-section" class="row g-3 mt-4 mb-5 d-none">
+        <div class="col-12">
+          <div class="card card-custom p-4">
+            <h5 class="card-title mb-4" style="font-size: 1rem;">
+              <i class="fas fa-lightbulb me-2"></i> Insights e Análise Automática
+            </h5>
+
+            <div class="mb-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h6 class="text-white mb-3" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <i class="fas fa-circle-question me-2"></i> Guia de Interpretação
+                </h6>
+                <div class="row g-3">
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-circle-info text-primary me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Monitoramento</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Indicadores descritivos do sistema.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-circle-exclamation text-warning me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Ponto de Atenção</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Desvios moderados da média.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-triangle-exclamation text-danger me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Alerta Crítico</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Alta vulnerabilidade ou sobrecarga.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <i class="fas fa-circle-check text-success me-2 fa-lg"></i>
+                        <div style="line-height: 1.2;">
+                            <strong class="d-block text-white" style="font-size: 0.85rem;">Meta Atingida</strong>
+                            <small class="text-muted" style="font-size: 0.75rem;">Parâmetros adequados.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="qa-list" class="accordion perguntas accordion-flush"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center mb-4 pt-4 border-top border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
+        <h5 class="mb-0 me-3 text-white">Detalhamento por UBS</h5>
+        <span class="badge bg-primary text-dark rounded-pill" id="ubs-count-badge">0</span>
+      </div>
+
+      <div class="card card-custom p-4 mb-4">
+        <h5 class="card-title mb-3">
+          <i class="fas fa-book-open me-2"></i> Como ler os cards abaixo?
+        </h5>
+        <div class="row g-4">
+          
+          <div class="col-md-6">
+            <h6 class="text-white mb-2" style="font-size: 0.9rem;">Classificação de Cobertura</h6>
+            <p class="text-muted small mb-3">
+              Baseada na distância média que a população percorre até a UBS.
+            </p>
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-success me-2" style="width: 80px;">Ótima</span>
+                <span class="text-muted small">Até 700m (Acesso a pé facilitado)</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-success me-2" style="width: 80px; opacity: 0.7;">Boa</span>
+                <span class="text-muted small">700m a 1km</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-warning text-dark me-2" style="width: 80px;">Regular</span>
+                <span class="text-muted small">1km a 2km</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-danger me-2" style="width: 80px;">Ruim</span>
+                <span class="text-muted small">Acima de 2km (Barreira de acesso)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <h6 class="text-white mb-2" style="font-size: 0.9rem;">Indicadores de Demanda</h6>
+            <ul class="list-unstyled text-muted small">
+              <li class="mb-2">
+                <strong class="text-white">População:</strong> Total de pessoas alocadas para esta unidade baseada na proximidade (Setores Censitários).
+              </li>
+              <li class="mb-2">
+                <strong class="text-primary">% Cidade:</strong> Quanto esta UBS representa do atendimento total do município.
+              </li>
+              <li>
+                <strong class="text-white">Cor Racial:</strong> Distribuição demográfica da área de cobertura, essencial para políticas de equidade.
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+      
+      <div id="ubs-cards" class="row g-3"></div>
+      
+      <div class="d-grid mt-4 mb-5 col-md-4 mx-auto">
+        <button id="toggle-ubs-btn" class="btn btn-outline-secondary btn-sm d-none">
+          Mostrar todas as unidades
+        </button>
+      </div>
+
+    </div> 
+</div>
+
+<div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: var(--bg-card); border: 1px solid var(--primary); color: var(--text-main);">
+      <div class="modal-header border-bottom border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
+        <h5 class="modal-title text-warning" id="warningModalLabel">
+            <i class="fas fa-exclamation-triangle me-2"></i> Atenção: Processamento Intensivo
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Você selecionou o método <strong>Distância Real</strong>.</p>
+        <p>Este método realiza o download da malha viária e calcula rotas reais para simular o deslocamento humano. Dependendo do tamanho da cidade, este processo pode levar <strong>vários minutos</strong>.</p>
+        <p class="mb-0">Deseja continuar?</p>
+      </div>
+      <div class="modal-footer border-top border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
+        <button type="button" class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-sm" id="confirmSearchBtn">Confirmar e Consultar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* ------------------------------------------------------------- */
+    /* CONFIGURAÇÕES GERAIS                                          */
+    /* ------------------------------------------------------------- */
+    
+    // URL Base
+    const API_ALLOCATOR_BASE = "/api/allocator";
+
+    // Seletores DOM
+    const estadoSel  = document.getElementById("estado");
+    const municipioSel = document.getElementById("municipio");
+    const painel     = document.getElementById("painel");
+    const mapCard    = document.getElementById("mapCard");
+    const warningModalEl = document.getElementById('warningModal');
+    const warningModal = new bootstrap.Modal(warningModalEl);
+    const confirmSearchBtn = document.getElementById('confirmSearchBtn');
+    
+    // Botões de Interface
+    const toggleBtn  = document.getElementById("toggle-ubs-btn");
+    const btnBackToTop = document.getElementById("btn-back-to-top");
+    const ubsCountBadge = document.getElementById("ubs-count-badge");
+
+    // Seções
+    const qaSection  = document.getElementById("qa-section");
+    const qaList     = document.getElementById("qa-list");    
+  
+    const nomesDistancia = {
+      "pysal": "Distância Geodésica",
+      "valhalla": "Distância Real (Valhalla)",
+      "pandana_real_distance": "Distância Real (Pandana)"
+    };
+
+    const MAX_UBS_DISPLAY = 9;
+    let allUBS     = [];
+    let showingAll = false;
+  
+    const fmtInt = n => Intl.NumberFormat("pt-BR").format(n);
+    const fmtPct = v => (v ?? 0).toFixed(1) + "%";
+    const iconPin = '<i class="fas fa-map-marker-alt me-1" style="color:var(--primary)"></i>';
+  
+    /* ------------------------------------------------------------- */
+    /* BOTÃO VOLTAR AO TOPO (Lógica)                                 */
+    /* ------------------------------------------------------------- */
+    window.onscroll = function () {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btnBackToTop.style.display = "block";
+      } else {
+        btnBackToTop.style.display = "none";
+      }
+    };
+
+    btnBackToTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    /* ------------------------------------------------------------- */
+    /* CARREGAMENTO DE DADOS (UF/CIDADE)                             */
+    /* ------------------------------------------------------------- */
+    fetch(`${API_ALLOCATOR_BASE}/consulta_base/ufs`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Erro: ${response.statusText}`);
+        return response.json();
+      })
+      .then(ufs => ufs.forEach(uf => estadoSel.appendChild(new Option(uf, uf))))
+      .catch(err => console.error("Falha UFs:", err));
+  
+    estadoSel.addEventListener("change", () => {
+      municipioSel.innerHTML = "";
+      if (!estadoSel.value) return;
+
+      fetch(`${API_ALLOCATOR_BASE}/consulta_base/municipios?uf=${estadoSel.value}`)
+        .then(response => {
+          if (!response.ok) throw new Error(`Erro: ${response.statusText}`);
+          return response.json();
+        })
+        .then(cidades => cidades.forEach(c => municipioSel.appendChild(new Option(c, c))))
+        .catch(err => console.error("Falha Municípios:", err));
+    });
+  
+    /* ------------------------------------------------------------- */
+    /* CONSULTA E DASHBOARD                                          */
+    /* ------------------------------------------------------------- */
+    
+    // Função separada para executar a consulta
+    function executarConsulta() {
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      loadingOverlay.classList.remove("d-none");
+  
+      // Reset visual
+      painel.classList.add("d-none");
+      mapCard.classList.add("d-none");
+      qaSection.classList.add("d-none");
+  
+      const uf   = encodeURIComponent(estadoSel.value);
+      const mun  = encodeURIComponent(municipioSel.value);
+      const tipo = document.getElementById("distancia").value;
+  
+      fetch(`${API_ALLOCATOR_BASE}/consulta_base/resultado_completo?uf=${uf}&municipio=${mun}&tipo=${tipo}`)
+        .then(r => {
+          if (!r.ok) throw new Error(`Erro API: ${r.statusText}`);
+          return r.json();
+        })
+        .then(data => {
+          showDashboard(data);
+          loadingOverlay.classList.add("d-none");
+        })
+        .catch(err => {
+          alert("Erro na consulta. Veja o console.");
+          console.error(err);
+          loadingOverlay.classList.add("d-none");
+        });
+    }
+
+    document.getElementById("consulta-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const tipo = document.getElementById("distancia").value;
+
+      // Chama o modal de aviso se for qualquer um dos métodos de rede real
+      if (tipo === 'valhalla' || tipo === 'pandana_real_distance') {
+          warningModal.show();
+      } else {
+          executarConsulta();
+      }
+    });
+
+    confirmSearchBtn.addEventListener('click', () => {
+        warningModal.hide();
+        executarConsulta();
+    });
+  
+    let chartRacial, chartPopUBS;
+  
+    function showDashboard(data) {
+      const { info, eda, alocacao, map_url, perguntas } = data;
+      painel.classList.remove("d-none");
+      
+      // Atualiza badge de contagem
+      ubsCountBadge.innerText = Object.keys(alocacao).length;
+
+      // Renderiza Indicadores
+      const top = document.getElementById("top-indicators");
+      top.innerHTML = "";
+      [
+        { label: "Cidade",            val: info["Município"] },
+        { label: "População Total",   val: fmtInt(eda.Total_City_Population) },
+        { label: "UBS Ativas",        val: fmtInt(Object.keys(alocacao).length) },
+        { label: "Método Utilizado",  val: nomesDistancia[info["Distância"]] || info["Distância"] }
+      ].forEach(s => top.appendChild(makeStatCard(s.label, s.val)));
+
+      const params = `uf=${estadoSel.value}&municipio=${municipioSel.value}&tipo=${document.getElementById("distancia").value}`;
+      top.appendChild(makeDownloadCard(params));
+  
+      // Renderiza UBS Cards
+      allUBS     = Object.values(alocacao);
+      showingAll = false;
+      renderUBSCards();
+      buildCharts(alocacao);
+      renderPerguntas(perguntas || []);
+  
+      if (map_url) {
+        mapCard.classList.remove("d-none");
+        const mapFrame = document.createElement("iframe");
+        mapFrame.src          = map_url;
+        mapFrame.className    = "map-iframe";
+        mapFrame.style.width  = "100%";
+        mapFrame.style.height = "650px";
+        mapFrame.frameBorder  = "0";
+        mapFrame.scrolling    = "no";
+        document.getElementById("mapContainer").innerHTML = "";
+        document.getElementById("mapContainer").appendChild(mapFrame);
+      }
+      
+      painel.scrollIntoView({ behavior: 'smooth' });
+    }
+  
+    /* ------------------------------------------------------------- */
+    /* LOGICA DE CARDS E GRÁFICOS                                    */
+    /* ------------------------------------------------------------- */
+    function makeStatCard(title, value) {
+      const col = document.createElement("div");
+      col.className = "col"; 
+      col.innerHTML = `
+        <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-center">
+          <h6 class="card-title mb-2">${title}</h6>
+          <div class="stat-value text-truncate" title="${value}">${value}</div>
+        </div>`;
+      return col;
+    }
+
+    function makeDownloadCard(queryParams) {
+      const col = document.createElement("div");
+      col.className = "col";
+      col.innerHTML = `
+        <div class="card card-custom p-3 h-100 d-flex flex-column justify-content-center">
+          <h6 class="card-title mb-2 text-center w-100">Exportar Dados</h6>
+          <div class="d-flex gap-2">
+             <button class="btn-download-icon" onclick="window.open('${API_ALLOCATOR_BASE}/consulta_base/download_pdf?${queryParams}', '_blank')">
+                <i class="fas fa-file-pdf fa-lg"></i> PDF
+             </button>
+             <button class="btn-download-icon" onclick="window.open('${API_ALLOCATOR_BASE}/consulta_base/download_zip?${queryParams}', '_blank')">
+                <i class="fas fa-file-archive fa-lg"></i> ZIP
+             </button>
+          </div>
+        </div>`;
+      return col;
+    }
+  
+    function makeUBSCard(d) {
+      const col = document.createElement("div");
+      col.className = "col-12 col-md-6 col-lg-4";
+      const distMedia = d.Mean_Distance !== null ? `${d.Mean_Distance.toFixed(0)} m` : "—";
+      
+      let raioColor = "text-white";
+      if(d.Radius && (d.Radius.includes("Ótima") || d.Radius.includes("Boa"))) {
+          raioColor = "text-success";
+      } else if(d.Radius && d.Radius.includes("Regular")) {
+          raioColor = "text-warning";
+      } else if(d.Radius && d.Radius.includes("Ruim")) {
+          raioColor = "text-danger";
+      }
+
+      col.innerHTML = `
+        <div class="card card-custom h-100 border-0">
+          <div class="card-body p-4">
+              <h6 class="card-title text-truncate mb-3" title="${d.UBS_Name}">
+                ${iconPin} ${d.UBS_Name}
+              </h6>
+              
+              <div class="row g-2 mb-3">
+                  <div class="col-6">
+                     <small class="text-secondary d-block text-uppercase" style="font-size:0.65rem; letter-spacing:0.05em">População</small>
+                     <strong class="fs-5">${fmtInt(d.Total_People)}</strong>
+                  </div>
+                  <div class="col-6">
+                     <small class="text-secondary d-block text-uppercase" style="font-size:0.65rem; letter-spacing:0.05em">% Cidade</small>
+                     <strong class="fs-5 text-primary">${fmtPct(d.Percentage_City)}</strong>
+                  </div>
+              </div>
+
+              <div class="p-3 rounded mb-3" style="background: rgba(0,0,0,0.2)">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="text-secondary small">Cobertura:</span>
+                    <strong class="${raioColor} small">${d.Radius}</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-secondary small">Dist. Média:</span>
+                    <strong class="text-white small">${distMedia}</strong>
+                </div>
+              </div>
+
+              <hr class="text-secondary opacity-25 my-3">
+              
+              <div class="d-flex justify-content-between text-center small">
+                  <div><div class="fw-bold text-white">${fmtInt(d.Total_People_Negros)}</div><div class="text-secondary" style="font-size:0.7rem">Negros</div></div>
+                  <div><div class="fw-bold text-white">${fmtInt(d.Total_People_Pardos)}</div><div class="text-secondary" style="font-size:0.7rem">Pardos</div></div>
+                  <div><div class="fw-bold text-white">${fmtInt(d.Total_People_Indigenas)}</div><div class="text-secondary" style="font-size:0.7rem">Indígenas</div></div>
+              </div>
+          </div>
+        </div>`;
+      return col;
+    }
+
+    function renderUBSCards() {
+      const cont = document.getElementById("ubs-cards");
+      cont.innerHTML = "";
+      const subset = showingAll ? allUBS : allUBS.slice(0, MAX_UBS_DISPLAY);
+      subset.forEach(d => cont.appendChild(makeUBSCard(d)));
+  
+      if (allUBS.length <= MAX_UBS_DISPLAY) {
+        toggleBtn.classList.add("d-none");
+      } else {
+        toggleBtn.textContent = showingAll ? "Ver Menos Unidades" : `Ver todas as ${allUBS.length} Unidades`;
+        toggleBtn.classList.remove("d-none");
+      }
+    }
+  
+    toggleBtn.addEventListener("click", () => {
+      showingAll = !showingAll;
+      renderUBSCards();
+    });
+
+    function renderPerguntas(lines) {
+      const qaList = document.getElementById("qa-list");
+      const qaSection = document.getElementById("qa-section");
+      
+      qaList.innerHTML = "";
+
+      if (!Array.isArray(lines) || !lines.length) {
+        qaSection.classList.add("d-none");
+        return;
+      }
+
+      let categories = [];
+      let currentCategory = null;
+      let currentCard = null;
+
+      lines.forEach(l => {
+        const t = l.trim();
+        if (!t) return;
+
+        if (/^\d+\./.test(t)) {
+          if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
+          currentCategory = { title: t.replace(/^\d+\.\s*/, ""), cards: [] };
+          categories.push(currentCategory);
+          currentCard = null;
+        } 
+        else if (t.startsWith("-")) {
+          if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
+          currentCard = { question: t.replace(/^-\s*/, ""), answer: "" };
+        }
+        else {
+          if (currentCard) {
+            currentCard.answer += (currentCard.answer ? " " : "") + t;
+          } else if (currentCategory && !currentCategory.intro) {
+             currentCategory.intro = t;
+          }
+        }
+      });
+      if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
+
+      categories.forEach((cat, idx) => {
+        const itemId = `qa-cat-${idx}`;
+        
+        const cardsHtml = cat.cards.map(card => {
+          let type = "info";
+          let icon = "fa-circle-info";
+          let colorClass = "text-primary";
+          let recommendation = ""; // Variável para a "conclusão" do card
+
+          const textLower = card.answer.toLowerCase();
+
+          // Lógica de Severidade + Recomendação Dinâmica
+          if (textLower.includes("sim,") || textLower.includes("existem ubs") || textLower.includes("acima de") || textLower.includes("desigual")) {
+            if (textLower.includes("crítica") || textLower.includes("sobrecarregada") || textLower.includes("vulnerabilidade")) {
+                type = "danger"; icon = "fa-triangle-exclamation"; colorClass = "text-danger";
+                recommendation = "<strong>Ação Sugerida:</strong> Prioridade alta. Recomenda-se estudo para expansão de cobertura ou redimensionamento de equipes.";
+            } else {
+                type = "warning"; icon = "fa-circle-exclamation"; colorClass = "text-warning";
+                recommendation = "<strong>Ação Sugerida:</strong> Monitorar tendência de crescimento e avaliar barreiras de acesso locais.";
+            }
+          } else if (textLower.includes("não há") || textLower.includes("não existem") || textLower.includes("suficiente") || textLower.includes("adequada")) {
+            type = "success"; icon = "fa-circle-check"; colorClass = "text-success";
+            recommendation = "<strong>Análise:</strong> Indicadores dentro do esperado. Manter o padrão de qualidade atual.";
+          } else {
+            // Caso neutro (informação estatística)
+            recommendation = "<strong>Contexto:</strong> Este dado fornece a base estatística para o planejamento territorial.";
+          }
+
+          let formattedAnswer = card.answer.replace(
+            /(\d+(?:[.,]\d+)?\s*(?:km|%|m|pessoas))|(\b[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,}(?:\s+[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,})*\b)/g, 
+            '<span class="highlight-val">$1$2</span>'
+          );
+
+          return `
+            <div class="insight-card ${type}">
+              <div class="insight-question">
+                <i class="fas ${icon} ${colorClass}"></i>
+                <span>${card.question}</span>
+              </div>
+              <div class="insight-answer">
+                ${formattedAnswer}
+              </div>
+              <div class="insight-impact">
+                 ${recommendation}
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        const collapsedClass = idx === 0 ? "" : "collapsed";
+        const showClass = idx === 0 ? "show" : "";
+
+        qaList.insertAdjacentHTML("beforeend", `
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="h-${itemId}">
+              <button class="accordion-button ${collapsedClass}" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#c-${itemId}"
+                      aria-expanded="${idx === 0}" aria-controls="c-${itemId}">
+                ${cat.title}
+              </button>
+            </h2>
+            <div id="c-${itemId}" class="accordion-collapse collapse ${showClass}"
+                 aria-labelledby="h-${itemId}" data-bs-parent="#qa-list">
+              <div class="accordion-body">
+                ${cardsHtml || '<p class="text-muted text-center my-2">Sem insights gerados para esta categoria.</p>'}
+              </div>
+            </div>
+          </div>
+        `);
+      });
+      qaSection.classList.remove("d-none");
+    }
+
+    function buildCharts(aloc) {
+      if (chartRacial) { chartRacial.destroy(); }
+      if (chartPopUBS) { chartPopUBS.destroy(); }
+      const values = Object.values(aloc);
+      const sum = k => values.reduce((a, b) => a + (b[k] || 0), 0);
+  
+      Chart.defaults.color = '#9fa7b0';
+      Chart.defaults.font.family = "'Inter', sans-serif";
+
+      chartRacial = new Chart(document.getElementById("chartRacial"), {
+        type: "doughnut",
+        data: {
+          labels: ["Negros", "Pardos", "Indígenas", "Amarela"],
+          datasets: [{
+            data: [sum("Total_People_Negros"), sum("Total_People_Pardos"), sum("Total_People_Indigenas"), sum("Total_People_Amarela")],
+            backgroundColor: ["#8D6E63", "#FFB74D", "#BA68C8", "#FFF176"],
+            borderWidth: 2, 
+            borderColor: '#1a2c3b', 
+            hoverOffset: 4
+          }]
+        },
+        options: { 
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { position: 'right', labels: { usePointStyle: true, padding: 20 } } 
+            },
+            layout: { padding: 10 }
+        }
+      });
+  
+      const top = values.sort((a, b) => b.Percentage_City - a.Percentage_City).slice(0, 10);
+      chartPopUBS = new Chart(document.getElementById("chartPopUBS"), {
+        type: "bar",
+        data: {
+          labels: top.map(t => t.UBS_Name.length > 25 ? t.UBS_Name.substring(0, 25) + '...' : t.UBS_Name),
+          datasets: [{ 
+            data: top.map(t => t.Percentage_City), 
+            backgroundColor: "#1fbad6",
+            borderRadius: 4
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          indexAxis: "y",
+          scales: {
+            x: { 
+                ticks: { callback: v => v + "%" }, 
+                grid: { color: "rgba(255,255,255,.05)" } 
+            },
+            y: { 
+                grid: { display: false } 
+            }
+          },
+          plugins: { 
+              legend: { display: false },
+              tooltip: {
+                  backgroundColor: 'rgba(26, 44, 59, 0.9)',
+                  titleColor: '#fff',
+                  bodyColor: '#ccc',
+                  padding: 10,
+                  cornerRadius: 8,
+                  displayColors: false
+              }
+          }
+        }
+      });
+    }
+  </script>  
+  <script src="/assets/keplermap.js"></script>
+</body>
+</html>
