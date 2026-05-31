@@ -1,7 +1,10 @@
 import json
+import logging
 import os
 from os import listdir
 from os.path import isfile, join
+
+logger = logging.getLogger(__name__)
 
 # Get the list of configuration files
 def read_configs(config_path):
@@ -17,9 +20,9 @@ def read_configs(config_path):
                 config = json.load(f)
                 configs.append(config)
         except json.JSONDecodeError as e:
-            print(f"Error decoding JSON from file {file_path}: {e}")
+            logger.error("Error decoding JSON from file %s: %s", file_path, e)
         except Exception as e:
-            print(f"Error reading file {file_path}: {e}")
+            logger.error("Error reading file %s: %s", file_path, e)
     return configs
 
 def load_user_config():
@@ -27,6 +30,7 @@ def load_user_config():
         with open("./config/config.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON from user config file: {e}")
+        logger.error("Error decoding JSON from user config file: %s", e)
     except Exception as e:
-        print(f"Error reading user config file: {e}")
+        logger.error("Error reading user config file: %s", e)
+    return {}

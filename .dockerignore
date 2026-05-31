@@ -1,0 +1,6 @@
+.git
+.gitattributes
+.gitignore
+.vscode
+__pycache__
+*.pyc
