@@ -3,398 +3,1763 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IPSUM - Projeto de Pesquisa</title>
-  
+  <title>IPSUM | Planejamento territorial da APS</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 
   <style>
     :root {
-      --bg-dark: #0f172a;       
-      --bg-card: rgba(30, 41, 59, 0.7); 
-      --primary: #22d3ee;       
+      --bg-dark: #0f172a;
+      --bg-panel: rgba(15, 23, 42, 0.82);
+      --bg-card: rgba(30, 41, 59, 0.72);
+      --bg-card-strong: rgba(18, 30, 46, 0.92);
+      --primary: #22d3ee;
       --primary-hover: #06b6d4;
-      --text-main: #f8fafc;     
-      --text-muted: #cbd5e1;     
-      --accent-purple: #c084fc;
-      --accent-green: #34d399;  
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
+      --text-soft: #94a3b8;
+      --accent-purple: #a78bfa;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
       --border-color: rgba(255, 255, 255, 0.1);
+      --shadow-lg: 0 24px 80px rgba(15, 23, 42, 0.38);
+      --shadow-md: 0 16px 40px rgba(15, 23, 42, 0.24);
     }
 
     ::selection {
-        background: var(--primary);
-        color: #ffffff;
+      background: var(--primary);
+      color: #ffffff;
     }
+
     ::-moz-selection {
-        background: var(--primary);
-        color: #ffffff;
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: "Inter", sans-serif;
       background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(34, 211, 238, 0.10) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.05) 0px, transparent 50%);
+      background-image:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.12) 0%, transparent 32%),
+        radial-gradient(circle at bottom right, rgba(167, 139, 250, 0.08) 0%, transparent 28%);
       background-attachment: fixed;
       color: var(--text-main);
-      line-height: 1.7;
+      line-height: 1.65;
       padding-bottom: 4rem;
+      min-width: 320px;
+      overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5, h6 { color: #fff !important; font-weight: 700; letter-spacing: -0.02em; }
-    p, li { color: var(--text-muted); font-size: 1rem; font-weight: 300; }
-    
-    .text-muted { color: var(--text-muted) !important; }
-    .text-justify { text-align: justify; }
+    img,
+    svg,
+    video {
+      max-width: 100%;
+      height: auto;
+    }
 
-    /* Hero Section */
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff !important;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    p, li {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    span,
+    a {
+      overflow-wrap: break-word;
+    }
+
+    .row > *,
+    .hero-copy,
+    .hero-preview,
+    .preview-card,
+    .preview-body,
+    .feature-card,
+    .mini-card,
+    .stat-card,
+    .deliverable-card,
+    .step-card,
+    .institution-card,
+    .team-member-card {
+      min-width: 0;
+    }
+
+    .page-shell {
+      width: min(100% - 2rem, 1180px);
+      max-width: 1180px;
+      margin-inline: auto;
+      padding-inline: 0;
+      padding-top: 2rem;
+    }
+
     .hero-section {
-        padding: 6rem 0 4rem;
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 4rem;
+      position: relative;
+      padding: clamp(1.5rem, 3vw, 3rem) 0 clamp(1.5rem, 2.5vw, 2.5rem);
+      margin-bottom: 1.5rem;
     }
 
-    .hero-title {
-        background: linear-gradient(to right, #fff, #94a3b8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
-        font-weight: 800;
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: clamp(1.35rem, 2.8vw, 2.35rem);
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(18, 30, 46, 0.86)),
+        rgba(15, 23, 42, 0.9);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(34, 211, 238, 0.15), transparent 26%),
+        radial-gradient(circle at 85% 20%, rgba(167, 139, 250, 0.12), transparent 22%);
+      pointer-events: none;
+    }
+
+    .hero-copy,
+    .hero-preview {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-panel .row {
+      align-items: stretch !important;
     }
 
     .project-code {
-        font-family: 'Inter', monospace;
-        font-size: 0.85rem;
-        color: var(--primary);
-        background: rgba(34, 211, 238, 0.1);
-        padding: 4px 12px;
-        border-radius: 20px;
-        border: 1px solid rgba(34, 211, 238, 0.2);
-        display: inline-block;
-        margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      white-space: normal;
+      gap: 0.55rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.18);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
     }
 
-    /* Cards */
-    .feature-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 2rem;
-        height: 100%; 
-        transition: transform 0.3s ease, border-color 0.3s ease;
+    .hero-kicker {
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
     }
 
-    .feature-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(34, 211, 238, 0.3);
+    .hero-title {
+      font-size: clamp(2rem, 3.7vw, 3.25rem);
+      line-height: 1.08;
+      margin-bottom: 1rem;
+      max-width: 18ch;
+      font-weight: 800;
+      text-wrap: balance;
     }
 
-    /* Botões de Ação (Tools) */
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+      color: var(--text-muted);
+      max-width: 60ch;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-points {
+      display: grid;
+      gap: 0.85rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .hero-point-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 8px;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--primary);
+      flex: 0 0 auto;
+      margin-top: 0.05rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .tool-btn,
+    .tool-btn-secondary {
+      min-height: 52px;
+      padding: 0.9rem 1.3rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      max-width: 100%;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .hero-actions .tool-btn,
+    .hero-actions .tool-btn-secondary {
+      flex: 1 1 220px;
+    }
+
     .tool-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border-color);
-        color: #fff;
-        padding: 1rem 2rem;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: all 0.2s;
-        width: 100%;
+      background: var(--primary);
+      color: #082032;
+      box-shadow: 0 12px 30px rgba(34, 211, 238, 0.2);
     }
+
     .tool-btn:hover {
-        background: var(--primary);
-        border-color: var(--primary);
-        color: #0f172a;
-        font-weight: 600;
+      background: var(--primary-hover);
+      color: #082032;
+      transform: translateY(-1px);
     }
 
-    /* Instituições */
-    .inst-label {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--primary);
-        margin-bottom: 0.5rem;
-        display: block;
-        font-weight: 600;
-    }
-    
-    .inst-name {
-        font-size: 1.1rem;
-        color: #fff;
-        font-weight: 600;
+    .tool-btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--border-color);
+      color: #fff;
     }
 
-    /* Section Headers */
+    .tool-btn-secondary:hover {
+      border-color: rgba(34, 211, 238, 0.35);
+      color: var(--primary);
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+      gap: 0.9rem;
+    }
+
+    .meta-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 0.95rem 1rem;
+      min-height: 92px;
+    }
+
+    .meta-label {
+      display: block;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 0.45rem;
+    }
+
+    .meta-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .hero-preview {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .preview-card {
+      width: 100%;
+      max-width: 620px;
+      min-width: 0;
+      background: rgba(10, 16, 28, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(12, 20, 35, 0.96);
+    }
+
+    .preview-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .preview-caption {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 0.2rem;
+    }
+
+    .preview-badges {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .preview-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+    }
+
+    .preview-body {
+      padding: 0.95rem;
+      display: grid;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .preview-stage {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #0c1624;
+      aspect-ratio: 16 / 10;
+      max-height: 360px;
+    }
+
+    .preview-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .preview-support {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.95rem 0.1rem 0.1rem;
+      flex-wrap: wrap;
+    }
+
+    .preview-support .tool-btn-secondary {
+      flex: 0 1 auto;
+      min-width: min(100%, 190px);
+      padding-inline: 1rem;
+    }
+
+    .preview-image-caption {
+      max-width: 40ch;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .stage-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+      gap: 0.75rem;
+    }
+
+    .stage-summary-card {
+      padding: 0.75rem 0.85rem;
+    }
+
+    .stage-summary-label {
+      display: block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 0.35rem;
+    }
+
+    .stage-summary-value {
+      display: block;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .section-band {
+      padding: 1.55rem 0;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--primary);
+      margin-bottom: 0.85rem;
+      font-weight: 700;
+    }
+
     .section-header {
-        margin-bottom: 1.5rem;
-        border-left: 4px solid var(--primary);
-        padding-left: 1rem;
+      margin-bottom: 1.4rem;
+      max-width: min(68ch, 100%);
     }
-    
+
+    .section-header h2 {
+      margin-bottom: 0.6rem;
+      font-size: clamp(1.65rem, 3vw, 2.45rem);
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+    }
+
+    .feature-card,
+    .mini-card,
+    .stat-card,
+    .deliverable-card,
+    .step-card,
+    .institution-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .stat-card,
+    .deliverable-card,
+    .step-card,
+    .institution-card {
+      height: 100%;
+    }
+
+    .feature-card,
+    .institution-card {
+      padding: clamp(1.1rem, 2vw, 1.8rem);
+    }
+
+    .mini-card,
+    .deliverable-card,
+    .step-card,
+    .stat-card {
+      padding: clamp(1rem, 1.8vw, 1.35rem);
+    }
+
+    .feature-card:hover,
+    .mini-card:hover,
+    .stat-card:hover,
+    .deliverable-card:hover,
+    .step-card:hover,
+    .institution-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(34, 211, 238, 0.28);
+    }
+
+    .stats-grid,
+    .deliverables-grid,
+    .steps-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .steps-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+    }
+
+    .deliverables-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    }
+
+    .stat-card {
+      min-height: 168px;
+    }
+
+    .stat-icon,
+    .deliverable-icon,
+    .step-icon,
     .method-icon {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        color: var(--text-main);
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 10px;
+      display: inline-grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
     }
 
-    /* Lista de Equipe Compacta */
-    .team-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    .stat-icon {
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--primary);
     }
-    .team-list li {
-        margin-bottom: 1rem;
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+
+    .deliverable-icon {
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--accent-green);
     }
-    .team-list li:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
+
+    .step-icon {
+      background: rgba(167, 139, 250, 0.14);
+      color: var(--accent-purple);
     }
+
+    .method-icon {
+      background: rgba(251, 191, 36, 0.14);
+      color: var(--accent-amber);
+      margin-bottom: 0;
+      flex: 0 0 auto;
+    }
+
+    .stat-eyebrow,
+    .card-eyebrow {
+      display: block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 0.55rem;
+    }
+
+    .stat-title,
+    .card-title {
+      font-size: 1.08rem;
+      line-height: 1.35;
+      margin-bottom: 0.55rem;
+    }
+
+    .step-card {
+      min-height: 204px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .step-list,
+    .deliverable-list,
+    .about-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .step-list li,
+    .deliverable-list li,
+    .about-list li {
+      position: relative;
+      padding-left: 1.15rem;
+      color: var(--text-muted);
+      font-size: 0.94rem;
+    }
+
+    .step-list li::before,
+    .deliverable-list li::before,
+    .about-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 1rem;
+    }
+
+    .about-highlight {
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.08), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(34, 211, 238, 0.16);
+      border-radius: 14px;
+      padding: 1.35rem;
+      min-height: 100%;
+    }
+
+    .about-highlight h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .about-highlight p + p {
+      margin-top: 0.85rem;
+    }
+
+    .mini-card .d-flex {
+      align-items: flex-start;
+    }
+
+    .deliverable-card {
+      min-height: 220px;
+    }
+
+    .institution-card {
+      min-height: 100%;
+    }
+
+    .methods-institutions-row {
+      align-items: flex-start;
+    }
+
+    .team-card {
+      height: auto;
+    }
+
+    .team-card-wide {
+      margin-top: 1rem;
+    }
+
+    .team-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .team-card-copy {
+      max-width: 58ch;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .inst-label {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+      margin-bottom: 0.65rem;
+      font-weight: 700;
+    }
+
+    .inst-name {
+      font-size: 1.15rem;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      overflow-wrap: anywhere;
+    }
+
+    .inst-copy {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      gap: 1rem;
+    }
+
+    .team-member-card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 1.15rem;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .team-member-card.team-member-technical {
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.07), rgba(255, 255, 255, 0.02));
+    }
+
+    .team-technical-people {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .team-person {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
     .role-badge {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        letter-spacing: 0.05em;
-        margin-bottom: 2px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.15rem;
     }
+
     .member-name {
-        color: #fff;
-        font-weight: 600;
-        font-size: 1rem;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
     }
+
     .member-inst {
-        font-size: 0.85rem;
-        color: var(--primary);
+      font-size: 0.86rem;
+      color: var(--primary);
     }
 
-    /* Links de Membros */
     .member-link {
-        text-decoration: none;
-        color: inherit;
-        transition: color 0.2s ease;
-        display: inline-block;
-    }
-    .member-link:hover .member-name {
-        color: var(--primary) !important;
-    }
-    .member-link i {
-        font-size: 0.8rem;
-        margin-left: 4px;
-        opacity: 0.6;
+      text-decoration: none;
+      color: inherit;
+      display: inline-block;
     }
 
-    /* Utilitário para cards menores dentro da coluna */
-    .mini-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5rem;
-        transition: transform 0.3s ease, border-color 0.3s ease;
+    .member-link:hover .member-name {
+      color: var(--primary) !important;
     }
-    .mini-card:hover {
-        transform: translateY(-3px);
-        border-color: rgba(34, 211, 238, 0.3);
+
+    .member-link i {
+      font-size: 0.82rem;
+      margin-left: 0.25rem;
+      opacity: 0.7;
+    }
+
+    .member-description {
+      display: block;
+      margin-top: 0.4rem;
+      color: #dbe7f3;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      opacity: 1;
+    }
+
+    .team-member-technical .member-description {
+      color: #dceaf8;
     }
 
     footer {
-        margin-top: 5rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--border-color);
-        color: #64748b;
-        text-align: center;
-        font-size: 0.9rem;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-soft);
+      text-align: center;
+      font-size: 0.92rem;
     }
+
+    footer p {
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 1199.98px) {
+      .hero-title {
+        max-width: none;
+      }
+
+      .preview-stage {
+        max-height: 320px;
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .hero-panel {
+        padding: 2rem;
+      }
+
+      .hero-title {
+        max-width: none;
+      }
+
+      .hero-copy {
+        margin-bottom: 0.5rem;
+      }
+
+      .hero-preview {
+        margin-bottom: 0;
+      }
+
+      .about-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .team-card-header {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .page-shell {
+        padding-top: 1.25rem;
+      }
+
+      .hero-section {
+        padding-top: 1.4rem;
+      }
+
+      .page-shell {
+        width: min(100% - 1.25rem, 100%);
+      }
+
+      .hero-panel {
+        padding: 1.15rem;
+        border-radius: 16px;
+      }
+
+      .section-band {
+        padding: 1.15rem 0;
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .tool-btn,
+      .tool-btn-secondary {
+        width: 100%;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-header,
+      .preview-support {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .preview-badges {
+        justify-content: flex-start;
+      }
+
+      .stage-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    @media (max-width: 575.98px) {
+      .page-shell {
+        width: min(100% - 1rem, 100%);
+      }
+
+      .hero-panel {
+        padding: 1rem;
+      }
+
+      .project-code,
+      .hero-kicker,
+      .section-label {
+        letter-spacing: 0.08em;
+      }
+
+      .hero-title {
+        font-size: clamp(1.85rem, 9vw, 2.3rem);
+      }
+
+      .preview-stage {
+        aspect-ratio: 4 / 3;
+        max-height: none;
+      }
+
+      .preview-header {
+        padding: 0.9rem;
+      }
+
+      .preview-body {
+        padding: 0.8rem;
+      }
+    }
+
+
+    /* =========================================================
+       Ajuste final de harmonia e responsividade
+       - remove dependência do .container do Bootstrap
+       - elimina margens negativas de .row dentro do hero
+       - centraliza todas as seções no mesmo eixo visual
+       - evita barra horizontal e conteúdo colado na lateral
+       ========================================================= */
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1240px;
+      margin-inline: auto;
+      padding: clamp(1.25rem, 2.6vw, 2.25rem);
+      padding-bottom: 0;
+    }
+
+    .hero-section {
+      padding: 0;
+      margin-bottom: clamp(2.25rem, 4vw, 3.75rem);
+    }
+
+    .hero-panel {
+      padding: clamp(1.45rem, 2.6vw, 2.5rem);
+    }
+
+    .hero-panel .row {
+      --bs-gutter-x: 0;
+      --bs-gutter-y: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 0.96fr) minmax(380px, 1.04fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: center !important;
+      margin: 0 !important;
+    }
+
+    .hero-panel .row > * {
+      width: auto !important;
+      max-width: none !important;
+      padding: 0 !important;
+    }
+
+    .hero-copy,
+    .hero-preview {
+      min-width: 0;
+      margin-bottom: 0 !important;
+    }
+
+    .hero-title {
+      max-width: 18ch;
+    }
+
+    .hero-subtitle {
+      max-width: 58ch;
+    }
+
+    .preview-card {
+      max-width: none;
+      height: 100%;
+    }
+
+    .preview-stage {
+      max-height: 330px;
+    }
+
+    .preview-support .tool-btn-secondary {
+      flex: 0 0 auto;
+    }
+
+    .hero-meta {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .section-band {
+      padding: clamp(2.35rem, 4.5vw, 3.75rem) 0;
+      margin: 0;
+    }
+
+    .section-band + .section-band {
+      border-top: 1px solid rgba(255, 255, 255, 0.055);
+    }
+
+    .section-header {
+      max-width: 780px;
+      margin-bottom: clamp(1.25rem, 2.2vw, 2rem);
+    }
+
+    .section-header h2 {
+      max-width: 720px;
+    }
+
+    .stats-grid,
+    .deliverables-grid,
+    .steps-grid,
+    .team-grid {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .stats-grid,
+    .deliverables-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(0.9rem, 1.6vw, 1.15rem);
+    }
+
+    .steps-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(0.9rem, 1.6vw, 1.15rem);
+    }
+
+    .stat-card,
+    .deliverable-card,
+    .step-card {
+      min-height: 100%;
+    }
+
+    .methods-institutions-row {
+      --bs-gutter-x: 0;
+      --bs-gutter-y: 0;
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1rem, 2vw, 1.4rem);
+      margin: 0 !important;
+    }
+
+    .methods-institutions-row > [class*="col-"] {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 !important;
+    }
+
+    .methods-institutions-row > .col-12 {
+      grid-column: 1 / -1;
+    }
+
+    .methods-institutions-row .row.g-3 {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .methods-institutions-row .row.g-3 > * {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    footer {
+      margin-top: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    @media (max-width: 1199.98px) {
+      .page-shell {
+        max-width: 1040px;
+      }
+
+      .hero-panel .row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        max-width: 20ch;
+      }
+
+      .preview-card {
+        max-width: 760px;
+        margin-inline: auto;
+      }
+
+      .stats-grid,
+      .deliverables-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .page-shell {
+        padding-inline: clamp(1rem, 3.8vw, 1.75rem);
+      }
+
+      .hero-title {
+        max-width: none;
+      }
+
+      .methods-institutions-row {
+        grid-template-columns: 1fr;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .page-shell {
+        padding: 1rem;
+        padding-bottom: 0;
+      }
+
+      .hero-section {
+        margin-bottom: 2rem;
+      }
+
+      .hero-panel {
+        border-radius: 16px;
+        padding: 1rem;
+      }
+
+      .hero-meta,
+      .stats-grid,
+      .deliverables-grid,
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-band {
+        padding: 2rem 0;
+      }
+
+      .section-header h2 {
+        font-size: clamp(1.65rem, 7vw, 2.1rem);
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .page-shell {
+        padding-inline: 0.875rem;
+      }
+
+      .hero-panel {
+        padding: 0.9rem;
+      }
+
+      .project-code,
+      .hero-kicker,
+      .section-label {
+        letter-spacing: 0.08em;
+      }
+
+      .hero-title {
+        font-size: clamp(1.8rem, 8.8vw, 2.25rem);
+      }
+
+      .preview-support .tool-btn-secondary {
+        width: 100%;
+      }
+    }
+
+
+    /* Ajuste final do hero sem card de prévia: remove dependência de .row e distribui melhor o espaço. */
+    .hero-section-refined {
+      padding-top: clamp(1.5rem, 3vw, 3rem);
+    }
+
+    .hero-panel-refined {
+      padding: clamp(1.45rem, 3.2vw, 3rem);
+    }
+
+    .hero-refined-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: clamp(1.25rem, 3vw, 2.35rem);
+      align-items: stretch;
+      min-width: 0;
+    }
+
+    .hero-refined-main,
+    .hero-refined-side {
+      min-width: 0;
+    }
+
+    .hero-refined-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 640px;
+    }
+
+    .hero-refined-main .hero-title {
+      max-width: 13ch;
+      font-size: clamp(2.35rem, 4.6vw, 4.15rem);
+      line-height: 1.04;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-refined-main .hero-subtitle {
+      max-width: 58ch;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-actions-refined {
+      max-width: 590px;
+      margin-bottom: 0;
+    }
+
+    .hero-refined-side {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 1rem;
+      align-content: stretch;
+    }
+
+    .hero-side-card {
+      height: 100%;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.62), rgba(15, 23, 42, 0.34));
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 16px;
+      padding: clamp(1rem, 1.8vw, 1.35rem);
+    }
+
+    .hero-side-eyebrow {
+      display: block;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+    }
+
+    .hero-side-card h2 {
+      font-size: clamp(1.18rem, 1.8vw, 1.55rem);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      max-width: 24ch;
+    }
+
+    .hero-points-refined {
+      margin-bottom: 0;
+      gap: 0.85rem;
+    }
+
+    .hero-points-refined .hero-point p {
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    .hero-meta-refined {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+      align-items: stretch;
+    }
+
+    .hero-meta-refined .meta-item {
+      min-height: 118px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @media (max-width: 991.98px) {
+      .hero-refined-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-refined-main {
+        max-width: none;
+      }
+
+      .hero-refined-main .hero-title,
+      .hero-refined-main .hero-subtitle,
+      .hero-actions-refined {
+        max-width: none;
+      }
+
+      .hero-meta-refined {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .hero-panel-refined {
+        padding: 1.25rem;
+      }
+
+      .hero-refined-main .hero-title {
+        font-size: clamp(2rem, 9vw, 2.75rem);
+      }
+
+      .hero-actions-refined {
+        display: grid;
+      }
+
+      .hero-meta-refined {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body>
-
-<div class="container">
-  
-  <div class="hero-section text-center">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <span class="project-code">PROJETO PRES-001-FIO-21</span>
-            <h1 class="display-4 hero-title">Projeto IPSUM</h1>
-            <p class="lead mb-4" style="font-size: 1.25rem; color: #cbd5e1;">
-                Análise e Ações de Apoio ao Aprimoramento das Políticas e Práticas Vinculadas à Atenção Primária à Saúde no Âmbito do SUS.
+  <main class="page-shell">
+    <section class="hero-section hero-section-refined">
+      <div class="hero-panel hero-panel-refined">
+        <div class="hero-refined-grid">
+          <div class="hero-refined-main">
+            <span class="project-code"><i class="fas fa-flask"></i> PROJETO PRES-001-FIO-21</span>
+            <span class="hero-kicker">Planejamento territorial da APS</span>
+            <h1 class="hero-title">O IPSUM transforma dados territoriais em <span>decisão operacional</span>.</h1>
+            <p class="hero-subtitle">
+              Consulte municípios, visualize alocação de população por UBS, compare métodos de distância
+              e identifique vazios assistenciais com suporte analítico para gestão do SUS.
             </p>
-            
-            <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-5">
-                <a href="/mapas" class="tool-btn">
-                    <i class="fas fa-layer-group"></i> Acessar Mapas de Alocação
-                </a>
-                <a href="/consulta_base" class="tool-btn">
-                    <i class="fas fa-search-location"></i> Nova Consulta (API)
-                </a>
-            </div>
-        </div>
-    </div>
-  </div>
 
-  <div class="row mb-5 justify-content-center">
-    <div class="col-12">
-        <div class="feature-card">
-            <div class="row text-center text-md-start align-items-center">
-                <div class="col-md-4 mb-4 mb-md-0 border-end-md border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
-                    <span class="inst-label">Financiamento</span>
-                    <div class="inst-name">Fiocruz</div>
-                    <small class="text-muted d-block mt-1">Fundação Oswaldo Cruz</small>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0 border-end-md border-secondary" style="border-color: rgba(255,255,255,0.1)!important;">
-                    <span class="inst-label">Gestão</span>
-                    <div class="inst-name">Fiotec</div>
-                    <small class="text-muted d-block mt-1">Fundação para o Desenvolvimento Científico e Tecnológico em Saúde</small>
-                </div>
-                <div class="col-md-4">
-                    <span class="inst-label">Execução Técnica</span>
-                    <div class="inst-name">NUPEC</div>
-                    <small class="text-muted d-block mt-1">Núcleo de Pesquisa em Ciência de Dados e Otimização</small>
-                </div>
+            <div class="hero-actions hero-actions-refined">
+              <a href="/consulta_base" class="tool-btn">
+                <i class="fas fa-search-location"></i>
+                Iniciar consulta territorial
+              </a>
+              <a href="/mapas" class="tool-btn-secondary">
+                <i class="fas fa-layer-group"></i>
+                Explorar mapas publicados
+              </a>
             </div>
-        </div>
-    </div>
-  </div>
+          </div>
 
-  <div class="row mb-5">
-    <div class="col-12">
-        <div class="section-header">
-            <h2 class="m-0">Sobre a Pesquisa</h2>
+          <aside class="hero-refined-side" aria-label="Resumo da plataforma IPSUM">
+            <div class="hero-side-card">
+              <span class="hero-side-eyebrow">O que o usuário encontra</span>
+              <h2>Do território ao painel de decisão em uma única jornada.</h2>
+              <div class="hero-points hero-points-refined">
+                <div class="hero-point">
+                  <span class="hero-point-icon"><i class="fas fa-map-marked-alt"></i></span>
+                  <p>Mapa interativo com setores, fluxos de alocação, UBS críticas e leitura territorial direta no Kepler.</p>
+                </div>
+                <div class="hero-point">
+                  <span class="hero-point-icon"><i class="fas fa-hospital-user"></i></span>
+                  <p>Painel de resultados com indicadores, gráficos, cobertura por UBS e priorização de áreas sensíveis.</p>
+                </div>
+                <div class="hero-point">
+                  <span class="hero-point-icon"><i class="fas fa-route"></i></span>
+                  <p>Comparação entre distância geodésica e malha viária real para análises rápidas ou cenários fiéis ao deslocamento.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-meta hero-meta-refined">
+              <div class="meta-item">
+                <span class="meta-label">Entradas</span>
+                <span class="meta-value">Estado, cidade e método de cálculo</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Saídas</span>
+                <span class="meta-value">Mapa, diagnóstico, gráficos e detalhamento por UBS</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Base analítica</span>
+                <span class="meta-value">IBGE, CNES/MS, OSM e Valhalla</span>
+              </div>
+            </div>
+          </aside>
         </div>
-    </div>
-    
-    <div class="col-12">
+      </div>
+    </section>
+
+    <section class="section-band">
+      <div class="section-header">
+        <span class="section-label"><i class="fas fa-bolt"></i> O que esta plataforma entrega</span>
+        <h2>Um ponto de entrada claro para análise territorial da APS.</h2>
+        <p>
+          Em vez de começar por uma descrição institucional extensa, a página agora apresenta a plataforma
+          como ferramenta de trabalho: o que entra, o que sai e como isso apoia gestão, planejamento e pesquisa.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-icon"><i class="fas fa-search"></i></span>
+          <span class="stat-eyebrow">Consulta orientada</span>
+          <h3 class="stat-title">Busca territorial com poucos passos</h3>
+          <p>Seleciona estado, cidade e método para montar um cenário analítico consistente sem exigir navegação complexa.</p>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon"><i class="fas fa-map"></i></span>
+          <span class="stat-eyebrow">Mapa acionável</span>
+          <h3 class="stat-title">Visualização com camadas operacionais</h3>
+          <p>Setores, UBS, arcos de alocação e leitura de criticidade no mesmo ambiente para apoiar interpretação espacial.</p>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon"><i class="fas fa-chart-column"></i></span>
+          <span class="stat-eyebrow">Diagnóstico imediato</span>
+          <h3 class="stat-title">Indicadores e gráficos por município</h3>
+          <p>Resumo executivo, situação de cobertura, distâncias e distribuição populacional para leitura rápida do território.</p>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon"><i class="fas fa-notes-medical"></i></span>
+          <span class="stat-eyebrow">Uso prático</span>
+          <h3 class="stat-title">Base para decisão e investigação</h3>
+          <p>Apoia revisão de cobertura, priorização de UBS, leitura de vulnerabilidade e investigação de exceções de acesso.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-band">
+      <div class="section-header">
+        <span class="section-label"><i class="fas fa-diagram-project"></i> Como funciona</span>
+        <h2>Três movimentos para sair do território bruto para uma leitura utilizável.</h2>
+        <p>
+          O fluxo principal foi pensado para ser simples de explicar: escolher, processar e interpretar.
+          Isso reduz atrito para quem chega pela primeira vez e reforça o valor operacional da plataforma.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <span class="step-number">1</span>
+          <span class="step-icon"><i class="fas fa-location-dot"></i></span>
+          <h3 class="card-title">Defina o território e o método</h3>
+          <ul class="step-list">
+            <li>Escolha estado e cidade para delimitar o recorte municipal.</li>
+            <li>Selecione o método geodésico para velocidade ou malha viária para maior aderência ao deslocamento.</li>
+            <li>Padronize a consulta sem exigir conhecimento técnico do backend.</li>
+          </ul>
+        </article>
+
+        <article class="step-card">
+          <span class="step-number">2</span>
+          <span class="step-icon"><i class="fas fa-gears"></i></span>
+          <h3 class="card-title">O sistema monta o cenário analítico</h3>
+          <ul class="step-list">
+            <li>Integra setores censitários, UBS, demanda e distâncias calculadas.</li>
+            <li>Consolida métricas por UBS e identifica situações críticas de acesso.</li>
+            <li>Publica o mapa Kepler e organiza a leitura da consulta em um painel único.</li>
+          </ul>
+        </article>
+
+        <article class="step-card">
+          <span class="step-number">3</span>
+          <span class="step-icon"><i class="fas fa-stethoscope"></i></span>
+          <h3 class="card-title">Interprete e priorize ações</h3>
+          <ul class="step-list">
+            <li>Leia a situação geral do município antes de descer para o detalhe por UBS.</li>
+            <li>Filtre unidades críticas, população concentrada e setores com cobertura ruim.</li>
+            <li>Use o resultado para apoiar planejamento territorial, validação e debate técnico.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-band">
+      <div class="section-header">
+        <span class="section-label"><i class="fas fa-table-cells-large"></i> Entregas da consulta</span>
+        <h2>O resultado vai além do mapa e vira painel de decisão.</h2>
+        <p>
+          Esta seção explicita o que o usuário recebe depois da consulta. Isso ajuda a alinhar expectativa
+          e mostra rapidamente por que a ferramenta vale o clique inicial.
+        </p>
+      </div>
+
+      <div class="deliverables-grid">
+        <article class="deliverable-card">
+          <span class="deliverable-icon"><i class="fas fa-bullseye"></i></span>
+          <h3 class="card-title">Resumo executivo do município</h3>
+          <ul class="deliverable-list">
+            <li>Situação geral de cobertura.</li>
+            <li>UBS cadastradas, UBS alocadas e razão por habitante.</li>
+            <li>Sinais rápidos de pressão assistencial e concentração de demanda.</li>
+          </ul>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="deliverable-icon"><i class="fas fa-network-wired"></i></span>
+          <h3 class="card-title">Mapa interativo com leitura espacial</h3>
+          <ul class="deliverable-list">
+            <li>Setores censitários, UBS, arcos de alocação e camadas críticas.</li>
+            <li>Filtros, tooltips legíveis e foco territorial em nova aba.</li>
+            <li>Base para explorar padrões e exceções no espaço.</li>
+          </ul>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="deliverable-icon"><i class="fas fa-people-group"></i></span>
+          <h3 class="card-title">Detalhamento por UBS</h3>
+          <ul class="deliverable-list">
+            <li>População alocada, distância média, cobertura e composição PPI.</li>
+            <li>Busca, ordenação e filtros para revisão operacional.</li>
+            <li>Comparação entre unidades sem sair da consulta.</li>
+          </ul>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="deliverable-icon"><i class="fas fa-chart-pie"></i></span>
+          <h3 class="card-title">Gráficos para síntese rápida</h3>
+          <ul class="deliverable-list">
+            <li>Cobertura por classificação e distribuição populacional.</li>
+            <li>Rankings por demanda e distância.</li>
+            <li>Leitura rápida para apresentação e revisão técnica.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-band">
+      <div class="section-header">
+        <span class="section-label"><i class="fas fa-circle-info"></i> Sobre a iniciativa</span>
+        <h2>Pesquisa aplicada com foco em uso real na Atenção Primária.</h2>
+        <p>
+          O IPSUM nasceu no contexto do projeto PRES-001-FIO-21 e combina modelagem espacial, dados oficiais
+          e visualização interativa para apoiar decisões baseadas em evidências no SUS.
+        </p>
+      </div>
+
+      <div class="about-layout">
         <div class="feature-card">
-            <p class="text-justify mb-4">
-                Desenvolvido no âmbito do projeto <strong>PRES-001-FIO-21</strong>, o Projeto IPSUM tem como objetivo principal aprimorar as políticas e práticas de Atenção Primária à Saúde no Sistema Único de Saúde (SUS). Utilizamos ferramentas tecnológicas avançadas e modelagem de dados para otimizar a distribuição de recursos e reduzir vazios assistenciais.
+          <div class="about-highlight">
+            <h3>Por que esta plataforma existe</h3>
+            <p>
+              O objetivo central é reduzir a distância entre a base territorial e a tomada de decisão. Em vez
+              de trabalhar apenas com tabelas ou leitura institucional abstrata, a plataforma organiza um
+              cenário concreto de cobertura e alocação por município.
             </p>
-            <p class="text-justify m-0">
-                A pesquisa integra dados censitários do IBGE e registros do CNES para criar modelos de alocação de demanda. Através da aplicação <strong>VisKepler</strong> e da <strong>API IPSUM</strong>, oferecemos visualizações interativas e cálculos de acessibilidade que consideram tanto distâncias geodésicas quanto a malha viária real, apoiando gestores na tomada de decisão baseada em evidências.
+            <p>
+              Isso permite localizar vazios assistenciais, tensionamentos de demanda e diferenças entre
+              aproximações rápidas e rotas mais realistas, com uma experiência única para consulta, análise e mapa.
             </p>
-        </div>
-    </div>
-  </div>
-
-  <div class="row mb-5">
-    
-    <div class="col-lg-6 mb-4 mb-lg-0">
-        <div class="section-header">
-            <h2 class="m-0">Dados e Métodos</h2>
-        </div>
-        
-        <div class="mini-card mb-4">
-            <div class="d-flex align-items-start gap-3">
-                <i class="fas fa-ruler-combined method-icon" style="color: var(--accent-purple);"></i>
-                <div>
-                    <h4 class="mb-2">Modelagem Geométrica</h4>
-                    <p class="small mb-0 text-justify">
-                        Utilização de algoritmos KD-Tree (PySAL) para alocação rápida baseada em distância euclidiana. Ideal para análises macroscópicas de cobertura em grandes territórios.
-                    </p>
-                </div>
-            </div>
+          </div>
         </div>
 
-        <div class="mini-card mb-4">
-            <div class="d-flex align-items-start gap-3">
-                <i class="fas fa-route method-icon" style="color: var(--primary);"></i>
-                <div>
-                    <h4 class="mb-2">Roteamento Real (Valhalla)</h4>
-                    <p class="small mb-0 text-justify">
-                        Implementação do motor <strong>Valhalla</strong> para processamento de matrizes de distância em malhas viárias reais. O sistema inclui um mecanismo de resiliência com <strong>fallback automático</strong> para distâncias geodésicas em áreas sem mapeamento rodoviário.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="mini-card">
-            <div class="d-flex align-items-start gap-3">
-                <i class="fas fa-database method-icon" style="color: var(--accent-green);"></i>
-                <div>
-                    <h4 class="mb-2">Fontes de Dados</h4>
-                    <p class="small mb-0 text-justify">
-                        Integração de bases oficiais do <strong>IBGE</strong> (Censo Demográfico e Malhas Territoriais), <strong>CNES/MS</strong> (Estabelecimentos de Saúde) e <strong>OpenStreetMap</strong> para roteamento viário.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6">
-        <div class="section-header">
-            <h2 class="m-0">Estrutura do Projeto</h2>
-        </div>
-        
         <div class="feature-card">
-            <ul class="team-list">
-                <li>
-                    <span class="role-badge">Líder do Projeto</span>
-                    <span class="member-name">Alessandro Jatobá, PhD</span>
-                    <span class="member-inst">Fiocruz / ResiliSUS Lab</span>
-                </li>
-                <li>
-                    <span class="role-badge">Coordenação</span>
-                    <span class="member-name">Paulo Vitor, PhD</span>
-                    <span class="member-inst">Fiocruz / ResiliSUS Lab</span>
-                </li>
-                <li>
-                    <span class="role-badge">Apoio Institucional</span>
-                    <span class="member-name">NUPEC / Núcleo de Pesquisa em Ciência de Dados e Otimização</span>
-                    <span class="member-inst">UFAM / Universidade Federal do Amazonas</span>
-                </li>
-                <li>
-                    <span class="role-badge">Pesquisa & Desenvolvimento Técnico</span>
-                    <div class="d-flex flex-column gap-3 mt-2">
-                        <div>
-                            <a href="https://www.uni-muenster.de/Geoinformatics/en/institute/staff/index.php/495/Fillipe_Oliveira_Feitosa" target="_blank" class="member-link">
-                                <span class="member-name">Fillipe Oliveira Feitosa, PhD <i class="fas fa-external-link-alt"></i></span>
-                            </a>
-                            <small class="text-muted d-block">Pesquisador Sênior & Cientista de Dados (Spatial Data Scientist)</small>
-                        </div>
-                        <div>
-                            <a href="https://www.linkedin.com/in/pablo-oliveira-273937206" target="_blank" class="member-link">
-                                <span class="member-name">Pablo Oliveira <i class="fab fa-linkedin"></i></span>
-                            </a>
-                            <small class="text-muted d-block">Pesquisador Pleno (NUPEC/ResiliSUS) & Graduando em Eng. de Software</small>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+          <span class="card-eyebrow">Foco de aplicação</span>
+          <h3 class="card-title">Onde a plataforma agrega valor</h3>
+          <ul class="about-list">
+            <li>Planejamento territorial de cobertura na APS.</li>
+            <li>Apoio à gestão municipal e leitura de pressão sobre UBS.</li>
+            <li>Discussão técnica entre pesquisa, assistência e operação.</li>
+            <li>Exploração de cenários de acesso com base em dados oficiais.</li>
+          </ul>
         </div>
-    </div>
+      </div>
+    </section>
 
-  </div>
+    <section class="section-band">
+      <div class="row g-4 methods-institutions-row">
+        <div class="col-lg-6">
+          <div class="section-header">
+            <span class="section-label"><i class="fas fa-database"></i> Dados e métodos</span>
+            <h2>Base técnica clara para a leitura dos resultados.</h2>
+            <p>
+              A plataforma combina rapidez operacional e aderência territorial, com duas abordagens de distância
+              e integração entre bases oficiais e roteamento viário.
+            </p>
+          </div>
 
-  <footer>
-    <div class="row justify-content-center">
+          <div class="mini-card mb-3">
+            <div class="d-flex gap-3">
+              <span class="method-icon"><i class="fas fa-ruler-combined"></i></span>
+              <div>
+                <h3 class="card-title">Modelagem geodésica</h3>
+                <p>Uso de KD-Tree com PySAL para alocação rápida baseada em proximidade geométrica, ideal para cenários amplos e resposta veloz.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card mb-3">
+            <div class="d-flex gap-3">
+              <span class="method-icon"><i class="fas fa-route"></i></span>
+              <div>
+                <h3 class="card-title">Roteamento viário com Valhalla</h3>
+                <p>Cálculo por malha viária real, com mecanismo de fallback geodésico para áreas onde o traçado disponível não sustenta a rota.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <div class="d-flex gap-3">
+              <span class="method-icon"><i class="fas fa-layer-group"></i></span>
+              <div>
+                <h3 class="card-title">Bases integradas</h3>
+                <p>Integração entre IBGE, CNES/MS, OpenStreetMap e ambiente analítico próprio para transformar dados em visualização e síntese territorial.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="section-header">
+            <span class="section-label"><i class="fas fa-building-columns"></i> Base institucional</span>
+            <h2>Governança, execução e equipe técnica.</h2>
+            <p>
+              A composição institucional continua disponível, mas agora entra depois do valor de uso da plataforma,
+              para fechar a página com contexto organizacional e autoria técnica.
+            </p>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-sm-6 col-xl-4">
+              <div class="institution-card">
+                <span class="inst-label"><i class="fas fa-hand-holding-heart"></i> Financiamento</span>
+                <div class="inst-name">Fiocruz</div>
+                <p class="inst-copy">Fundação Oswaldo Cruz, responsável pelo apoio ao projeto no âmbito do PRES-001-FIO-21.</p>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-4">
+              <div class="institution-card">
+                <span class="inst-label"><i class="fas fa-sitemap"></i> Gestão</span>
+                <div class="inst-name">Fiotec</div>
+                <p class="inst-copy">Fundação para o Desenvolvimento Científico e Tecnológico em Saúde, com papel de gestão e suporte institucional.</p>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-xl-4">
+              <div class="institution-card">
+                <span class="inst-label"><i class="fas fa-gears"></i> Execução técnica</span>
+                <div class="inst-name">NUPEC</div>
+                <p class="inst-copy">Núcleo de Pesquisa em Ciência de Dados e Otimização, responsável pela implementação técnica e analítica.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="feature-card team-card team-card-wide">
+            <div class="team-card-header">
+              <div>
+                <span class="card-eyebrow">Equipe principal</span>
+                <h3 class="card-title">Estrutura do projeto</h3>
+              </div>
+              <p class="team-card-copy">
+                A equipe foi reorganizada em um bloco horizontal para aproveitar melhor a largura da tela e
+                deixar papéis, vínculos institucionais e referências técnicas mais fáceis de comparar.
+              </p>
+            </div>
+
+            <div class="team-grid">
+              <div class="team-member-card">
+                <span class="role-badge">Liderança do projeto</span>
+                <span class="member-name">Alessandro Jatobá, PhD</span>
+                <span class="member-inst">Fiocruz / ResiliSUS Lab</span>
+              </div>
+
+              <div class="team-member-card">
+                <span class="role-badge">Coordenação</span>
+                <span class="member-name">Paulo Vitor, PhD</span>
+                <span class="member-inst">Fiocruz / ResiliSUS Lab</span>
+              </div>
+
+              <div class="team-member-card">
+                <span class="role-badge">Apoio institucional</span>
+                <span class="member-name">NUPEC / Núcleo de Pesquisa em Ciência de Dados e Otimização</span>
+                <span class="member-inst">UFAM / Universidade Federal do Amazonas</span>
+              </div>
+
+              <div class="team-member-card team-member-technical">
+                <span class="role-badge">Pesquisa e desenvolvimento técnico</span>
+                <div class="team-technical-people">
+                  <div>
+                    <a href="https://www.uni-muenster.de/Geoinformatics/en/institute/staff/index.php/495/Fillipe_Oliveira_Feitosa" target="_blank" class="member-link">
+                      <span class="member-name">Fillipe Oliveira Feitosa, PhD <i class="fas fa-external-link-alt"></i></span>
+                    </a>
+                    <small class="member-description">Pesquisador sênior e cientista de dados espaciais.</small>
+                  </div>
+
+                  <div class="team-person">
+                    <a href="https://www.linkedin.com/in/pablo-oliveira-273937206" target="_blank" class="member-link">
+                      <span class="member-name">Pablo Oliveira <i class="fab fa-linkedin"></i></span>
+                    </a>
+                    <small class="member-description">Pesquisador pleno, NUPEC/ResiliSUS, com atuação em engenharia e implementação da plataforma.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="row justify-content-center">
         <div class="col-md-8">
-            <p class="mb-2"><strong>Projeto PRES-001-FIO-21</strong></p>
-            <p class="small mb-2">Financiado pela Fiocruz através da Fiotec.</p>
-           <p class="small opacity-50">
-            &copy; 2024-<span id="current-year"></span> IPSUM. Todos os direitos reservados.
-          </p>
-          <script>
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-          </script>
+          <p class="mb-2"><strong>Projeto PRES-001-FIO-21</strong></p>
+          <p class="small mb-2">Financiado pela Fiocruz com gestão da Fiotec e execução técnica do NUPEC.</p>
+          <p class="small opacity-75">&copy; 2024-<span id="current-year"></span> IPSUM. Todos os direitos reservados.</p>
         </div>
-    </div>
-  </footer>
+      </div>
+    </footer>
+  </main>
 
-</div>
-
+  <script>
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

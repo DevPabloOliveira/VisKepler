@@ -32,7 +32,8 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-dark);
+      background:
+        linear-gradient(180deg, #10212d 0%, #132633 42%, #10212d 100%);
       color: var(--text-main);
       min-height: 100vh;
       padding-bottom: 4rem; 
@@ -53,6 +54,518 @@
       font-weight: 600;
       font-size: 1.1rem;
       letter-spacing: -0.01em;
+    }
+
+    .page-shell {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .workspace-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+      gap: 1rem;
+      align-items: stretch;
+      margin-bottom: 1rem;
+    }
+
+    .hero-panel,
+    .consult-panel,
+    .empty-panel {
+      background: rgba(26, 44, 59, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    }
+
+    .hero-panel {
+      padding: 1.35rem;
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(31, 186, 214, 0.12), transparent 36%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.035) 0,
+          rgba(255,255,255,0.035) 1px,
+          transparent 1px,
+          transparent 56px
+        );
+      opacity: 0.65;
+    }
+
+    .hero-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.55rem;
+    }
+
+    .hero-title {
+      font-size: clamp(1.45rem, 2.4vw, 2.25rem);
+      line-height: 1.08;
+      max-width: 720px;
+      margin-bottom: 0.65rem;
+    }
+
+    .hero-copy {
+      color: #c1c9d2;
+      font-size: 0.96rem;
+      line-height: 1.55;
+      max-width: 760px;
+      margin-bottom: 1.15rem;
+    }
+
+    .output-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .output-item {
+      min-height: 86px;
+      padding: 0.85rem;
+      background: rgba(10, 22, 31, 0.50);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+    }
+
+    .output-item i {
+      color: var(--primary);
+      margin-bottom: 0.45rem;
+    }
+
+    .output-item strong {
+      display: block;
+      font-size: 0.82rem;
+      color: #fff;
+      margin-bottom: 0.15rem;
+    }
+
+    .output-item span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+
+    .consult-panel {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .consult-panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .panel-kicker {
+      color: #dce7ec;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-note {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .method-note {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      margin-top: 0.45rem;
+      line-height: 1.35;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+      border: 1px solid rgba(31, 186, 214, 0.35);
+      color: #b7f3ff;
+      background: rgba(31, 186, 214, 0.08);
+      border-radius: 999px;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .empty-panel {
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .empty-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .process-list {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: start;
+      padding: 0.85rem;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+    }
+
+    .step-index {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      align-self: center;
+      justify-self: center;
+      text-align: center;
+      border-radius: 50%;
+      background: rgba(31, 186, 214, 0.14);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.86rem;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .process-step strong {
+      display: block;
+      color: #fff;
+      font-size: 0.88rem;
+      margin-bottom: 0.16rem;
+    }
+
+    .process-step > div > span {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.78rem;
+      line-height: 1.42;
+    }
+
+    .readiness-card {
+      background: rgba(10, 22, 31, 0.45);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 1rem;
+      height: 100%;
+    }
+
+    .readiness-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .readiness-row:last-child {
+      border-bottom: 0;
+    }
+
+    .readiness-row span {
+      color: #d9e2e8;
+      font-size: 0.84rem;
+    }
+
+    .readiness-row small {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      text-align: right;
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.35s ease both;
+    }
+
+    .result-summary {
+      background: rgba(26, 44, 59, 0.88);
+      border: 1px solid rgba(31, 186, 214, 0.16);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .summary-title {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .summary-text {
+      color: #c6d1d8;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .summary-metric {
+      background: rgba(10, 22, 31, 0.50);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 0.85rem;
+    }
+
+    .summary-metric span {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.72rem;
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .summary-metric strong {
+      color: #fff;
+      display: block;
+      font-size: 1rem;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .map-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .map-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      padding: 0 1rem 1rem;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #cbd5dd;
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 999px;
+      padding: 0.35rem 0.6rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .ubs-toolbar {
+      background: rgba(26, 44, 59, 0.82);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-actions > * {
+      min-width: 180px;
+      flex: 1 1 180px;
+    }
+
+    .view-toggle {
+      flex: 0 0 auto;
+      min-width: auto;
+      display: inline-flex;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .view-toggle button {
+      border-radius: 0;
+      border: 0;
+      min-width: 44px;
+    }
+
+    .view-toggle button.active {
+      background: var(--primary);
+      color: #10212d;
+    }
+
+    .coverage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.25rem 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .coverage-good { background: rgba(76, 175, 80, 0.16); color: #94f0a4; }
+    .coverage-regular { background: rgba(255, 193, 7, 0.16); color: #ffd66d; }
+    .coverage-bad { background: rgba(244, 67, 54, 0.16); color: #ff9a90; }
+
+    .ubs-table {
+      color: #dbe4ea;
+      margin-bottom: 0;
+    }
+
+    .ubs-table th {
+      color: var(--primary);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-color: rgba(255,255,255,0.08);
+      white-space: nowrap;
+    }
+
+    .ubs-table td {
+      border-color: rgba(255,255,255,0.06);
+      vertical-align: middle;
+    }
+
+    .table-wrap {
+      background: rgba(26, 44, 59, 0.82);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      overflow: auto;
+    }
+
+    .empty-results {
+      color: var(--text-muted);
+      border: 1px dashed rgba(255,255,255,0.16);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1199.98px) {
+      .workspace-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .consult-panel {
+        display: block;
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .output-grid,
+      .empty-grid,
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+
+      .hero-panel,
+      .consult-panel,
+      .empty-panel {
+        padding: 1rem;
+      }
+
+      .output-grid,
+      .empty-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .consult-panel-header {
+        flex-direction: column;
+      }
+
+      .status-chip {
+        align-self: flex-start;
+      }
+
+      .readiness-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .readiness-row small {
+        text-align: left;
+      }
+
+      .map-header,
+      .toolbar-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .map-actions {
+        justify-content: flex-start;
+      }
     }
 
     /* Cards */
@@ -292,8 +805,8 @@
     <i class="fas fa-arrow-up"></i>
   </button>
 
-<div class="container-fluid py-4 px-4 px-lg-5">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.1)!important;">
+<div class="container-fluid page-shell py-4 px-4 px-lg-5">
+    <div class="topbar d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 pb-3">
       <div class="d-flex align-items-center gap-3">
           <a href="/" class="text-decoration-none text-white d-flex align-items-center hover-opacity">
              <i class="fas fa-chevron-left me-2 text-secondary" style="font-size: 1rem;"></i>
@@ -305,48 +818,174 @@
         <i class="fas fa-home me-1"></i> Ir para Início
       </a>
     </div>
-    
-    <form id="consulta-form" class="row gy-3 gx-3 align-items-end mb-5 p-3" style="background: rgba(255,255,255,0.02); border-radius: 8px;">
-      <div class="col-12 col-md-3">
-        <label class="form-label" for="estado">Estado</label>
-        <select id="estado" class="form-select"></select>
+
+    <section class="workspace-hero fade-in" aria-label="Consulta de alocação">
+      <div class="hero-panel">
+        <div>
+          <div class="eyebrow">Consulta territorial de atenção básica</div>
+          <h2 class="hero-title">Analise a cobertura das UBS antes de abrir o mapa.</h2>
+          <p class="hero-copy">
+            Selecione um município para gerar alocação por proximidade, indicadores de demanda,
+            distribuição racial, mapa interativo e arquivos de apoio para decisão.
+          </p>
+        </div>
+
+        <div class="output-grid" aria-label="Saídas geradas pela consulta">
+          <div class="output-item">
+            <i class="fas fa-map-location-dot"></i>
+            <strong>Mapa interativo</strong>
+            <span>Visualização da alocação e cobertura por território.</span>
+          </div>
+          <div class="output-item">
+            <i class="fas fa-chart-line"></i>
+            <strong>Indicadores</strong>
+            <span>População, UBS ativas, método e percentuais.</span>
+          </div>
+          <div class="output-item">
+            <i class="fas fa-scale-balanced"></i>
+            <strong>Equidade</strong>
+            <span>Leitura racial e pontos de atenção por unidade.</span>
+          </div>
+          <div class="output-item">
+            <i class="fas fa-file-export"></i>
+            <strong>Exportação</strong>
+            <span>Relatório PDF e pacote ZIP após a consulta.</span>
+          </div>
+        </div>
       </div>
-      <div class="col-12 col-md-4">
-        <label class="form-label" for="municipio">Cidade</label>
-        <select id="municipio" class="form-select"></select>
+
+      <form id="consulta-form" class="consult-panel">
+        <div class="consult-panel-header">
+          <div>
+            <div class="panel-kicker">Nova consulta</div>
+            <p class="panel-note">Comece por estado e cidade. A consulta rápida usa distância geodésica; a real usa roteamento.</p>
+          </div>
+          <span class="status-chip"><i class="fas fa-circle-check"></i> Pronto para selecionar</span>
+        </div>
+
+        <div class="row gy-3 gx-3 align-items-end">
+          <div class="col-12">
+            <label class="form-label" for="estado">Estado</label>
+            <select id="estado" class="form-select"></select>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="municipio">Cidade</label>
+            <select id="municipio" class="form-select"></select>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="distancia">Método de cálculo</label>
+            <select id="distancia" class="form-select">
+              <option value="pysal">Distância Geodésica (rápido)</option> 
+              <option value="valhalla">Distância Real (Valhalla - recomendado)</option>
+            </select>
+            <div class="method-note">Use Valhalla quando a malha viária for decisiva para a análise.</div>
+          </div>
+          <div class="col-12 d-grid">
+            <button type="submit" class="btn btn-primary" id="consultarBtn">
+              <i class="fas fa-search me-2"></i> Consultar município
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section id="emptyState" class="empty-panel fade-in" aria-label="Orientação inicial">
+      <div class="empty-grid">
+        <div>
+          <div class="eyebrow">Fluxo da análise</div>
+          <div class="process-list">
+            <div class="process-step">
+              <span class="step-index">1</span>
+              <div>
+                <strong>Escolha o território</strong>
+                <span>Estado e cidade definem a base populacional e as UBS avaliadas.</span>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="step-index">2</span>
+              <div>
+                <strong>Defina o método</strong>
+                <span>Geodésico prioriza velocidade; Valhalla aproxima deslocamentos reais.</span>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="step-index">3</span>
+              <div>
+                <strong>Revise o resultado</strong>
+                <span>O painel retorna mapa, indicadores, gráficos e detalhamento por UBS.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="readiness-card">
+          <div class="eyebrow">O que observar</div>
+          <div class="readiness-row">
+            <span><i class="fas fa-route text-primary me-2"></i> Distância média</span>
+            <small>Ajuda a identificar barreiras de acesso.</small>
+          </div>
+          <div class="readiness-row">
+            <span><i class="fas fa-users text-primary me-2"></i> Demanda por UBS</span>
+            <small>Mostra unidades com maior concentração populacional.</small>
+          </div>
+          <div class="readiness-row">
+            <span><i class="fas fa-layer-group text-primary me-2"></i> Distribuição racial</span>
+            <small>Apoia decisões voltadas à equidade territorial.</small>
+          </div>
+          <div class="readiness-row">
+            <span><i class="fas fa-triangle-exclamation text-primary me-2"></i> Alertas automáticos</span>
+            <small>Destaca sobrecarga, cobertura ruim e pontos críticos.</small>
+          </div>
+        </div>
       </div>
-      <div class="col-6 col-md-3">
-        <label class="form-label" for="distancia">Método de Cálculo</label>
-        <select id="distancia" class="form-select">
-          <option value="pysal">Distância Geodésica (Rápido)</option> 
-          <option value="valhalla">Distância Real (Valhalla - Recomendado)</option>
-        </select>
-      </div>
-      <div class="col-6 col-md-2 d-grid">
-        <button type="submit" class="btn btn-primary h-100">
-          <i class="fas fa-search me-2"></i> Consultar
-        </button>
-      </div>
-    </form>
+    </section>
 
     <div id="painel" class="d-none fade-in">
+
+      <section id="resultSummary" class="result-summary">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+          <div>
+            <div class="eyebrow">Diagnóstico do território</div>
+            <h2 class="summary-title" id="summaryTitle">Resultado da alocação</h2>
+            <p class="summary-text" id="summaryText"></p>
+          </div>
+          <div class="d-flex align-items-start justify-content-lg-end">
+            <span class="status-chip" id="summaryStatus"><i class="fas fa-circle-info"></i> Em análise</span>
+          </div>
+        </div>
+        <div id="summaryMetrics" class="summary-grid"></div>
+      </section>
       
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-3 mb-5" id="top-indicators"></div>
 
       <div id="mapCard" class="mt-4 mb-5 d-none">
         <div class="card card-custom">
           <div class="card-body p-1">
-             <div class="p-3 d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0" style="font-size: 1rem;">Mapa Interativo de Alocação</h5>
-                <small class="text-white"><i class="fas fa-mouse me-1"></i> Use o mouse para interagir</small>
+             <div class="p-3 map-header">
+                <div>
+                  <h5 class="card-title mb-1" style="font-size: 1rem;">Mapa Interativo de Alocação</h5>
+                  <small class="text-white" id="mapStatus"><i class="fas fa-circle-notch fa-spin me-1"></i> Carregando mapa</small>
+                </div>
+                <div class="map-actions">
+                  <button type="button" class="btn btn-sm btn-outline-secondary text-white" id="openMapBtn">
+                    <i class="fas fa-up-right-from-square me-1"></i> Abrir mapa
+                  </button>
+                </div>
              </div>
+            <div class="map-legend" aria-label="Legenda do mapa">
+              <span class="legend-chip"><span class="legend-dot" style="background:#1fbad6"></span> UBS</span>
+              <span class="legend-chip"><span class="legend-dot" style="background:#ff4d4d"></span> Demanda</span>
+              <span class="legend-chip"><span class="legend-dot" style="background:#ff4d4d; border:2px solid #ffd166;"></span> Setores críticos</span>
+              <span class="legend-chip"><span class="legend-dot" style="background:#ffd166"></span> Limites</span>
+              <span class="legend-chip"><i class="fas fa-route" style="color:#1fbad6;"></i> Alocação territorial</span>
+            </div>
             <div id="mapContainer" style="width:100%; height:650px;"></div>
           </div>
         </div>
       </div>
 
       <div class="row g-4 mb-5">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="card card-custom p-4 h-100">
             <h6 class="card-title mb-4">Composição Racial da Demanda</h6>
             <div style="position: relative; height: 300px; width: 100%;">
@@ -354,11 +993,27 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-5">
           <div class="card card-custom p-4 h-100">
             <h6 class="card-title mb-4">Top 10 UBS por % da População da Cidade</h6>
             <div style="position: relative; height: 300px; width: 100%;">
                 <canvas id="chartPopUBS"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card card-custom p-4 h-100">
+            <h6 class="card-title mb-4">Cobertura por Classificação</h6>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="chartCoverage"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card card-custom p-4 h-100">
+            <h6 class="card-title mb-4">Distância Média por UBS</h6>
+            <div style="position: relative; height: 320px; width: 100%;">
+                <canvas id="chartDistance"></canvas>
             </div>
           </div>
         </div>
@@ -417,6 +1072,43 @@
         <span class="badge bg-primary text-dark rounded-pill" id="ubs-count-badge">0</span>
       </div>
 
+      <div class="ubs-toolbar">
+        <div class="toolbar-actions">
+          <div>
+            <label class="form-label" for="ubsSearch">Buscar UBS</label>
+            <input type="search" id="ubsSearch" class="form-control" placeholder="Nome da unidade">
+          </div>
+          <div>
+            <label class="form-label" for="coverageFilter">Cobertura</label>
+            <select id="coverageFilter" class="form-select">
+              <option value="all">Todas</option>
+              <option value="otima">Ótima</option>
+              <option value="boa">Boa</option>
+              <option value="regular">Regular</option>
+              <option value="ruim">Ruim</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="ubsSort">Ordenar por</label>
+            <select id="ubsSort" class="form-select">
+              <option value="critical">Prioridade</option>
+              <option value="population">Maior população</option>
+              <option value="distance">Maior distância</option>
+              <option value="racial">Maior população PPI</option>
+              <option value="name">Nome</option>
+            </select>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Alternar visualização">
+            <button type="button" class="btn btn-outline-secondary text-white active" id="cardViewBtn" title="Cards">
+              <i class="fas fa-grip"></i>
+            </button>
+            <button type="button" class="btn btn-outline-secondary text-white" id="tableViewBtn" title="Tabela">
+              <i class="fas fa-table"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="card card-custom p-4 mb-4">
         <h5 class="card-title mb-3">
           <i class="fas fa-book-open me-2"></i> Como ler os cards abaixo?
@@ -467,6 +1159,8 @@
       </div>
       
       <div id="ubs-cards" class="row g-3"></div>
+      <div id="ubs-table-wrap" class="table-wrap d-none"></div>
+      <div id="ubs-empty" class="empty-results d-none">Nenhuma UBS encontrada com os filtros atuais.</div>
       
       <div class="d-grid mt-4 mb-5 col-md-4 mx-auto">
         <button id="toggle-ubs-btn" class="btn btn-outline-secondary btn-sm d-none">
@@ -513,10 +1207,25 @@
     const estadoSel  = document.getElementById("estado");
     const municipioSel = document.getElementById("municipio");
     const painel     = document.getElementById("painel");
+    const emptyState = document.getElementById("emptyState");
     const mapCard    = document.getElementById("mapCard");
     const warningModalEl = document.getElementById('warningModal');
     const warningModal = new bootstrap.Modal(warningModalEl);
     const confirmSearchBtn = document.getElementById('confirmSearchBtn');
+    const consultarBtn = document.getElementById("consultarBtn");
+    const summaryTitle = document.getElementById("summaryTitle");
+    const summaryText = document.getElementById("summaryText");
+    const summaryStatus = document.getElementById("summaryStatus");
+    const summaryMetrics = document.getElementById("summaryMetrics");
+    const mapStatus = document.getElementById("mapStatus");
+    const openMapBtn = document.getElementById("openMapBtn");
+    const ubsSearch = document.getElementById("ubsSearch");
+    const coverageFilter = document.getElementById("coverageFilter");
+    const ubsSort = document.getElementById("ubsSort");
+    const cardViewBtn = document.getElementById("cardViewBtn");
+    const tableViewBtn = document.getElementById("tableViewBtn");
+    const ubsTableWrap = document.getElementById("ubs-table-wrap");
+    const ubsEmpty = document.getElementById("ubs-empty");
     
     // Botões de Interface
     const toggleBtn  = document.getElementById("toggle-ubs-btn");
@@ -535,10 +1244,14 @@
 
     const MAX_UBS_DISPLAY = 9;
     let allUBS     = [];
+    let filteredUBS = [];
     let showingAll = false;
+    let currentUbsView = "cards";
+    let currentMapUrl = "";
   
     const fmtInt = n => Intl.NumberFormat("pt-BR").format(n);
     const fmtPct = v => (v ?? 0).toFixed(1) + "%";
+    const fmtOne = v => (v ?? 0).toFixed(1).replace(".", ",");
     const iconPin = '<i class="fas fa-map-marker-alt me-1" style="color:var(--primary)"></i>';
   
     /* ------------------------------------------------------------- */
@@ -559,26 +1272,64 @@
     /* ------------------------------------------------------------- */
     /* CARREGAMENTO DE DADOS (UF/CIDADE)                             */
     /* ------------------------------------------------------------- */
+    function resetSelect(selectEl, label, disabled = false) {
+      selectEl.innerHTML = "";
+      selectEl.appendChild(new Option(label, ""));
+      selectEl.value = "";
+      selectEl.disabled = disabled;
+    }
+
+    function updateConsultButton() {
+      consultarBtn.disabled = !estadoSel.value || !municipioSel.value;
+    }
+
+    resetSelect(estadoSel, "Carregando estados...", true);
+    resetSelect(municipioSel, "Selecione um estado primeiro", true);
+    updateConsultButton();
+
     fetch(`${API_ALLOCATOR_BASE}/consulta_base/ufs`)
       .then(response => {
         if (!response.ok) throw new Error(`Erro: ${response.statusText}`);
         return response.json();
       })
-      .then(ufs => ufs.forEach(uf => estadoSel.appendChild(new Option(uf, uf))))
-      .catch(err => console.error("Falha UFs:", err));
+      .then(ufs => {
+        resetSelect(estadoSel, "Selecione o estado", false);
+        ufs.forEach(uf => estadoSel.appendChild(new Option(uf, uf)));
+        updateConsultButton();
+      })
+      .catch(err => {
+        resetSelect(estadoSel, "Não foi possível carregar estados", true);
+        updateConsultButton();
+        console.error("Falha UFs:", err);
+      });
   
     estadoSel.addEventListener("change", () => {
-      municipioSel.innerHTML = "";
-      if (!estadoSel.value) return;
+      resetSelect(municipioSel, "Carregando cidades...", true);
+      updateConsultButton();
+      if (!estadoSel.value) {
+        resetSelect(municipioSel, "Selecione um estado primeiro", true);
+        updateConsultButton();
+        return;
+      }
 
       fetch(`${API_ALLOCATOR_BASE}/consulta_base/municipios?uf=${estadoSel.value}`)
         .then(response => {
           if (!response.ok) throw new Error(`Erro: ${response.statusText}`);
           return response.json();
         })
-        .then(cidades => cidades.forEach(c => municipioSel.appendChild(new Option(c, c))))
-        .catch(err => console.error("Falha Municípios:", err));
+        .then(cidades => {
+          resetSelect(municipioSel, "Selecione a cidade", false);
+          cidades.forEach(c => municipioSel.appendChild(new Option(c, c)));
+          updateConsultButton();
+        })
+        .catch(err => {
+          resetSelect(municipioSel, "Não foi possível carregar cidades", true);
+          updateConsultButton();
+          console.error("Falha Municípios:", err);
+        });
     });
+
+    municipioSel.addEventListener("change", updateConsultButton);
   
     /* ------------------------------------------------------------- */
     /* CONSULTA E DASHBOARD                                          */
@@ -586,13 +1337,20 @@
     
     // Função separada para executar a consulta
     function executarConsulta() {
+      if (!estadoSel.value || !municipioSel.value) {
+        alert("Selecione estado e cidade antes de consultar.");
+        return;
+      }
+
       const loadingOverlay = document.getElementById("loadingOverlay");
       loadingOverlay.classList.remove("d-none");
+      consultarBtn.disabled = true;
   
       // Reset visual
       painel.classList.add("d-none");
       mapCard.classList.add("d-none");
       qaSection.classList.add("d-none");
+      emptyState.classList.add("d-none");
   
       const uf   = encodeURIComponent(estadoSel.value);
       const mun  = encodeURIComponent(municipioSel.value);
@@ -606,17 +1364,27 @@
         .then(data => {
           showDashboard(data);
           loadingOverlay.classList.add("d-none");
+          updateConsultButton();
         })
         .catch(err => {
           alert("Erro na consulta. Veja o console.");
           console.error(err);
           loadingOverlay.classList.add("d-none");
+          updateConsultButton();
+          if (painel.classList.contains("d-none")) {
+            emptyState.classList.remove("d-none");
+          }
         });
     }
 
     document.getElementById("consulta-form").addEventListener("submit", e => {
       e.preventDefault();
       const tipo = document.getElementById("distancia").value;
+
+      if (!estadoSel.value || !municipioSel.value) {
+        alert("Selecione estado e cidade antes de consultar.");
+        return;
+      }
 
       // Chama o modal de aviso se for qualquer um dos métodos de rede real
       if (tipo === 'valhalla' || tipo === 'pandana_real_distance') {
@@ -631,14 +1399,120 @@
         executarConsulta();
     });
   
-    let chartRacial, chartPopUBS;
+    let chartRacial, chartPopUBS, chartCoverage, chartDistance;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalizeText(value) {
+      return String(value ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function getCoverageKey(radius) {
+      const text = normalizeText(radius);
+      if (text.includes("otima")) return "otima";
+      if (text.includes("boa")) return "boa";
+      if (text.includes("regular")) return "regular";
+      if (text.includes("ruim")) return "ruim";
+      return "indefinida";
+    }
+
+    function coveragePriority(radius) {
+      return { ruim: 4, regular: 3, boa: 2, otima: 1, indefinida: 0 }[getCoverageKey(radius)] ?? 0;
+    }
+
+    function coveragePill(radius) {
+      const key = getCoverageKey(radius);
+      let klass = "coverage-good";
+      let icon = "fa-circle-check";
+      if (key === "regular") {
+        klass = "coverage-regular";
+        icon = "fa-circle-exclamation";
+      } else if (key === "ruim") {
+        klass = "coverage-bad";
+        icon = "fa-triangle-exclamation";
+      }
+      return `<span class="coverage-pill ${klass}"><i class="fas ${icon}"></i>${escapeHtml(radius || "Sem classificação")}</span>`;
+    }
+
+    function ppiTotal(d) {
+      return (d.Total_People_Negros || 0) + (d.Total_People_Pardos || 0) + (d.Total_People_Indigenas || 0);
+    }
+
+    function getCriticalUBS(values) {
+      return [...values].sort((a, b) => {
+        const coverageDiff = coveragePriority(b.Radius) - coveragePriority(a.Radius);
+        if (coverageDiff) return coverageDiff;
+        return (b.Total_People || 0) - (a.Total_People || 0);
+      })[0];
+    }
+
+    function renderSummary(info, eda, values) {
+      const totalPopulation = eda.Total_City_Population || 0;
+      const allocatedPopulation = values.reduce((sum, d) => sum + (d.Total_People || 0), 0);
+      const badCoverage = values.filter(d => getCoverageKey(d.Radius) === "ruim");
+      const regularCoverage = values.filter(d => getCoverageKey(d.Radius) === "regular");
+      const criticalUBS = getCriticalUBS(values);
+      const maxDemand = [...values].sort((a, b) => (b.Total_People || 0) - (a.Total_People || 0))[0];
+      const totalPpi = values.reduce((sum, d) => sum + ppiTotal(d), 0);
+      const status = eda.UBS_Situation || "Sem classificação";
+      const badPopulation = badCoverage.reduce((sum, d) => sum + (d.Total_People || 0), 0);
+      const badPct = totalPopulation ? (badPopulation / totalPopulation) * 100 : 0;
+
+      summaryTitle.textContent = `${info["Município"] || "Município"} / ${info.UF || ""}`;
+      summaryText.textContent = values.length
+        ? `${status}: ${values.length} UBS receberam população alocada. ${badCoverage.length} unidade(s) estão em cobertura ruim e ${regularCoverage.length} em cobertura regular. A maior demanda está em ${maxDemand?.UBS_Name || "não identificado"}.`
+        : "Nenhuma UBS recebeu população alocada para os parâmetros selecionados.";
+
+      const statusClass = badCoverage.length ? "fa-triangle-exclamation" : "fa-circle-check";
+      summaryStatus.innerHTML = `<i class="fas ${statusClass}"></i> ${escapeHtml(status)}`;
+
+      const metrics = [
+        { label: "UBS cadastradas", value: fmtInt(eda.Total_UBS || 0) },
+        { label: "UBS alocadas", value: fmtInt(values.length) },
+        { label: "Cobertura ruim", value: `${fmtInt(badCoverage.length)} UBS (${fmtOne(badPct)}%)` },
+        { label: "População PPI", value: fmtInt(totalPpi) },
+        { label: "UBS por 1.000 hab.", value: fmtOne(eda.UBS_per_1000 || 0) },
+        { label: "Maior demanda", value: maxDemand ? `${fmtInt(maxDemand.Total_People)} pessoas` : "Sem dados" },
+        { label: "UBS crítica", value: criticalUBS ? criticalUBS.UBS_Name : "Sem dados" },
+        { label: "População alocada", value: fmtInt(allocatedPopulation) }
+      ];
+
+      summaryMetrics.innerHTML = metrics.map(item => `
+        <div class="summary-metric">
+          <span>${escapeHtml(item.label)}</span>
+          <strong title="${escapeHtml(item.value)}">${escapeHtml(item.value)}</strong>
+        </div>
+      `).join("");
+    }
   
     function showDashboard(data) {
       const { info, eda, alocacao, map_url, perguntas } = data;
       painel.classList.remove("d-none");
+      emptyState.classList.add("d-none");
+      currentMapUrl = map_url || "";
       
       // Atualiza badge de contagem
       ubsCountBadge.innerText = Object.keys(alocacao).length;
+      allUBS = Object.values(alocacao);
+      filteredUBS = [...allUBS];
+      showingAll = false;
+      currentUbsView = "cards";
+      ubsSearch.value = "";
+      coverageFilter.value = "all";
+      ubsSort.value = "critical";
+      cardViewBtn.classList.add("active");
+      tableViewBtn.classList.remove("active");
+      renderSummary(info, eda, allUBS);
 
       // Renderiza Indicadores
       const top = document.getElementById("top-indicators");
@@ -646,7 +1520,10 @@
       [
         { label: "Cidade",            val: info["Município"] },
         { label: "População Total",   val: fmtInt(eda.Total_City_Population) },
-        { label: "UBS Ativas",        val: fmtInt(Object.keys(alocacao).length) },
+        { label: "UBS Cadastradas",   val: fmtInt(eda.Total_UBS || Object.keys(alocacao).length) },
+        { label: "UBS Alocadas",      val: fmtInt(Object.keys(alocacao).length) },
+        { label: "Situação",          val: eda.UBS_Situation || "Sem dados" },
+        { label: "UBS / 1.000 hab.",  val: fmtOne(eda.UBS_per_1000 || 0) },
         { label: "Método Utilizado",  val: nomesDistancia[info["Distância"]] || info["Distância"] }
       ].forEach(s => top.appendChild(makeStatCard(s.label, s.val)));
 
@@ -654,14 +1531,14 @@
       top.appendChild(makeDownloadCard(params));
   
       // Renderiza UBS Cards
-      allUBS     = Object.values(alocacao);
-      showingAll = false;
-      renderUBSCards();
+      applyUBSFilters();
       buildCharts(alocacao);
       renderPerguntas(perguntas || []);
   
       if (map_url) {
         mapCard.classList.remove("d-none");
+        openMapBtn.disabled = false;
+        mapStatus.innerHTML = '<i class="fas fa-circle-notch fa-spin me-1"></i> Carregando mapa';
         const mapFrame = document.createElement("iframe");
         mapFrame.src          = map_url;
         mapFrame.className    = "map-iframe";
@@ -669,8 +1546,16 @@
         mapFrame.style.height = "650px";
         mapFrame.frameBorder  = "0";
         mapFrame.scrolling    = "no";
+        mapFrame.onload = () => {
+          mapStatus.innerHTML = '<i class="fas fa-circle-check me-1 text-success"></i> Mapa carregado';
+        };
         document.getElementById("mapContainer").innerHTML = "";
         document.getElementById("mapContainer").appendChild(mapFrame);
+      } else {
+        mapCard.classList.remove("d-none");
+        openMapBtn.disabled = true;
+        mapStatus.innerHTML = '<i class="fas fa-triangle-exclamation me-1 text-warning"></i> Mapa indisponível';
+        document.getElementById("mapContainer").innerHTML = '<div class="empty-results m-3">O mapa não foi retornado para esta consulta.</div>';
       }
       
       painel.scrollIntoView({ behavior: 'smooth' });
@@ -684,8 +1569,8 @@
       col.className = "col"; 
       col.innerHTML = `
         <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-center">
-          <h6 class="card-title mb-2">${title}</h6>
-          <div class="stat-value text-truncate" title="${value}">${value}</div>
+          <h6 class="card-title mb-2">${escapeHtml(title)}</h6>
+          <div class="stat-value text-truncate" title="${escapeHtml(value)}">${escapeHtml(value)}</div>
         </div>`;
       return col;
     }
@@ -711,7 +1596,7 @@
     function makeUBSCard(d) {
       const col = document.createElement("div");
       col.className = "col-12 col-md-6 col-lg-4";
-      const distMedia = d.Mean_Distance !== null ? `${d.Mean_Distance.toFixed(0)} m` : "—";
+      const distMedia = d.Mean_Distance !== null && d.Mean_Distance !== undefined ? `${d.Mean_Distance.toFixed(0)} m` : "—";
       
       let raioColor = "text-white";
       if(d.Radius && (d.Radius.includes("Ótima") || d.Radius.includes("Boa"))) {
@@ -725,8 +1610,8 @@
       col.innerHTML = `
         <div class="card card-custom h-100 border-0">
           <div class="card-body p-4">
-              <h6 class="card-title text-truncate mb-3" title="${d.UBS_Name}">
-                ${iconPin} ${d.UBS_Name}
+              <h6 class="card-title text-truncate mb-3" title="${escapeHtml(d.UBS_Name)}">
+                ${iconPin} ${escapeHtml(d.UBS_Name)}
               </h6>
               
               <div class="row g-2 mb-3">
@@ -743,7 +1628,7 @@
               <div class="p-3 rounded mb-3" style="background: rgba(0,0,0,0.2)">
                 <div class="d-flex justify-content-between mb-1">
                     <span class="text-secondary small">Cobertura:</span>
-                    <strong class="${raioColor} small">${d.Radius}</strong>
+                    <strong class="${raioColor} small">${escapeHtml(d.Radius || "Sem dados")}</strong>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span class="text-secondary small">Dist. Média:</span>
@@ -763,23 +1648,125 @@
       return col;
     }
 
+    function getSortedUBS(values) {
+      const sortBy = ubsSort.value;
+      const sorted = [...values];
+      sorted.sort((a, b) => {
+        if (sortBy === "population") return (b.Total_People || 0) - (a.Total_People || 0);
+        if (sortBy === "distance") return (b.Mean_Distance || 0) - (a.Mean_Distance || 0);
+        if (sortBy === "racial") return ppiTotal(b) - ppiTotal(a);
+        if (sortBy === "name") return String(a.UBS_Name || "").localeCompare(String(b.UBS_Name || ""), "pt-BR");
+        const coverageDiff = coveragePriority(b.Radius) - coveragePriority(a.Radius);
+        if (coverageDiff) return coverageDiff;
+        return (b.Total_People || 0) - (a.Total_People || 0);
+      });
+      return sorted;
+    }
+
+    function applyUBSFilters() {
+      const query = normalizeText(ubsSearch.value);
+      const coverage = coverageFilter.value;
+      filteredUBS = allUBS.filter(d => {
+        const matchesSearch = !query || normalizeText(d.UBS_Name).includes(query);
+        const matchesCoverage = coverage === "all" || getCoverageKey(d.Radius) === coverage;
+        return matchesSearch && matchesCoverage;
+      });
+      filteredUBS = getSortedUBS(filteredUBS);
+      showingAll = false;
+      renderUBSResults();
+    }
+
+    function renderUBSResults() {
+      ubsCountBadge.innerText = filteredUBS.length;
+      ubsEmpty.classList.toggle("d-none", filteredUBS.length > 0);
+
+      if (currentUbsView === "table") {
+        document.getElementById("ubs-cards").classList.add("d-none");
+        ubsTableWrap.classList.remove("d-none");
+        toggleBtn.classList.add("d-none");
+        renderUBSTable();
+        return;
+      }
+
+      ubsTableWrap.classList.add("d-none");
+      document.getElementById("ubs-cards").classList.remove("d-none");
+      renderUBSCards();
+    }
+
     function renderUBSCards() {
       const cont = document.getElementById("ubs-cards");
       cont.innerHTML = "";
-      const subset = showingAll ? allUBS : allUBS.slice(0, MAX_UBS_DISPLAY);
+      const subset = showingAll ? filteredUBS : filteredUBS.slice(0, MAX_UBS_DISPLAY);
       subset.forEach(d => cont.appendChild(makeUBSCard(d)));
   
-      if (allUBS.length <= MAX_UBS_DISPLAY) {
+      if (filteredUBS.length <= MAX_UBS_DISPLAY) {
         toggleBtn.classList.add("d-none");
       } else {
-        toggleBtn.textContent = showingAll ? "Ver Menos Unidades" : `Ver todas as ${allUBS.length} Unidades`;
+        toggleBtn.textContent = showingAll ? "Ver Menos Unidades" : `Ver todas as ${filteredUBS.length} Unidades`;
         toggleBtn.classList.remove("d-none");
       }
+    }
+
+    function renderUBSTable() {
+      if (!filteredUBS.length) {
+        ubsTableWrap.innerHTML = "";
+        return;
+      }
+
+      ubsTableWrap.innerHTML = `
+        <table class="table ubs-table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>UBS</th>
+              <th>Cobertura</th>
+              <th class="text-end">Distância</th>
+              <th class="text-end">População</th>
+              <th class="text-end">% Cidade</th>
+              <th class="text-end">PPI</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredUBS.map(d => `
+              <tr>
+                <td>${escapeHtml(d.UBS_Name)}</td>
+                <td>${coveragePill(d.Radius)}</td>
+                <td class="text-end">${d.Mean_Distance !== null && d.Mean_Distance !== undefined ? fmtInt(Math.round(d.Mean_Distance)) + " m" : "—"}</td>
+                <td class="text-end">${fmtInt(d.Total_People || 0)}</td>
+                <td class="text-end">${fmtPct(d.Percentage_City)}</td>
+                <td class="text-end">${fmtInt(ppiTotal(d))}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
     }
   
     toggleBtn.addEventListener("click", () => {
       showingAll = !showingAll;
       renderUBSCards();
+    });
+
+    [ubsSearch, coverageFilter, ubsSort].forEach(control => {
+      control.addEventListener("input", applyUBSFilters);
+      control.addEventListener("change", applyUBSFilters);
+    });
+
+    cardViewBtn.addEventListener("click", () => {
+      currentUbsView = "cards";
+      cardViewBtn.classList.add("active");
+      tableViewBtn.classList.remove("active");
+      renderUBSResults();
+    });
+
+    tableViewBtn.addEventListener("click", () => {
+      currentUbsView = "table";
+      tableViewBtn.classList.add("active");
+      cardViewBtn.classList.remove("active");
+      renderUBSResults();
+    });
+
+    openMapBtn.addEventListener("click", () => {
+      if (currentMapUrl) window.open(currentMapUrl, "_blank");
     });
 
     function renderPerguntas(lines) {
@@ -796,19 +1783,44 @@
       let categories = [];
       let currentCategory = null;
       let currentCard = null;
+      let intro = [];
+
+      const pushCard = () => {
+        if (currentCard && currentCategory) {
+          currentCategory.cards.push(currentCard);
+        }
+        currentCard = null;
+      };
 
       lines.forEach(l => {
         const t = l.trim();
         if (!t) return;
 
         if (/^\d+\./.test(t)) {
-          if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
+          pushCard();
           currentCategory = { title: t.replace(/^\d+\.\s*/, ""), cards: [] };
           categories.push(currentCategory);
           currentCard = null;
-        } 
-        else if (t.startsWith("-")) {
-          if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
+        } else if (/^pergunta:/i.test(t)) {
+          if (!currentCategory) {
+            currentCategory = { title: "Análise geral", cards: [] };
+            categories.push(currentCategory);
+          }
+          pushCard();
+          currentCard = { question: t.replace(/^pergunta:\s*/i, ""), answer: "" };
+        } else if (/^resposta:/i.test(t)) {
+          if (!currentCategory) {
+            currentCategory = { title: "Análise geral", cards: [] };
+            categories.push(currentCategory);
+          }
+          if (!currentCard) currentCard = { question: "Resultado observado", answer: "" };
+          currentCard.answer += (currentCard.answer ? " " : "") + t.replace(/^resposta:\s*/i, "");
+        } else if (t.startsWith("-")) {
+          if (!currentCategory) {
+            currentCategory = { title: "Análise geral", cards: [] };
+            categories.push(currentCategory);
+          }
+          pushCard();
           currentCard = { question: t.replace(/^-\s*/, ""), answer: "" };
         }
         else {
@@ -816,10 +1828,20 @@
             currentCard.answer += (currentCard.answer ? " " : "") + t;
           } else if (currentCategory && !currentCategory.intro) {
              currentCategory.intro = t;
+          } else if (!currentCategory) {
+            intro.push(t);
           }
         }
       });
-      if (currentCard && currentCategory) currentCategory.cards.push(currentCard);
+      pushCard();
+
+      categories = categories.filter(cat => cat.cards.length || cat.intro);
+      if (!categories.length && intro.length) {
+        categories.push({
+          title: "Análise geral",
+          cards: [{ question: "Resumo", answer: intro.join(" ") }]
+        });
+      }
 
       categories.forEach((cat, idx) => {
         const itemId = `qa-cat-${idx}`;
@@ -849,7 +1871,7 @@
             recommendation = "<strong>Contexto:</strong> Este dado fornece a base estatística para o planejamento territorial.";
           }
 
-          let formattedAnswer = card.answer.replace(
+          let formattedAnswer = escapeHtml(card.answer || "Sem resposta detalhada.").replace(
             /(\d+(?:[.,]\d+)?\s*(?:km|%|m|pessoas))|(\b[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,}(?:\s+[A-ZÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ0-9]{2,})*\b)/g, 
             '<span class="highlight-val">$1$2</span>'
           );
@@ -858,7 +1880,7 @@
             <div class="insight-card ${type}">
               <div class="insight-question">
                 <i class="fas ${icon} ${colorClass}"></i>
-                <span>${card.question}</span>
+                <span>${escapeHtml(card.question || "Pergunta")}</span>
               </div>
               <div class="insight-answer">
                 ${formattedAnswer}
@@ -879,7 +1901,7 @@
               <button class="accordion-button ${collapsedClass}" type="button"
                       data-bs-toggle="collapse" data-bs-target="#c-${itemId}"
                       aria-expanded="${idx === 0}" aria-controls="c-${itemId}">
-                ${cat.title}
+                ${escapeHtml(cat.title)}
               </button>
             </h2>
             <div id="c-${itemId}" class="accordion-collapse collapse ${showClass}"
@@ -897,6 +1919,8 @@
     function buildCharts(aloc) {
       if (chartRacial) { chartRacial.destroy(); }
       if (chartPopUBS) { chartPopUBS.destroy(); }
+      if (chartCoverage) { chartCoverage.destroy(); }
+      if (chartDistance) { chartDistance.destroy(); }
       const values = Object.values(aloc);
       const sum = k => values.reduce((a, b) => a + (b[k] || 0), 0);
   
@@ -957,6 +1981,75 @@
                   cornerRadius: 8,
                   displayColors: false
               }
+          }
+        }
+      });
+
+      const coverageCounts = values.reduce((acc, d) => {
+        const key = getCoverageKey(d.Radius);
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, { otima: 0, boa: 0, regular: 0, ruim: 0 });
+
+      chartCoverage = new Chart(document.getElementById("chartCoverage"), {
+        type: "doughnut",
+        data: {
+          labels: ["Ótima", "Boa", "Regular", "Ruim"],
+          datasets: [{
+            data: [coverageCounts.otima, coverageCounts.boa, coverageCounts.regular, coverageCounts.ruim],
+            backgroundColor: ["#4caf50", "#82c784", "#ffc107", "#f44336"],
+            borderWidth: 2,
+            borderColor: '#1a2c3b',
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { usePointStyle: true, padding: 16 } }
+          }
+        }
+      });
+
+      const distanceTop = [...values]
+        .filter(d => d.Mean_Distance !== null && d.Mean_Distance !== undefined)
+        .sort((a, b) => b.Mean_Distance - a.Mean_Distance)
+        .slice(0, 12);
+
+      chartDistance = new Chart(document.getElementById("chartDistance"), {
+        type: "bar",
+        data: {
+          labels: distanceTop.map(t => t.UBS_Name.length > 36 ? t.UBS_Name.substring(0, 36) + '...' : t.UBS_Name),
+          datasets: [{
+            label: "Distância média",
+            data: distanceTop.map(t => Math.round(t.Mean_Distance || 0)),
+            backgroundColor: distanceTop.map(t => getCoverageKey(t.Radius) === "ruim" ? "#f44336" : getCoverageKey(t.Radius) === "regular" ? "#ffc107" : "#4caf50"),
+            borderRadius: 4
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          indexAxis: "y",
+          scales: {
+            x: {
+              ticks: { callback: v => `${v} m` },
+              grid: { color: "rgba(255,255,255,.05)" }
+            },
+            y: { grid: { display: false } }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${fmtInt(ctx.raw)} m`
+              },
+              backgroundColor: 'rgba(26, 44, 59, 0.9)',
+              titleColor: '#fff',
+              bodyColor: '#ccc',
+              padding: 10,
+              cornerRadius: 8,
+              displayColors: false
+            }
           }
         }
       });

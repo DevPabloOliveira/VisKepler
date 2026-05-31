@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Galeria de Mapas - IPSUM</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
@@ -15,22 +15,45 @@
   <style>
     :root {
       --bg-dark: #0f172a;
-      --sidebar-bg: #111c29;
-      --sidebar-border: rgba(255, 255, 255, 0.05);
+      --bg-panel: #111c29;
+      --bg-surface: rgba(17, 28, 41, 0.92);
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-strong: rgba(18, 30, 46, 0.96);
       --primary: #22d3ee;
+      --primary-hover: #06b6d4;
+      --primary-soft: rgba(34, 211, 238, 0.12);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --active-bg: rgba(34, 211, 238, 0.1);
+      --text-soft: #64748b;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --active-bg: rgba(34, 211, 238, 0.12);
+      --shadow-lg: 0 24px 80px rgba(15, 23, 42, 0.32);
+      --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-dark);
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.10) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08) 0%, transparent 22%),
+        var(--bg-dark);
       color: var(--text-main);
-      margin: 0;
-      padding: 0;
-      height: 100vh;
       overflow: hidden;
+    }
+
+    a {
+      color: inherit;
     }
 
     .app-wrapper {
@@ -39,173 +62,574 @@
       width: 100vw;
     }
 
-    /* --- SIDEBAR --- */
     .sidebar {
-      width: 320px;
-      background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--sidebar-border);
+      width: 318px;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
-      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 100;
+      transition: width 0.28s ease, transform 0.28s ease;
+      z-index: 120;
       flex-shrink: 0;
-      white-space: nowrap; /* Evita quebra de texto na animação */
+      box-shadow: var(--shadow-md);
     }
 
-    /* Estado Recolhido (Collapsed) */
     .sidebar.collapsed {
-      width: 72px;
+      width: 76px;
     }
 
     .sidebar-header {
-      height: 70px;
-      padding: 0 1.5rem;
-      border-bottom: 1px solid var(--sidebar-border);
+      min-height: 76px;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .brand-icon-wrap {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--primary-soft);
+      color: var(--primary);
+      flex: 0 0 auto;
+      font-size: 1.2rem;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0;
+    }
+
+    .brand-subtitle {
+      display: block;
+      margin-top: 0.12rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .desktop-toggle,
+    .mobile-toggle {
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      border-radius: 10px;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .desktop-toggle:hover,
+    .mobile-toggle:hover {
+      color: #fff;
+      border-color: rgba(34, 211, 238, 0.26);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .mobile-toggle {
+      display: none;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 220;
+    }
+
+    .sidebar.collapsed .brand-copy,
+    .sidebar.collapsed .desktop-toggle,
+    .sidebar.collapsed .sidebar-intro,
+    .sidebar.collapsed .search-shell,
+    .sidebar.collapsed .section-label,
+    .sidebar.collapsed .nav-item-copy,
+    .sidebar.collapsed .map-card-copy,
+    .sidebar.collapsed .map-card-meta,
+    .sidebar.collapsed .sidebar-footer small {
+      display: none;
     }
 
     .sidebar.collapsed .sidebar-header {
       justify-content: center;
       padding: 0;
+      cursor: pointer;
     }
 
-    .brand-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #fff;
-      letter-spacing: -0.02em;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      overflow: hidden;
+    .sidebar.collapsed .brand-block {
+      justify-content: center;
     }
 
-    .brand-icon {
-        color: var(--primary);
-        font-size: 1.4rem;
-        flex-shrink: 0; /* Impede que o ícone encolha */
+    .sidebar.collapsed .map-list-container {
+      padding-left: 0.6rem;
+      padding-right: 0.6rem;
     }
 
-    /* Botão de Toggle Desktop */
-    .desktop-toggle {
-        background: transparent;
-        border: none;
-        color: var(--text-muted);
-        cursor: pointer;
-        transition: transform 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 4px;
-    }
-    
-    .desktop-toggle:hover {
-        background: rgba(255,255,255,0.05);
-        color: #fff;
+    .sidebar.collapsed .nav-item,
+    .sidebar.collapsed .map-card {
+      justify-content: center;
+      padding-left: 0;
+      padding-right: 0;
     }
 
-    /* Esconde elementos quando recolhido */
-    .sidebar.collapsed .brand-text,
-    .sidebar.collapsed .desktop-toggle,
-    .sidebar.collapsed .section-label,
-    .sidebar.collapsed .text-truncate,
-    .sidebar.collapsed .sidebar-footer small {
-        display: none;
-        opacity: 0;
+    .sidebar.collapsed .nav-item i,
+    .sidebar.collapsed .map-card-icon {
+      margin-right: 0;
     }
 
-    /* Centraliza itens quando recolhido */
-    .sidebar.collapsed .nav-item {
-        justify-content: center;
-        padding: 0.85rem 0;
-    }
-    
-    .sidebar.collapsed .nav-item i {
-        margin-right: 0;
-        font-size: 1.2rem;
-    }
-
-    /* Botão de reabrir (hack visual: usa o próprio header clicável ou um ícone fixo) */
-    .sidebar.collapsed .sidebar-header {
-        cursor: pointer;
-    }
-    .sidebar.collapsed .sidebar-header:hover .brand-icon {
-        color: #fff;
-    }
-
-    /* Lista de Mapas */
     .map-list-container {
-      flex-grow: 1;
+      flex: 1 1 auto;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 1rem;
+      padding: 0.85rem 0.85rem 1rem;
+      display: grid;
+      gap: 0.85rem;
+      align-content: start;
+    }
+
+    .sidebar-intro {
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.08), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(34, 211, 238, 0.16);
+      border-radius: 14px;
+      padding: 0.95rem;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .eyebrow {
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .sidebar-intro h1 {
+      margin: 0;
+      font-size: 1.38rem;
+      line-height: 1.1;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .sidebar-intro p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.87rem;
+      line-height: 1.5;
+    }
+
+    .intro-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .intro-stat {
+      min-height: 82px;
+      padding: 0.85rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .intro-stat-label {
+      display: block;
+      color: var(--text-soft);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.45rem;
+    }
+
+    .intro-stat-value {
+      display: block;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .tool-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      width: 100%;
+      min-height: 2.9rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .tool-link-primary {
+      background: var(--primary);
+      color: #082032;
+    }
+
+    .tool-link-primary:hover {
+      background: var(--primary-hover);
+      color: #082032;
+    }
+
+    .tool-link-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      border-color: var(--border-color);
+    }
+
+    .tool-link-secondary:hover {
+      border-color: rgba(34, 211, 238, 0.26);
+      color: var(--primary);
+    }
+
+    .search-shell {
+      position: relative;
+    }
+
+    .search-shell i {
+      position: absolute;
+      left: 0.95rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-soft);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      padding: 0.75rem 1rem 0.75rem 2.7rem;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-soft);
+    }
+
+    .search-input:focus {
+      border-color: rgba(34, 211, 238, 0.28);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .section-block {
+      display: grid;
+      gap: 0.75rem;
     }
 
     .section-label {
+      color: var(--text-muted);
       font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
-      font-weight: 600;
-      padding-left: 0.5rem;
-      transition: opacity 0.2s;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      padding-left: 0.25rem;
+      margin: 0;
+    }
+
+    .nav-stack,
+    .map-stack {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .nav-item,
+    .map-card {
+      border: 1px solid transparent;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #cbd5e1;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.01);
     }
 
     .nav-item {
       display: flex;
       align-items: center;
-      padding: 0.85rem 1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
-      color: #cbd5e1;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      border: 1px solid transparent;
-      height: 44px;
+      min-height: 44px;
+      padding: 0 0.9rem;
+      gap: 0.85rem;
     }
 
-    .nav-item:hover {
-      background-color: rgba(255, 255, 255, 0.03);
+    .nav-item:hover,
+    .map-card:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-item.active,
+    .map-card.active {
+      background: var(--active-bg);
+      border-color: rgba(34, 211, 238, 0.22);
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.08);
+    }
+
+    .nav-item i,
+    .map-card-icon {
+      flex: 0 0 auto;
+      width: 1.2rem;
+      text-align: center;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .map-card {
+      padding: 0.85rem 0.9rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: start;
+      gap: 0.8rem;
+      min-height: 86px;
+    }
+
+    .map-card-copy {
+      min-width: 0;
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .map-card-title {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.35;
+      font-weight: 700;
       color: #fff;
     }
 
-    .nav-item.active {
-      background-color: var(--active-bg);
-      color: var(--primary);
-      border-color: rgba(34, 211, 238, 0.2);
-      font-weight: 500;
+    .map-card-description {
+      color: var(--text-muted);
+      font-size: 0.79rem;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
-    .nav-item i {
-      width: 24px;
-      text-align: center;
-      margin-right: 12px;
-      font-size: 1rem;
-      flex-shrink: 0;
+    .map-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.15rem;
+    }
+
+    .map-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 1.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      padding: 0.25rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      max-width: 100%;
+    }
+
+    .map-chip strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .map-card.active .map-chip {
+      border-color: rgba(34, 211, 238, 0.22);
+      background: rgba(34, 211, 238, 0.08);
+      color: #d9f8fd;
+    }
+
+    .map-card-chevron {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      padding-top: 0.2rem;
+    }
+
+    .empty-state {
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.02);
     }
 
     .sidebar-footer {
-      padding: 1rem;
-      border-top: 1px solid var(--sidebar-border);
-      background-color: rgba(0,0,0,0.2);
-      min-height: 50px;
+      min-height: 56px;
+      padding: 0.75rem 0.9rem;
+      border-top: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.18);
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
 
-    /* --- MAP AREA --- */
+    .sidebar-footer small {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
     .map-content {
-      flex-grow: 1;
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 1rem;
+      background: rgba(9, 15, 26, 0.35);
+      overflow: hidden;
+    }
+
+    .content-shell {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 0.85rem;
+    }
+
+    .map-overview {
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(17, 28, 41, 0.96), rgba(18, 30, 46, 0.92));
+      box-shadow: var(--shadow-md);
+      padding: 1rem 1.1rem;
+    }
+
+    .overview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .overview-copy {
+      min-width: 0;
+      display: grid;
+      gap: 0.3rem;
+    }
+
+    .overview-copy h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(1.25rem, 2vw, 2rem);
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .overview-copy p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.89rem;
+      line-height: 1.5;
+      max-width: 70ch;
+    }
+
+    .overview-actions {
+      display: flex;
+      flex: 0 0 auto;
+      justify-content: flex-end;
+    }
+
+    .overview-btn {
+      min-height: 2.9rem;
+      padding: 0.72rem 1.05rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .overview-btn:hover {
+      border-color: rgba(34, 211, 238, 0.26);
+      color: var(--primary);
+    }
+
+    .map-viewer {
       position: relative;
-      background-color: #000;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      background: var(--bg-card-strong);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .viewer-header {
+      min-height: 58px;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(10, 16, 28, 0.88);
+    }
+
+    .viewer-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .viewer-status .dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 999px;
+      background: var(--primary);
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.12);
+    }
+
+    .viewer-hint {
+      color: var(--text-soft);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .viewer-frame-shell {
+      position: relative;
+      min-height: 0;
+      background: #0b1320;
     }
 
     .map-iframe {
@@ -213,212 +637,495 @@
       height: 100%;
       border: none;
       display: block;
+      background: #0b1320;
     }
 
     #mapLoader {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg-dark);
+      inset: 0;
+      background: rgba(8, 15, 27, 0.86);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 50;
-      transition: opacity 0.3s;
+      transition: opacity 0.28s ease;
+      gap: 0.8rem;
+      text-align: center;
+      padding: 1.5rem;
     }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    .loader-copy {
+      display: grid;
+      gap: 0.3rem;
+    }
 
-    /* Mobile */
-    @media (max-width: 768px) {
+    .loader-title {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .loader-text {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.56);
+      z-index: 110;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 1240px) {
+      .sidebar {
+        width: 292px;
+      }
+    }
+
+    @media (max-width: 991.98px) {
       .sidebar {
         position: absolute;
         height: 100%;
         transform: translateX(-100%);
-        width: 280px !important; /* Mobile sempre fixo */
+        width: min(82vw, 312px) !important;
       }
+
       .sidebar.open {
         transform: translateX(0);
       }
+
       .mobile-toggle {
-        display: block !important;
+        display: inline-flex;
       }
+
       .desktop-toggle {
         display: none !important;
       }
-    }
-    
-    .mobile-toggle {
+
+      .mobile-overlay.show {
+        display: block;
+      }
+
+      .overview-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .overview-actions {
+        justify-content: flex-start;
+      }
+
+      .map-content {
+        padding: 0.85rem;
+      }
+
+      .viewer-hint {
         display: none;
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        z-index: 200;
-        background: var(--sidebar-bg);
-        border: 1px solid var(--sidebar-border);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 6px;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .map-content {
+        padding: 0.7rem;
+      }
+
+      .map-overview,
+      .map-viewer {
+        border-radius: 16px;
+      }
+
+      .sidebar-intro h1 {
+        font-size: 1.22rem;
+      }
     }
   </style>
 </head>
 <body>
-
-  <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+  <button class="mobile-toggle" type="button" onclick="toggleMobileSidebar()" aria-label="Abrir menu de mapas">
     <i class="fas fa-bars"></i>
   </button>
 
+  <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileSidebar()"></div>
+
   <div class="app-wrapper">
-    
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header" onclick="expandSidebarIfCollapsed()">
-        <div class="brand-title">
-            <i class="fas fa-layer-group brand-icon"></i>
-            <span class="brand-text">VisKepler</span>
+        <div class="brand-block">
+          <div class="brand-icon-wrap">
+            <i class="fas fa-layer-group"></i>
+          </div>
+          <div class="brand-copy">
+            <p class="brand-title">{{ site_title or "VisKepler" }}</p>
+            <span class="brand-subtitle">Galeria publicada de mapas territoriais</span>
+          </div>
         </div>
-        <button class="desktop-toggle" onclick="toggleDesktopSidebar(event)" title="Recolher Menu">
-            <i class="fas fa-chevron-left"></i>
+        <button class="desktop-toggle" type="button" onclick="toggleDesktopSidebar(event)" title="Recolher menu">
+          <i class="fas fa-chevron-left"></i>
         </button>
       </div>
 
       <div class="map-list-container">
-        <div class="section-label">Navegação</div>
-        <a href="/" class="nav-item" title="Início">
-            <i class="fas fa-home"></i> 
-            <span class="text-truncate">Início</span>
-        </a>
-        <a href="/consulta_base" class="nav-item" title="Nova Consulta">
-            <i class="fas fa-search-location"></i> 
-            <span class="text-truncate">Nova Consulta</span>
-        </a>
-
-        <hr style="border-color: var(--sidebar-border); margin: 1.5rem 0;">
-
-        <div class="section-label">Mapas Disponíveis</div>
-        <div id="maps-list">
-            <div class="text-center mt-4">
-                <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+        <section class="sidebar-intro">
+          <div>
+            <div class="eyebrow">Mapas publicados</div>
+            <h1>Explore cenários prontos de alocação territorial.</h1>
+          </div>
+          <p>
+            Navegue por mapas já publicados, compare cidades e abra cada visualização com contexto
+            suficiente para entender o recorte antes de entrar no Kepler.
+          </p>
+          <div class="intro-stats">
+            <div class="intro-stat">
+              <span class="intro-stat-label">Coleção</span>
+              <span class="intro-stat-value" id="mapsCountValue">0 mapas</span>
             </div>
+            <div class="intro-stat">
+              <span class="intro-stat-label">Mapa atual</span>
+              <span class="intro-stat-value" id="currentScopeValue">Aguardando seleção</span>
+            </div>
+          </div>
+          <a href="/consulta_base" class="tool-link tool-link-primary">
+            <i class="fas fa-search-location"></i>
+            Nova consulta territorial
+          </a>
+        </section>
+
+        <div class="search-shell">
+          <i class="fas fa-magnifying-glass"></i>
+          <input
+            id="mapSearch"
+            class="search-input"
+            type="search"
+            placeholder="Buscar por cidade, estado ou tipo"
+            autocomplete="off"
+          />
         </div>
+
+        <section class="section-block">
+          <div class="section-label">Navegação</div>
+          <div class="nav-stack">
+            <a href="/" class="nav-item" title="Início">
+              <i class="fas fa-home"></i>
+              <span class="nav-item-copy">Início</span>
+            </a>
+            <a href="/consulta_base" class="nav-item" title="Nova Consulta">
+              <i class="fas fa-search-location"></i>
+              <span class="nav-item-copy">Nova Consulta</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-label">Mapas disponíveis</div>
+          <div id="maps-list" class="map-stack">
+            <div class="empty-state">
+              <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+              Carregando mapas publicados...
+            </div>
+          </div>
+        </section>
       </div>
 
       <div class="sidebar-footer">
-        <small class="text-white d-block text-center text-truncate" style="font-size: 0.75rem; opacity: 0.8;">
-            &copy; 2025 Projeto IPSUM
-        </small>
-        <i class="fas fa-info-circle text-muted d-none collapsed-icon"></i>
+        <small>&copy; 2024-2026 IPSUM. Todos os direitos reservados.</small>
       </div>
     </aside>
 
     <main class="map-content">
-      <div id="mapLoader">
-        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
-        <span class="text-white small fw-bold">Carregando visualização...</span>
-      </div>
-      <iframe id="mapFrame" class="map-iframe" src=""></iframe>
-    </main>
+      <div class="content-shell">
+        <section class="map-overview">
+          <div class="overview-top">
+            <div class="overview-copy">
+              <div class="eyebrow">Mapa em destaque</div>
+              <h2 id="currentMapTitle">Carregando coleção de mapas...</h2>
+              <p id="currentMapDescription">
+                Assim que a galeria for carregada, os detalhes do mapa selecionado aparecem aqui.
+              </p>
+            </div>
+            <div class="overview-actions">
+              <button type="button" class="overview-btn" id="fullscreenBtn">
+                <i class="fas fa-expand"></i>
+                Visualizar em tela cheia
+              </button>
+            </div>
+          </div>
+        </section>
 
+        <section class="map-viewer">
+          <div class="viewer-header">
+            <div class="viewer-status">
+              <span class="dot"></span>
+              <span id="viewerStatusText">Preparando visualização do mapa</span>
+            </div>
+            <div class="viewer-hint">Use os controles do Kepler para inspecionar camadas, filtros e tooltips.</div>
+          </div>
+
+          <div class="viewer-frame-shell">
+            <div id="mapLoader">
+              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+              <div class="loader-copy">
+                <div class="loader-title" id="loaderTitle">Carregando visualização...</div>
+                <div class="loader-text" id="loaderText">Aguarde enquanto o mapa publicado é aberto no visualizador.</div>
+              </div>
+            </div>
+            <iframe id="mapFrame" class="map-iframe" src="" title="Mapa publicado"></iframe>
+          </div>
+        </section>
+      </div>
+    </main>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const mapFrame = document.getElementById('mapFrame');
-    const mapLoader = document.getElementById('mapLoader');
-    const mapsListContainer = document.getElementById('maps-list');
-    const sidebar = document.getElementById('sidebar');
+    const mapFrame = document.getElementById("mapFrame");
+    const mapLoader = document.getElementById("mapLoader");
+    const mapsListContainer = document.getElementById("maps-list");
+    const sidebar = document.getElementById("sidebar");
+    const mobileOverlay = document.getElementById("mobileOverlay");
+    const mapSearch = document.getElementById("mapSearch");
+    const mapsCountValue = document.getElementById("mapsCountValue");
+    const currentScopeValue = document.getElementById("currentScopeValue");
+    const currentMapTitle = document.getElementById("currentMapTitle");
+    const currentMapDescription = document.getElementById("currentMapDescription");
+    const viewerStatusText = document.getElementById("viewerStatusText");
+    const loaderTitle = document.getElementById("loaderTitle");
+    const loaderText = document.getElementById("loaderText");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const mapViewer = document.querySelector(".map-viewer");
+
+    let allMaps = [];
+    let filteredMaps = [];
+    let currentMap = null;
+
+    function normalizeText(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function parseMapMeta(map) {
+      const label = String(map.label || "").trim();
+      const parts = label.split("–").map(part => part.trim()).filter(Boolean);
+      let category = label;
+      let scope = "Mapa publicado";
+
+      if (parts.length >= 2) {
+        category = parts[0];
+        scope = parts.slice(1).join(" – ");
+      } else if (/\/[A-Z]{2}\b/.test(label)) {
+        scope = label;
+      } else if (label.toLowerCase().includes("nacional")) {
+        scope = "Brasil";
+      }
+
+      const stateMatch = scope.match(/\/([A-Z]{2})\b/);
+      const uf = stateMatch ? stateMatch[1] : "Coleção";
+      const city = scope.replace(/\/[A-Z]{2}\b/, "").trim();
+
+      return {
+        category,
+        scope,
+        city: city || scope,
+        uf,
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function setLoaderVisible(visible) {
+      mapLoader.style.opacity = visible ? "1" : "0";
+      mapLoader.style.zIndex = visible ? "50" : "-1";
+    }
+
+    function renderCurrentMap(map) {
+      if (!map) {
+        currentMapTitle.textContent = "Nenhum mapa disponível";
+        currentMapDescription.textContent = "A galeria não encontrou mapas configurados para exibir.";
+        currentScopeValue.textContent = "Sem dados";
+        return;
+      }
+
+      const meta = parseMapMeta(map);
+      currentMapTitle.textContent = map.label;
+      currentMapDescription.textContent = map.description || "Mapa publicado para exploração territorial no Kepler.";
+      currentScopeValue.textContent = meta.city || meta.scope;
+      viewerStatusText.textContent = `Visualizando: ${meta.scope}`;
+      loaderTitle.textContent = `Abrindo ${meta.scope}`;
+      loaderText.textContent = "Aguarde enquanto os dados e camadas do mapa publicado são carregados.";
+    }
+
+    function renderMapsList() {
+      mapsListContainer.innerHTML = "";
+
+      if (!filteredMaps.length) {
+        mapsListContainer.innerHTML = `
+          <div class="empty-state">
+            Nenhum mapa corresponde ao filtro atual. Tente buscar por cidade, UF ou tipo de análise.
+          </div>
+        `;
+        return;
+      }
+
+      filteredMaps.forEach((map, index) => {
+        const meta = parseMapMeta(map);
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = `map-card${currentMap && currentMap.link === map.link ? " active" : ""}`;
+        card.id = `map-item-${index}`;
+        card.title = map.label;
+        card.onclick = () => loadMap(map);
+        card.innerHTML = `
+          <span class="map-card-icon"><i class="fas fa-map"></i></span>
+          <span class="map-card-copy">
+            <span class="map-card-title">${escapeHtml(map.label)}</span>
+            <span class="map-card-description">${escapeHtml(map.description || "Mapa publicado para navegação territorial.")}</span>
+            <span class="map-card-meta">
+              <span class="map-chip"><strong>${escapeHtml(meta.uf)}</strong></span>
+              <span class="map-chip">${escapeHtml(meta.category)}</span>
+            </span>
+          </span>
+          <span class="map-card-chevron"><i class="fas fa-chevron-right"></i></span>
+        `;
+        mapsListContainer.appendChild(card);
+      });
+    }
+
+    function applyMapFilter() {
+      const query = normalizeText(mapSearch.value);
+      filteredMaps = allMaps.filter(map => {
+        const meta = parseMapMeta(map);
+        const haystack = [
+          map.label,
+          map.description,
+          meta.scope,
+          meta.city,
+          meta.uf,
+          meta.category
+        ].map(normalizeText).join(" ");
+        return !query || haystack.includes(query);
+      });
+      renderMapsList();
+    }
 
     async function fetchConfig() {
       try {
-        const response = await fetch('/get_config');
+        const response = await fetch("/get_config");
         const data = await response.json();
-        
-        mapsListContainer.innerHTML = '';
+        allMaps = Array.isArray(data.maps) ? data.maps : [];
+        filteredMaps = [...allMaps];
+        mapsCountValue.textContent = `${allMaps.length} mapa(s)`;
 
-        if (data.maps.length === 0) {
-            mapsListContainer.innerHTML = '<p class="text-muted small ps-2">Nenhum mapa disponível.</p>';
-            mapLoader.innerHTML = '<span class="text-muted">Sem mapas configurados.</span>';
-            return;
+        if (!allMaps.length) {
+          renderCurrentMap(null);
+          mapsListContainer.innerHTML = `
+            <div class="empty-state">
+              Nenhum mapa foi configurado ainda. Gere novas consultas para alimentar esta galeria.
+            </div>
+          `;
+          mapLoader.innerHTML = `
+            <div class="loader-copy">
+              <div class="loader-title">Sem mapas configurados</div>
+              <div class="loader-text">Assim que novos mapas forem publicados, eles aparecerão aqui.</div>
+            </div>
+          `;
+          return;
         }
 
-        loadMap(data.maps[0].link, 'map-item-0');
-
-        data.maps.forEach((map, index) => {
-          const link = document.createElement('div');
-          link.className = 'nav-item';
-          link.id = `map-item-${index}`;
-          // Adiciona title para tooltip nativo quando recolhido
-          link.title = map.label;
-          link.onclick = () => loadMap(map.link, link.id);
-          
-          const icon = '<i class="fas fa-map"></i>';
-          
-          link.innerHTML = `
-            ${icon}
-            <span class="text-truncate">${map.label}</span>
-          `;
-          mapsListContainer.appendChild(link);
-        });
-
+        renderMapsList();
+        loadMap(allMaps[0]);
       } catch (error) {
-        console.error('Erro ao carregar configurações:', error);
-        mapsListContainer.innerHTML = '<p class="text-danger small ps-2">Erro ao carregar mapas.</p>';
+        console.error("Erro ao carregar configurações:", error);
+        mapsListContainer.innerHTML = `
+          <div class="empty-state" style="color:#fca5a5;">
+            Não foi possível carregar a galeria de mapas neste momento.
+          </div>
+        `;
+        currentMapTitle.textContent = "Erro ao carregar a galeria";
+        currentMapDescription.textContent = "Houve uma falha ao buscar os mapas configurados.";
       }
     }
 
-    function loadMap(url, elementId) {
-      mapLoader.style.opacity = '1';
-      mapLoader.style.zIndex = '50';
+    function loadMap(map) {
+      currentMap = map;
+      renderCurrentMap(map);
+      renderMapsList();
+      setLoaderVisible(true);
+      mapFrame.src = map.link;
 
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      const activeEl = document.getElementById(elementId);
-      if(activeEl) activeEl.classList.add('active');
-
-      mapFrame.src = url;
-
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 991.98 && sidebar.classList.contains("open")) {
         toggleMobileSidebar();
       }
     }
 
     mapFrame.onload = function() {
-        setTimeout(() => {
-            mapLoader.style.opacity = '0';
-            setTimeout(() => {
-                mapLoader.style.zIndex = '-1';
-            }, 300);
-        }, 800);
+      setTimeout(() => setLoaderVisible(false), 550);
     };
 
-    // Função para Mobile (Slide in/out)
+    fullscreenBtn.addEventListener("click", async () => {
+      if (!mapViewer) return;
+      try {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+          return;
+        }
+        await mapViewer.requestFullscreen();
+      } catch (error) {
+        console.error("Erro ao alternar tela cheia:", error);
+      }
+    });
+
     function toggleMobileSidebar() {
-      sidebar.classList.toggle('open');
+      sidebar.classList.toggle("open");
+      mobileOverlay.classList.toggle("show");
     }
 
-    // Função para Desktop (Collapse/Expand)
     function toggleDesktopSidebar(event) {
-        if(event) event.stopPropagation();
-        sidebar.classList.toggle('collapsed');
-        
-        // Troca o ícone do botão
-        const btnIcon = document.querySelector('.desktop-toggle i');
-        if(sidebar.classList.contains('collapsed')) {
-            btnIcon.className = 'fas fa-chevron-right';
-        } else {
-            btnIcon.className = 'fas fa-chevron-left';
-        }
+      if (event) event.stopPropagation();
+      sidebar.classList.toggle("collapsed");
+      const btnIcon = document.querySelector(".desktop-toggle i");
+      btnIcon.className = sidebar.classList.contains("collapsed")
+        ? "fas fa-chevron-right"
+        : "fas fa-chevron-left";
     }
 
-    // Expandir ao clicar no header (se estiver fechado)
     function expandSidebarIfCollapsed() {
-        if(sidebar.classList.contains('collapsed')) {
-            toggleDesktopSidebar();
-        }
+      if (sidebar.classList.contains("collapsed")) {
+        toggleDesktopSidebar();
+      }
     }
 
-    document.addEventListener('DOMContentLoaded', fetchConfig);
+    mapSearch.addEventListener("input", applyMapFilter);
+
+    document.addEventListener("DOMContentLoaded", fetchConfig);
   </script>
 </body>
 </html>
